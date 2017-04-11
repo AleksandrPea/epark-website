@@ -4,19 +4,15 @@ import java.util.Date;
 import java.util.List;
 
 public class Task {
-    private Long id;
+    private Integer id;
     private State state;
     private String comment;
     private Date creationDate;
     private Report report;
     private List<Plant> plants;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public State getState() {

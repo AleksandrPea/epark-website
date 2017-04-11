@@ -3,19 +3,15 @@ package com.web.apea.parkWebsite.domain;
 import java.util.List;
 
 public class Plant {
-    private Long id;
+    private Integer id;
     private String name;
     private State state;
     private String description;
     private Plant plant;
     private List<Task> tasks;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

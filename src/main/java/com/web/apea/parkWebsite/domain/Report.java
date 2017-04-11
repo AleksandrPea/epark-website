@@ -2,15 +2,11 @@ package com.web.apea.parkWebsite.domain;
 
 public class Report {
 
-    private Long id;
+    private Integer id;
     private String comment;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getComment() {
