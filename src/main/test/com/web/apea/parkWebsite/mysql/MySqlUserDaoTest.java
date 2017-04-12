@@ -52,7 +52,6 @@ public class MySqlUserDaoTest {
 
     @Test
     public void deleteByLoginTest() throws SQLException {
-        User user = userDao.getByLogin(login);
         userDao.deleteByLogin(user.getLogin());
         user = userDao.getByLogin(user.getLogin());
         Assert.assertNull(user);
@@ -86,6 +85,4 @@ public class MySqlUserDaoTest {
             e.printStackTrace();  // LOGGER
         }
     }
-
-
 }

@@ -16,6 +16,7 @@ public class MySqlDaoFactory implements DaoFactory {
     private String driver = "com.mysql.jdbc.Driver";
 
     private MySqlUserDao mySqlUserDao;
+    private MySqlAreaDao mySqlAreaDao;
 
     private MySqlDaoFactory() {
         try {
@@ -33,8 +34,11 @@ public class MySqlDaoFactory implements DaoFactory {
         return DriverManager.getConnection(url, user, password);
     }
 
-    public AreaDao getAreaDao(Connection connection) {
-        return null;
+    public AreaDao getAreaDao(Connection connection){
+        if (mySqlAreaDao == null) {
+            mySqlAreaDao = new MySqlAreaDao(connection);
+        }
+        return mySqlAreaDao;
     }
 
     public PlantDao getPlantDao(Connection connection) {

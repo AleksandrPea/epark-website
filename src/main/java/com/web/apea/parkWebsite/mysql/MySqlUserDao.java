@@ -37,6 +37,7 @@ public class MySqlUserDao implements UserDao {
                 String password = resultSet.getString("password");
                 user = new User(login, password);
             }
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace(); // LOGGER
         }

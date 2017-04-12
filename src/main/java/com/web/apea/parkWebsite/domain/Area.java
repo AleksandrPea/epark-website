@@ -6,6 +6,11 @@ public class Area {
     private String name;
     private String description;
 
+    public Area(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
