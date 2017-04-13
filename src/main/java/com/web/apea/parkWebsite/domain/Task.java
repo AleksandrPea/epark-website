@@ -1,15 +1,20 @@
 package com.web.apea.parkWebsite.domain;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 public class Task {
     private Integer id;
     private State state;
     private String comment;
-    private Date creationDate;
-    private Report report;
+    private Instant creationDate;
     private List<Plant> plants;
+
+    public Task(Integer id, State state) {
+        this.id = id;
+        this.state = state;
+        comment = "";
+    }
 
     public Integer getId() {
         return id;
@@ -31,20 +36,8 @@ public class Task {
         this.comment = comment;
     }
 
-    public Date getCreationDate() {
+    public Instant getCreationDate() {
         return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Report getReport() {
-        return report;
-    }
-
-    public void setReport(Report report) {
-        this.report = report;
     }
 
     public List<Plant> getPlants() {

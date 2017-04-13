@@ -5,9 +5,13 @@ public class Report {
     private Integer id;
     private String comment;
     private String imgPath;
+    private Integer taskId;
 
-    public Report(Integer id) {
+    public Report(Integer id, Integer taskId) {
         this.id = id;
+        this.taskId = taskId;
+        comment = "";
+        imgPath = "";
     }
 
     public Integer getId() {
@@ -28,5 +32,9 @@ public class Report {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public Integer getTaskId() {
+        return taskId;
     }
 }

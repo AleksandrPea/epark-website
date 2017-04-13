@@ -9,6 +9,7 @@ public class Area {
     public Area(Integer id, String name) {
         this.id = id;
         this.name = name;
+        description = "";
     }
 
     public String getName() {

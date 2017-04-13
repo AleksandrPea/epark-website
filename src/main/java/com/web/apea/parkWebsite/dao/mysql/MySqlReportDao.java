@@ -5,6 +5,8 @@ import com.web.apea.parkWebsite.dao.ReportDao;
 import com.web.apea.parkWebsite.domain.Report;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlReportDao implements ReportDao {
 
@@ -14,11 +16,13 @@ public class MySqlReportDao implements ReportDao {
         this.connection = connection;
     }
 
-    public Report create() {
+    public Report createOn(Integer taskId) {
+        String sqlStatement = "INSERT INTO report (comment, imgPath, taskId) VALUES ('', '', ?)";
         Report report;
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO report " +
-                    "(comment, imgPath) VALUES ('', '')", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                    Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, taskId);
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DaoException("Creating report failed.");
@@ -29,9 +33,7 @@ public class MySqlReportDao implements ReportDao {
             }
             Integer id = generatedKeys.getInt("id");
             generatedKeys.close();
-            report = new Report(id);
-            report.setComment("");
-            report.setImgPath("");
+            report = new Report(id, taskId);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -39,17 +41,19 @@ public class MySqlReportDao implements ReportDao {
     }
 
     public Report getById(Integer id) {
+        String sqlStatement = "SELECT * FROM report WHERE id = ?";
         Report report;
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM report " +
-                    "WHERE id="+id);
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 throw new DaoException("Report with id " + id + " doesn't exist");
             }
             String comment = resultSet.getString("comment");
             String imgPath = resultSet.getString("imgPath");
-            report = new Report(id);
+            Integer taskId = resultSet.getInt("taskId");
+            report = new Report(id, taskId);
             report.setComment(comment);
             report.setImgPath(imgPath);
         } catch (SQLException e) {
@@ -59,9 +63,9 @@ public class MySqlReportDao implements ReportDao {
     }
 
     public void update(Report report) {
+        String sqlStatement = "UPDATE report SET comment = ?, imgPath = ? WHERE id = ?";
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE report " +
-                    "SET comment = ?, imgPath = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
             statement.setString(1, report.getComment());
             statement.setString(2, report.getImgPath());
             statement.setInt(3, report.getId());
@@ -75,14 +79,49 @@ public class MySqlReportDao implements ReportDao {
     }
 
     public void delete(Report report) {
+        String sqlStatement = "DELETE FROM report WHERE id = ?";
         try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM report " +
-                    "WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
             statement.setInt(1, report.getId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DaoException("Deleting report failed.");
             }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Report> getAllOn(Integer taskId) {
+        String sqlStatement = "SELECT * FROM report WHERE taskId = ?";
+        List<Report> reports = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            ResultSet resultSet = statement.executeQuery();
+            statement.setInt(1, taskId);
+            while (resultSet.next()) {
+                String comment = resultSet.getString("comment");
+                String imgPath = resultSet.getString("imgPath");
+                Integer id = resultSet.getInt("id");
+                Report report = new Report(id, taskId);
+                report.setComment(comment);
+                report.setImgPath(imgPath);
+                reports.add(report);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return reports;
+    }
+
+    @Override
+    public int deleteAllOn(Integer taskId) {
+        String sqlStatement = "DELETE FROM report WHERE taskId = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, taskId);
+            return statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

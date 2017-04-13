@@ -15,11 +15,12 @@ public class MySqlUserDao implements UserDao {
     }
 
     public User getByLogin(String login) {
+        String sqlStatement = "SELECT * FROM user WHERE login = ?";
         User user;
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM user " +
-                    "WHERE login='"+login+"'");
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 throw new DaoException("User with login " + login + " doesn't exist");
             }
@@ -32,9 +33,9 @@ public class MySqlUserDao implements UserDao {
     }
 
     public void update(User user) {
+        String sqlStatement = "UPDATE user SET password = ? WHERE login = ?";
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE user " +
-                    "SET password = ? WHERE login = ?");
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
             statement.setString(1, user.getPassword());
             statement.setString(2, user.getLogin());
             int affectedRows = statement.executeUpdate();
@@ -46,14 +47,4 @@ public class MySqlUserDao implements UserDao {
         }
     }
 
-//
-//    public void deleteByLogin(String login) throws SQLException {
-//        if (login == null) {
-//            throw new IllegalArgumentException("null login");
-//        }
-//        PreparedStatement statement = connection.prepareStatement("DELETE FROM user " +
-//                "WHERE login = ?");
-//        statement.setString(1, login);
-//        statement.executeUpdate();
-//    }
 }
