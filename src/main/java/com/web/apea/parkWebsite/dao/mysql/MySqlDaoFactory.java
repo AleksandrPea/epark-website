@@ -1,4 +1,4 @@
-package com.web.apea.parkWebsite.mysql;
+package com.web.apea.parkWebsite.dao.mysql;
 
 import com.web.apea.parkWebsite.dao.*;
 
@@ -17,6 +17,7 @@ public class MySqlDaoFactory implements DaoFactory {
 
     private MySqlUserDao mySqlUserDao;
     private MySqlAreaDao mySqlAreaDao;
+    private MySqlReportDao mySqlReportDao;
 
     private MySqlDaoFactory() {
         try {
@@ -30,8 +31,12 @@ public class MySqlDaoFactory implements DaoFactory {
         return instance;
     }
 
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+    public Connection getConnection() {
+        try {
+            return DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     public AreaDao getAreaDao(Connection connection){
@@ -46,7 +51,10 @@ public class MySqlDaoFactory implements DaoFactory {
     }
 
     public ReportDao getReportDao(Connection connection) {
-        return null;
+        if (mySqlReportDao == null) {
+            mySqlReportDao = new MySqlReportDao(connection);
+        }
+        return mySqlReportDao;
     }
 
     public TaskDao getTaskDao(Connection connection) {
