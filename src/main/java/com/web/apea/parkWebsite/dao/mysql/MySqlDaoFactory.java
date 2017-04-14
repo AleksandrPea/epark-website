@@ -18,6 +18,8 @@ public class MySqlDaoFactory implements DaoFactory {
     private MySqlUserDao mySqlUserDao;
     private MySqlAreaDao mySqlAreaDao;
     private MySqlReportDao mySqlReportDao;
+    private MySqlTaskDao mySqlTaskDao;
+    private MySqlPlantDao mySqlPlantDao;
 
     private MySqlDaoFactory() {
         try {
@@ -47,7 +49,10 @@ public class MySqlDaoFactory implements DaoFactory {
     }
 
     public PlantDao getPlantDao(Connection connection) {
-        return null;
+        if (mySqlPlantDao == null) {
+            mySqlPlantDao = new MySqlPlantDao(connection);
+        }
+        return mySqlPlantDao;
     }
 
     public ReportDao getReportDao(Connection connection) {
@@ -58,7 +63,10 @@ public class MySqlDaoFactory implements DaoFactory {
     }
 
     public TaskDao getTaskDao(Connection connection) {
-        return null;
+        if (mySqlTaskDao == null) {
+            mySqlTaskDao = new MySqlTaskDao(connection);
+        }
+        return mySqlTaskDao;
     }
 
     public UserDao getUserDao(Connection connection) {

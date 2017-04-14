@@ -16,16 +16,15 @@ public class MySqlUserDao implements UserDao {
 
     public User getByLogin(String login) {
         String sqlStatement = "SELECT * FROM user WHERE login = ?";
-        User user;
+        User user = null;
         try {
             PreparedStatement statement = connection.prepareStatement(sqlStatement);
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                throw new DaoException("User with login " + login + " doesn't exist");
+            if (resultSet.next()) {
+                String password = resultSet.getString("password");
+                user = new User(login, password);
             }
-            String password = resultSet.getString("password");
-            user = new User(login, password);
         } catch (SQLException e) {
             throw new DaoException(e);
         }

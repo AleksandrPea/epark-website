@@ -6,9 +6,19 @@ public class Plant {
     private Integer id;
     private String name;
     private State state;
+    private String imgPath;
     private String description;
-    private Plant plant;
+    private Integer areaId;
     private List<Task> tasks;
+
+    public Plant(Integer id, String name, State state, Integer areaId) {
+        this.id = id;
+        this.name = name;
+        this.state = state;
+        this.areaId = areaId;
+        imgPath = "";
+        description = "";
+    }
 
     public Integer getId() {
         return id;
@@ -30,6 +40,14 @@ public class Plant {
         this.state = state;
     }
 
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -38,12 +56,12 @@ public class Plant {
         this.description = description;
     }
 
-    public Plant getPlant() {
-        return plant;
+    public Integer getAreaId() {
+        return areaId;
     }
 
-    public void setPlant(Plant plant) {
-        this.plant = plant;
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public List<Task> getTasks() {

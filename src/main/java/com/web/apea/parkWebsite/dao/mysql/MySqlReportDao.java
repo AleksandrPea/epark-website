@@ -32,7 +32,6 @@ public class MySqlReportDao implements ReportDao {
                 throw new DaoException("Creating report failed, no ID obtained.");
             }
             Integer id = generatedKeys.getInt("id");
-            generatedKeys.close();
             report = new Report(id, taskId);
         } catch (SQLException e) {
             throw new DaoException(e);

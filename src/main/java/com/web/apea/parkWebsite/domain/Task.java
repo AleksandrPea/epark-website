@@ -10,9 +10,10 @@ public class Task {
     private Instant creationDate;
     private List<Plant> plants;
 
-    public Task(Integer id, State state) {
+    public Task(Integer id, State state, Instant creationDate) {
         this.id = id;
         this.state = state;
+        this.creationDate = creationDate;
         comment = "";
     }
 
