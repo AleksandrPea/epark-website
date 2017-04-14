@@ -19,8 +19,7 @@ public class MySqlAreaDao implements AreaDao {
     public Area getByName(String name) {
         String sqlStatement = "SELECT * FROM area WHERE name = ?";
         Area area;
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -30,6 +29,7 @@ public class MySqlAreaDao implements AreaDao {
             area = new Area(id, name);
             String description = resultSet.getString("description");
             area.setDescription(description);
+            resultSet.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -39,8 +39,7 @@ public class MySqlAreaDao implements AreaDao {
     public Area getById(Integer id) {
         String sqlStatement = "SELECT * FROM area WHERE id = ?";
         Area area;
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -50,6 +49,7 @@ public class MySqlAreaDao implements AreaDao {
             area = new Area(id, name);
             String description = resultSet.getString("description");
             area.setDescription(description);
+            resultSet.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -58,8 +58,7 @@ public class MySqlAreaDao implements AreaDao {
 
     public void update(Area area) {
         String sqlStatement = "UPDATE area SET name = ?, description = ? WHERE id = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setString(1, area.getName());
             statement.setString(2, area.getDescription());
             statement.setInt(3, area.getId());
@@ -76,8 +75,7 @@ public class MySqlAreaDao implements AreaDao {
     public List<Area> getAll() {
         String sqlStatement = "SELECT * FROM area";
         List<Area> areas = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlStatement);
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
@@ -87,6 +85,7 @@ public class MySqlAreaDao implements AreaDao {
                 area.setDescription(description);
                 areas.add(area);
             }
+            resultSet.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

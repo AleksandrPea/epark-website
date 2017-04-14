@@ -3,7 +3,6 @@ package com.web.apea.parkWebsite.dao.mysql;
 import com.web.apea.parkWebsite.dao.DaoException;
 import com.web.apea.parkWebsite.dao.PlantDao;
 import com.web.apea.parkWebsite.domain.Plant;
-import com.web.apea.parkWebsite.domain.Report;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,9 +20,8 @@ public class MySqlPlantDao implements PlantDao {
         String sqlStatement = "INSERT INTO plant (name, state, imgPath, description, areaId)" +
                 "VALUES ('new plant', 'SEEDLING', '', '', ?)";
         Plant plant;
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement,
-                    Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, areaId);
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -35,6 +33,7 @@ public class MySqlPlantDao implements PlantDao {
             }
             Integer id = generatedKeys.getInt("id");
             plant = new Plant(id, "new plant", Plant.State.SEEDLING, areaId);
+            generatedKeys.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -44,8 +43,7 @@ public class MySqlPlantDao implements PlantDao {
     public Plant getById(Integer id) {
         String sqlStatement = "SELECT * FROM plant WHERE id = ?";
         Plant plant;
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -59,6 +57,7 @@ public class MySqlPlantDao implements PlantDao {
             plant = new Plant(id, name, Plant.State.valueOf(state), areaId);
             plant.setImgPath(imgPath);
             plant.setDescription(description);
+            resultSet.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -68,8 +67,7 @@ public class MySqlPlantDao implements PlantDao {
     public void update(Plant plant) {
         String sqlStatement = "UPDATE plant SET name = ?, state = ?, imgPath = ?, description = ?," +
                 "areaId = ? WHERE id = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setString(1, plant.getName());
             statement.setString(2, plant.getState().toString());
             statement.setString(3, plant.getImgPath());
@@ -87,8 +85,7 @@ public class MySqlPlantDao implements PlantDao {
 
     public void delete(Plant plant) {
         String sqlStatement = "DELETE FROM plant WHERE id = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setInt(1, plant.getId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -103,8 +100,7 @@ public class MySqlPlantDao implements PlantDao {
     public List<Plant> getAllOn(Integer areaId) {
         String sqlStatement = "SELECT * FROM plant WHERE areaId = ?";
         List<Plant> plants = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             ResultSet resultSet = statement.executeQuery();
             statement.setInt(1, areaId);
             while (resultSet.next()) {
@@ -118,6 +114,7 @@ public class MySqlPlantDao implements PlantDao {
                 plant.setDescription(description);
                 plants.add(plant);
             }
+            resultSet.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

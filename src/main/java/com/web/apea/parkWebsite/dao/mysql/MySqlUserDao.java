@@ -17,14 +17,14 @@ public class MySqlUserDao implements UserDao {
     public User getByLogin(String login) {
         String sqlStatement = "SELECT * FROM user WHERE login = ?";
         User user = null;
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 String password = resultSet.getString("password");
                 user = new User(login, password);
             }
+            resultSet.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -33,8 +33,7 @@ public class MySqlUserDao implements UserDao {
 
     public void update(User user) {
         String sqlStatement = "UPDATE user SET password = ? WHERE login = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setString(1, user.getPassword());
             statement.setString(2, user.getLogin());
             int affectedRows = statement.executeUpdate();

@@ -19,9 +19,8 @@ public class MySqlReportDao implements ReportDao {
     public Report createOn(Integer taskId) {
         String sqlStatement = "INSERT INTO report (comment, imgPath, taskId) VALUES ('', '', ?)";
         Report report;
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement,
-                    Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, taskId);
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -33,6 +32,7 @@ public class MySqlReportDao implements ReportDao {
             }
             Integer id = generatedKeys.getInt("id");
             report = new Report(id, taskId);
+            generatedKeys.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -42,8 +42,7 @@ public class MySqlReportDao implements ReportDao {
     public Report getById(Integer id) {
         String sqlStatement = "SELECT * FROM report WHERE id = ?";
         Report report;
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -55,6 +54,7 @@ public class MySqlReportDao implements ReportDao {
             report = new Report(id, taskId);
             report.setComment(comment);
             report.setImgPath(imgPath);
+            resultSet.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -63,8 +63,7 @@ public class MySqlReportDao implements ReportDao {
 
     public void update(Report report) {
         String sqlStatement = "UPDATE report SET comment = ?, imgPath = ? WHERE id = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setString(1, report.getComment());
             statement.setString(2, report.getImgPath());
             statement.setInt(3, report.getId());
@@ -79,8 +78,7 @@ public class MySqlReportDao implements ReportDao {
 
     public void delete(Report report) {
         String sqlStatement = "DELETE FROM report WHERE id = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setInt(1, report.getId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -95,8 +93,7 @@ public class MySqlReportDao implements ReportDao {
     public List<Report> getAllOn(Integer taskId) {
         String sqlStatement = "SELECT * FROM report WHERE taskId = ?";
         List<Report> reports = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             ResultSet resultSet = statement.executeQuery();
             statement.setInt(1, taskId);
             while (resultSet.next()) {
@@ -108,6 +105,7 @@ public class MySqlReportDao implements ReportDao {
                 report.setImgPath(imgPath);
                 reports.add(report);
             }
+            resultSet.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -117,8 +115,7 @@ public class MySqlReportDao implements ReportDao {
     @Override
     public int deleteAllOn(Integer taskId) {
         String sqlStatement = "DELETE FROM report WHERE taskId = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setInt(1, taskId);
             return statement.executeUpdate();
         } catch (SQLException e) {
