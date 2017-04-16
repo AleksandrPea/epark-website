@@ -8,7 +8,6 @@ public class Task {
     private State state;
     private String comment;
     private Instant creationDate;
-    private List<Plant> plants;
 
     public Task(Integer id, State state, Instant creationDate) {
         this.id = id;
@@ -39,14 +38,6 @@ public class Task {
 
     public Instant getCreationDate() {
         return creationDate;
-    }
-
-    public List<Plant> getPlants() {
-        return plants;
-    }
-
-    public void setPlants(List<Plant> plants) {
-        this.plants = plants;
     }
 
     public enum State {

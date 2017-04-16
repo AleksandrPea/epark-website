@@ -9,7 +9,6 @@ public class Plant {
     private String imgPath;
     private String description;
     private Integer areaId;
-    private List<Task> tasks;
 
     public Plant(Integer id, String name, State state, Integer areaId) {
         this.id = id;
@@ -62,14 +61,6 @@ public class Plant {
 
     public void setAreaId(Integer areaId) {
         this.areaId = areaId;
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
     }
 
     public enum State {

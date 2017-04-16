@@ -39,6 +39,12 @@ public class MySqlDaoFactory implements DaoFactory {
         return new MySqlUserDao(connection);
     }
 
+    @Override
+    public PlantTasksDao getPlantTasksDao(Connection connection) {
+        checkConnection(connection);
+        return new MySqlPlantTasksDao(connection);
+    }
+
     private void checkConnection(Connection connection) {
         if (connection == null) {
             throw new DaoException("null connection");

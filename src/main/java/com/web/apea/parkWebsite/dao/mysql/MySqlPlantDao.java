@@ -101,8 +101,8 @@ public class MySqlPlantDao implements PlantDao {
         String sqlStatement = "SELECT * FROM plant WHERE areaId = ?";
         List<Plant> plants = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
-            ResultSet resultSet = statement.executeQuery();
             statement.setInt(1, areaId);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String state = resultSet.getString("state");

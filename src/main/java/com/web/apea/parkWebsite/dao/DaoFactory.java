@@ -9,4 +9,5 @@ public interface DaoFactory {
     ReportDao getReportDao(Connection connection);
     TaskDao getTaskDao(Connection connection);
     UserDao getUserDao(Connection connection);
+    PlantTasksDao getPlantTasksDao(Connection connection);
 }
