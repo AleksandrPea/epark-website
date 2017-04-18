@@ -1,6 +1,7 @@
-package com.web.apea.parkWebsite.connectionPool;
+package com.web.apea.parkWebsite.connection;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.web.apea.parkWebsite.dao.DaoException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,9 +9,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MySqlConnectionPool implements ConnectionPool {
+public class MySqlConnectionPool implements ConnectionPool<AbstractConnectionImpl> {
 
-    private static final String DB_CONFIG_FILENAME = "webProject/config/dbConfig.properties";
+    private static final String DB_CONFIG_FILENAME = "/webProject/config/dbConfig.properties";
     private static final String DB_CONFIG_PARAM_URL = "database.url";
     private static final String DB_CONFIG_PARAM_DB_NAME = "database.dbName";
     private static final String DB_CONFIG_PARAM_USER_NAME = "database.userName";
@@ -42,11 +43,16 @@ public class MySqlConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public Connection getConnection() {
+    public AbstractConnectionImpl getConnection() {
         try {
-            return mysqlDS.getConnection();
+            return new AbstractConnectionImpl(mysqlDS.getConnection());
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't get connection", e);
         }
+    }
+
+    @Override
+    public Connection getSqlConnection(AbstractConnectionImpl connection) {
+        return connection.getConnection();
     }
 }
