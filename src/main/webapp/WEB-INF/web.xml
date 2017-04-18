@@ -1,7 +1,20 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
-<web-app>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+    <servlet-name>TestView</servlet-name>
+    <jsp-file>/index.jsp</jsp-file>
+  </servlet>
+  <servlet>
+    <servlet-name>AddPlant</servlet-name>
+    <jsp-file>/WEB-INF/plants/createPlant.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TestView</servlet-name>
+    <url-pattern>/index</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddPlant</servlet-name>
+    <url-pattern>/plants/add</url-pattern>
+  </servlet-mapping>
+
 </web-app>
