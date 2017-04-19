@@ -2,16 +2,14 @@ package com.web.apea.parkWebsite.service.impl;
 
 import com.web.apea.parkWebsite.connection.AbstractConnectionImpl;
 import com.web.apea.parkWebsite.connection.ConnectionPool;
-import com.web.apea.parkWebsite.connection.MySqlConnectionPool;
 import com.web.apea.parkWebsite.dao.DaoFactory;
-import com.web.apea.parkWebsite.dao.mysql.MySqlDaoFactory;
 import com.web.apea.parkWebsite.domain.User;
 import com.web.apea.parkWebsite.service.UserService;
 
 public class UserServiceImpl implements UserService {
 
-    private ConnectionPool<AbstractConnectionImpl> pool = MySqlConnectionPool.getInstance();
-    private DaoFactory factory = MySqlDaoFactory.getInstance();
+    private ConnectionPool<AbstractConnectionImpl> pool;
+    private DaoFactory factory;
 
     UserServiceImpl(ConnectionPool<AbstractConnectionImpl> pool, DaoFactory factory) {
         this.pool = pool;

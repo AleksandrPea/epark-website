@@ -28,23 +28,30 @@ public class MySqlPlantTasksDao implements PlantTasksDao {
                 isCreated = true;
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't create plant-task association",e);
         }
         return isCreated;
     }
 
     @Override
-    public void deleteAssociation(Integer taskId, Integer plantId) {
-        String sqlStatement = "DELETE FROM plant_task WHERE taskId = ? AND plantId = ?";
+    public int deleteAssociationsForTask(Integer taskId) {
+        String sqlStatement = "DELETE FROM plant_task WHERE taskId = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setInt(1, taskId);
-            statement.setInt(2, plantId);
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DaoException("Deleting relation failed.");
-            }
+            return statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't delete associations for task", e);
+        }
+    }
+
+    @Override
+    public int deleteAssociationsForPlant(Integer plantId) {
+        String sqlStatement = "DELETE FROM plant_task WHERE plantId = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setInt(1, plantId);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't delete associations for plant", e);
         }
     }
 
@@ -61,7 +68,7 @@ public class MySqlPlantTasksDao implements PlantTasksDao {
             }
             resultSet.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get associations for plant", e);
         }
         return taskIds;
     }
@@ -79,7 +86,7 @@ public class MySqlPlantTasksDao implements PlantTasksDao {
             }
             resultSet.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get associations for task", e);
         }
         return plantIds;
     }

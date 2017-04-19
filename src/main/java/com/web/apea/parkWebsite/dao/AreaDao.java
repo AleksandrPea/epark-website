@@ -1,6 +1,7 @@
 package com.web.apea.parkWebsite.dao;
 
 import com.web.apea.parkWebsite.domain.Area;
+
 import java.util.List;
 
 public interface AreaDao {

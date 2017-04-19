@@ -1,7 +1,6 @@
 package com.web.apea.parkWebsite.connection;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import com.web.apea.parkWebsite.dao.DaoException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,7 +46,7 @@ public class MySqlConnectionPool implements ConnectionPool<AbstractConnectionImp
         try {
             return new AbstractConnectionImpl(mysqlDS.getConnection());
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get connection", e);
+            throw new RuntimeException("Can't get connection.", e);
         }
     }
 

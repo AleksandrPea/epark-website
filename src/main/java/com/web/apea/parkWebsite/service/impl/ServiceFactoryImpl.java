@@ -28,12 +28,18 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
     @Override
     public AreaService getAreaService() {
-        return null;
+        if (areaService == null) {
+            areaService = new AreaServiceImpl(pool, factory);
+        }
+        return areaService;
     }
 
     @Override
     public PlantService getPlantService() {
-        return null;
+        if (plantService == null) {
+            plantService = new PlantServiceImpl(pool, factory);
+        }
+        return plantService;
     }
 
     @Override

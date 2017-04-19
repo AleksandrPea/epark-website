@@ -1,7 +1,5 @@
 package com.web.apea.parkWebsite.domain;
 
-import java.util.List;
-
 public class Plant {
     private Integer id;
     private String name;

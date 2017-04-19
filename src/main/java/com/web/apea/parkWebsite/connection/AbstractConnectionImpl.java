@@ -1,6 +1,5 @@
 package com.web.apea.parkWebsite.connection;
 
-import com.web.apea.parkWebsite.dao.DaoException;
 import com.web.apea.parkWebsite.service.ServiceException;
 
 import java.sql.Connection;

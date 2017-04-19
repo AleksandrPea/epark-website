@@ -31,7 +31,7 @@ public class MySqlAreaDao implements AreaDao {
             area.setDescription(description);
             resultSet.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get area by name "+name, e);
         }
         return area;
     }
@@ -51,7 +51,7 @@ public class MySqlAreaDao implements AreaDao {
             area.setDescription(description);
             resultSet.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get area", e);
         }
         return area;
     }
@@ -67,7 +67,7 @@ public class MySqlAreaDao implements AreaDao {
                 throw new DaoException("Updating area failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't update area", e);
         }
     }
 

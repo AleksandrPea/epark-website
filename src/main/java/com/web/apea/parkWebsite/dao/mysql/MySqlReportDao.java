@@ -34,7 +34,7 @@ public class MySqlReportDao implements ReportDao {
             report = new Report(id, taskId);
             generatedKeys.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't create report", e);
         }
         return report;
     }
@@ -56,7 +56,7 @@ public class MySqlReportDao implements ReportDao {
             report.setImgPath(imgPath);
             resultSet.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get report", e);
         }
         return report;
     }
@@ -72,7 +72,7 @@ public class MySqlReportDao implements ReportDao {
                 throw new DaoException("Updating report failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't update report", e);
         }
     }
 
@@ -85,7 +85,7 @@ public class MySqlReportDao implements ReportDao {
                 throw new DaoException("Deleting report failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't delete report", e);
         }
     }
 

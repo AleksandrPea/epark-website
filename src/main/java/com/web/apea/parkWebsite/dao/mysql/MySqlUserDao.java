@@ -4,7 +4,10 @@ import com.web.apea.parkWebsite.dao.DaoException;
 import com.web.apea.parkWebsite.dao.UserDao;
 import com.web.apea.parkWebsite.domain.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MySqlUserDao implements UserDao {
 
@@ -26,7 +29,7 @@ public class MySqlUserDao implements UserDao {
             }
             resultSet.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get user by login " + login, e);
         }
         return user;
     }
@@ -41,7 +44,7 @@ public class MySqlUserDao implements UserDao {
                 throw new DaoException("Updating user failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't update user", e);
         }
     }
 

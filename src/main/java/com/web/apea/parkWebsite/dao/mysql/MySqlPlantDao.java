@@ -35,7 +35,7 @@ public class MySqlPlantDao implements PlantDao {
             plant = new Plant(id, "new plant", Plant.State.SEEDLING, areaId);
             generatedKeys.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't create plant", e);
         }
         return plant;
     }
@@ -59,7 +59,7 @@ public class MySqlPlantDao implements PlantDao {
             plant.setDescription(description);
             resultSet.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get plant", e);
         }
         return plant;
     }
@@ -79,7 +79,7 @@ public class MySqlPlantDao implements PlantDao {
                 throw new DaoException("Updating plant failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't update plant", e);
         }
     }
 
@@ -92,7 +92,7 @@ public class MySqlPlantDao implements PlantDao {
                 throw new DaoException("Deleting report failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't delete plant", e);
         }
     }
 

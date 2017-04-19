@@ -11,6 +11,8 @@ public interface TaskService {
     Task getById(Integer id);
     List<Plant> getAssociatedPlants(Integer taskId);
     void update(Task task);
-    void updateAssociatedPlants(Integer taskId, List<Plant> newPlants);
+    void updateAssociationsFor(Integer taskId, List<Plant> newPlants);
+
+    /** Deletes task and its associations with plants */
     void delete(Task task);
 }

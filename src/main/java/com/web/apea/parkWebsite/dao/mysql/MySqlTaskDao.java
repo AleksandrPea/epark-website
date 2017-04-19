@@ -33,7 +33,7 @@ public class MySqlTaskDao implements TaskDao {
             task = new Task(id, Task.State.NEW, Instant.ofEpochMilli(epochMilli));
             generatedKeys.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't create task", e);
         }
         return task;
     }
@@ -54,7 +54,7 @@ public class MySqlTaskDao implements TaskDao {
             task.setComment(comment);
             resultSet.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get task", e);
         }
         return task;
     }
@@ -70,7 +70,7 @@ public class MySqlTaskDao implements TaskDao {
                 throw new DaoException("Updating task failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't update task", e);
         }
     }
 
@@ -83,7 +83,7 @@ public class MySqlTaskDao implements TaskDao {
                 throw new DaoException("Deleting task failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't delete task", e);
         }
     }
 }
