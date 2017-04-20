@@ -1,12 +1,10 @@
 package com.apea.training.parkWebsite.dao.mysql;
 
-import com.apea.training.parkWebsite.domain.Report;
-import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.dao.UserDao;
+import com.apea.training.parkWebsite.domain.User;
 
 import java.sql.*;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 

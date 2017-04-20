@@ -43,7 +43,7 @@ public class MySqlConnectionPool implements ConnectionPool<MySqlDaoConnection> {
     }
 
     @Override
-    public MySqlDaoConnection getDaoConnection() {
+    public MySqlDaoConnection getConnection() {
         try {
             return new MySqlDaoConnection(mysqlDS.getConnection());
         } catch (SQLException e) {

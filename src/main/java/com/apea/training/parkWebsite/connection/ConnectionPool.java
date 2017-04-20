@@ -9,6 +9,6 @@ import java.sql.Connection;
  */
 public interface ConnectionPool<T extends DaoConnection> {
 
-    T getDaoConnection();
+    T getConnection();
     Connection getSqlConnectionFrom(T connection);
 }

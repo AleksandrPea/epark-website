@@ -12,9 +12,11 @@ public interface PlantDao {
 
     void update(Plant plant);
 
-    void updateState(Integer plantId, Plant.State newState);
+    void updateState(Plant plant, Plant.State newState);
 
     void delete(Plant plant);
 
     List<Plant> getAllOn(Integer areaId);
+
+    List<Integer> getAssociatedTaskIds(Plant plant);
 }

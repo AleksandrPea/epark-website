@@ -18,7 +18,7 @@
 //
 //    @BeforeClass
 //    public static void openConnection() throws SQLException {
-//        connection = MySqlDaoFactory.getInstance().getDaoConnection();
+//        connection = MySqlDaoFactory.getInstance().getConnection();
 //        areaDao = MySqlDaoFactory.getInstance().getAreaDao(connection);
 //        area = new Area(testAreaId, testAreaName);
 //        area.setDescription("aaa");

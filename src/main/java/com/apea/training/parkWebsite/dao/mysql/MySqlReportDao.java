@@ -1,8 +1,8 @@
 package com.apea.training.parkWebsite.dao.mysql;
 
-import com.apea.training.parkWebsite.domain.Report;
 import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.dao.ReportDao;
+import com.apea.training.parkWebsite.domain.Report;
 
 import java.sql.*;
 import java.time.Instant;

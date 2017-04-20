@@ -1,18 +1,24 @@
 package com.apea.training.parkWebsite.service;
 
-import com.apea.training.parkWebsite.domain.Task;
 import com.apea.training.parkWebsite.domain.Plant;
+import com.apea.training.parkWebsite.domain.Task;
 
 import java.util.List;
 
 public interface TaskService {
 
-    Task createBlank();
-    Task getById(Integer id);
-    List<Plant> getAssociatedPlants(Integer taskId);
-    void update(Task task);
-    void updateAssociationsFor(Integer taskId, List<Plant> newPlants);
+    void createAndAssociate(Task task, List<Plant> plants);
 
-    /** Deletes task and its associations with plants */
+    Task getById(Integer id);
+
     void delete(Task task);
+
+    List<Plant> getAssociatedPlants(Task task);
+
+    void finishAndUpdatePlantStates(Task task, List<Plant> plants);
+
+    void abort(Task task);
+
+    void confirmRecieving(Task task);
+
 }

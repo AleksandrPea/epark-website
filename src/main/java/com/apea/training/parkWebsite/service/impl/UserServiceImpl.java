@@ -1,9 +1,9 @@
 package com.apea.training.parkWebsite.service.impl;
 
 import com.apea.training.parkWebsite.connection.ConnectionPool;
-import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.connection.MySqlDaoConnection;
 import com.apea.training.parkWebsite.dao.DaoFactory;
+import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.UserService;
 
 public class UserServiceImpl implements UserService {
@@ -18,14 +18,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByLogin(String login) {
-        try (MySqlDaoConnection connection = pool.getDaoConnection()) {
+        try (MySqlDaoConnection connection = pool.getConnection()) {
             return factory.getUserDao(pool.getSqlConnectionFrom(connection)).getByLogin(login);
         }
     }
 
     @Override
     public void changePassword(String login, String newPassword) {
-        try (MySqlDaoConnection connection = pool.getDaoConnection()) {
+        try (MySqlDaoConnection connection = pool.getConnection()) {
             factory.getUserDao(pool.getSqlConnectionFrom(connection)).update(new User(login, newPassword));
         }
     }

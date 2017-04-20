@@ -1,7 +1,7 @@
 package com.apea.training.parkWebsite.dao.mysql;
 
-import com.apea.training.parkWebsite.dao.PlantDao;
 import com.apea.training.parkWebsite.dao.DaoException;
+import com.apea.training.parkWebsite.dao.PlantDao;
 import com.apea.training.parkWebsite.domain.Plant;
 
 import java.sql.*;
@@ -88,11 +88,11 @@ public class MySqlPlantDao implements PlantDao {
     }
 
     @Override
-    public void updateState(Integer plantId, Plant.State newState) {
+    public void updateState(Plant plant, Plant.State newState) {
         String sqlStatement = "UPDATE plant SET state = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setString(1, newState.toString());
-            statement.setInt(2, plantId);
+            statement.setInt(2, plant.getId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DaoException("Updating state failed.");
@@ -137,5 +137,21 @@ public class MySqlPlantDao implements PlantDao {
             throw new DaoException(e);
         }
         return plants;
+    }
+
+    @Override
+    public List<Integer> getAssociatedTaskIds(Plant plant) {
+        String sqlStatement = "SELECT * FROM plant_task WHERE plantId = ?";
+        List<Integer> associatedTaskIds = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setInt(1, plant.getId());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                associatedTaskIds.add(resultSet.getInt("taskId"));
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Can't get associated task ids", e);
+        }
+        return associatedTaskIds;
     }
 }

@@ -21,7 +21,7 @@ public class MySqlDaoFactory implements DaoFactory {
 
     @Override
     public DaoConnection getDaoConnection() {
-        return pool.getDaoConnection();
+        return pool.getConnection();
     }
 
     @Override

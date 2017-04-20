@@ -6,6 +6,8 @@ import com.apea.training.parkWebsite.domain.Task;
 
 import java.sql.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlTaskDao implements TaskDao {
 
@@ -40,6 +42,36 @@ public class MySqlTaskDao implements TaskDao {
         } catch (SQLException e) {
             throw new DaoException("Can't create task", e);
         }
+    }
+
+    @Override
+    public List<Integer> getAssociatedPlantIds(Task task) {
+        String sqlStatement = "SELECT * FROM plant_task WHERE taskId = ?";
+        List<Integer> associatedPlantIds = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setInt(1, task.getId());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                associatedPlantIds.add(resultSet.getInt("plantId"));
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Can't get associated plant ids", e);
+        }
+        return associatedPlantIds;
+    }
+
+    @Override
+    public boolean associate(Task task, Integer plantId) {
+        String sqlStatement = "INSERT INTO plant_task (taskId, plantId) VALUES (?, ?)";
+        boolean isCreated;
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setInt(1, task.getId());
+            statement.setInt(2, plantId);
+            isCreated = statement.executeUpdate() != 0;
+        } catch (SQLException e) {
+            throw new DaoException("Can't associate task with plant", e);
+        }
+        return isCreated;
     }
 
     @Override

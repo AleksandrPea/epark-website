@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface ReportService {
 
-    Report createBlankOn(Integer taskId);
+    void create(Report report);
+
     Report getById(Integer id);
-    void update(Report report);
+
     void delete(Report report);
+
     List<Report> getAllOn(Integer taskId);
 }

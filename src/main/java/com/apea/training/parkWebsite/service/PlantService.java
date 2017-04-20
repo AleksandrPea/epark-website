@@ -7,12 +7,15 @@ import java.util.List;
 
 public interface PlantService {
 
-    Plant createOn(Integer areaId);
+    void createNew(Plant plant);
+
     Plant getById(Integer id);
-    List<Task> getAssociatedTasks(Integer plantId);
+
     void update(Plant plant);
 
-    /** Deletes plant and its associations with tasks */
     void delete(Plant plant);
+
     List<Plant> getAllOn(Integer areaId);
+
+    List<Task> getAssociatedTasks(Plant plant);
 }
