@@ -1,8 +1,8 @@
 package com.apea.training.parkWebsite.dao.mysql;
 
+import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.dao.TaskDao;
 import com.apea.training.parkWebsite.domain.Task;
-import com.apea.training.parkWebsite.dao.DaoException;
 
 import java.sql.*;
 import java.time.Instant;
@@ -15,11 +15,15 @@ public class MySqlTaskDao implements TaskDao {
         this.connection = connection;
     }
 
-    public Task create() {
-        String sqlStatement = "INSERT INTO state (state, comment) VALUES ('NEW', '')";
-        Task task;
+    @Override
+    public void create(Task task) {
+        String sqlStatement = "INSERT INTO task (state, comment, senderId, recieverId) VALUES (?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement,
                 Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, task.getState().toString());
+            statement.setString(2, task.getComment());
+            statement.setInt(3, task.getSenderId());
+            statement.setInt(4, task.getRecieverId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DaoException("Creating task failed.");
@@ -29,15 +33,16 @@ public class MySqlTaskDao implements TaskDao {
                 throw new DaoException("Creating task failed, no ID obtained.");
             }
             Integer id = generatedKeys.getInt("id");
-            long epochMilli = generatedKeys.getTimestamp("creationDate").getTime();
-            task = new Task(id, Task.State.NEW, Instant.ofEpochMilli(epochMilli));
+            long creationDate = generatedKeys.getTimestamp("creationDate").getTime();
+            task.setId(id);
+            task.setCreationDate(Instant.ofEpochMilli(creationDate));
             generatedKeys.close();
         } catch (SQLException e) {
             throw new DaoException("Can't create task", e);
         }
-        return task;
     }
 
+    @Override
     public Task getById(Integer id) {
         String sqlStatement = "SELECT * FROM task WHERE id = ?";
         Task task;
@@ -47,11 +52,14 @@ public class MySqlTaskDao implements TaskDao {
             if (!resultSet.next()) {
                 throw new DaoException("Task with id " + id + " doesn't exist");
             }
-            String comment = resultSet.getString("comment");
             String state = resultSet.getString("state");
-            long epochMilli = resultSet.getTimestamp("creationDate").getTime();
-            task = new Task(id, Task.State.valueOf(state), Instant.ofEpochMilli(epochMilli));
-            task.setComment(comment);
+            String comment = resultSet.getString("comment");
+            long creationDate = resultSet.getTimestamp("creationDate").getTime();
+            Integer senderId = resultSet.getInt("senderId");
+            Integer recieverId = resultSet.getInt("recieverId");
+            task = new Task.Builder().setId(id).setState(Task.State.valueOf(state)).setComment(comment)
+                    .setCreationDate(Instant.ofEpochMilli(creationDate)).setSenderId(senderId)
+                    .setRecieverId(recieverId).build();
             resultSet.close();
         } catch (SQLException e) {
             throw new DaoException("Can't get task", e);
@@ -59,18 +67,18 @@ public class MySqlTaskDao implements TaskDao {
         return task;
     }
 
-    public void update(Task task) {
-        String sqlStatement = "UPDATE task SET state = ?, comment = ?, WHERE id = ?";
+    @Override
+    public void updateState(Integer taskId, Task.State newState) {
+        String sqlStatement = "UPDATE task SET state = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
-            statement.setString(1, task.getState().toString());
-            statement.setString(2, task.getComment());
-            statement.setInt(3, task.getId());
+            statement.setString(1, newState.toString());
+            statement.setInt(2, taskId);
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
-                throw new DaoException("Updating task failed.");
+                throw new DaoException("Updating state failed.");
             }
         } catch (SQLException e) {
-            throw new DaoException("Can't update task", e);
+            throw new DaoException("Can't update state", e);
         }
     }
 

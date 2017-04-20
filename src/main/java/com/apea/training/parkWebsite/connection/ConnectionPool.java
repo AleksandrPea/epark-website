@@ -7,8 +7,8 @@ import java.sql.Connection;
  *
  * @param <T> type of connection
  */
-public interface ConnectionPool<T extends AbstractConnection> {
+public interface ConnectionPool<T extends DaoConnection> {
 
-    T getConnection();
-    Connection getSqlConnection(T connection);
+    T getDaoConnection();
+    Connection getSqlConnectionFrom(T connection);
 }

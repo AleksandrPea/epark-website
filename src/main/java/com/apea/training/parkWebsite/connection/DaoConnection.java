@@ -1,6 +1,6 @@
 package com.apea.training.parkWebsite.connection;
 
-public interface AbstractConnection extends AutoCloseable {
+public interface DaoConnection extends AutoCloseable {
 
     void beginTransaction();
 

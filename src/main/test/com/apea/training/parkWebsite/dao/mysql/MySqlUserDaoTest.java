@@ -16,7 +16,7 @@
 //
 //    @BeforeClass
 //    public static void openConnection() throws SQLException {
-//        connection = MySqlDaoFactory.getInstance().getConnection();
+//        connection = MySqlDaoFactory.getInstance().getDaoConnection();
 //        userDao = MySqlDaoFactory.getInstance().getUserDao(connection);
 //        login = "" + System.currentTimeMillis();
 //    }

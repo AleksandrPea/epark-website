@@ -1,6 +1,6 @@
 package com.apea.training.parkWebsite.service.impl;
 
-import com.apea.training.parkWebsite.connection.AbstractConnectionImpl;
+import com.apea.training.parkWebsite.connection.MySqlDaoConnection;
 import com.apea.training.parkWebsite.connection.ConnectionPool;
 import com.apea.training.parkWebsite.dao.TaskDao;
 import com.apea.training.parkWebsite.domain.Task;
@@ -13,32 +13,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlantServiceImpl implements PlantService {
-    private ConnectionPool<AbstractConnectionImpl> pool;
+    private ConnectionPool<MySqlDaoConnection> pool;
     private DaoFactory factory;
 
-    PlantServiceImpl(ConnectionPool<AbstractConnectionImpl> pool, DaoFactory factory) {
+    PlantServiceImpl(ConnectionPool<MySqlDaoConnection> pool, DaoFactory factory) {
         this.pool = pool;
         this.factory = factory;
     }
 
     @Override
     public Plant createOn(Integer areaId) {
-        try (AbstractConnectionImpl connection = pool.getConnection()) {
-            return factory.getPlantDao(pool.getSqlConnection(connection)).createOn(areaId);
+        try (MySqlDaoConnection connection = pool.getDaoConnection()) {
+            return factory.getPlantDao(pool.getSqlConnectionFrom(connection)).createOn(areaId);
         }
     }
 
     @Override
     public Plant getById(Integer id) {
-        try (AbstractConnectionImpl connection = pool.getConnection()) {
-            return factory.getPlantDao(pool.getSqlConnection(connection)).getById(id);
+        try (MySqlDaoConnection connection = pool.getDaoConnection()) {
+            return factory.getPlantDao(pool.getSqlConnectionFrom(connection)).getById(id);
         }
     }
 
     @Override
     public List<Task> getAssociatedTasks(Integer plantId) {
-        try (AbstractConnectionImpl connection = pool.getConnection()) {
-            Connection sqlConn = pool.getSqlConnection(connection);
+        try (MySqlDaoConnection connection = pool.getDaoConnection()) {
+            Connection sqlConn = pool.getSqlConnectionFrom(connection);
             TaskDao taskDao = factory.getTaskDao(sqlConn);
             return factory.getPlantTasksDao(sqlConn).getAssociatedTasksIds(plantId)
                     .stream()
@@ -49,16 +49,16 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public void update(Plant plant) {
-        try (AbstractConnectionImpl connection = pool.getConnection()) {
-            factory.getPlantDao(pool.getSqlConnection(connection)).update(plant);
+        try (MySqlDaoConnection connection = pool.getDaoConnection()) {
+            factory.getPlantDao(pool.getSqlConnectionFrom(connection)).update(plant);
         }
     }
 
     @Override
     public void delete(Plant plant) {
-        try (AbstractConnectionImpl connection = pool.getConnection()) {
+        try (MySqlDaoConnection connection = pool.getDaoConnection()) {
             connection.beginTransaction();
-            Connection sqlConn = pool.getSqlConnection(connection);
+            Connection sqlConn = pool.getSqlConnectionFrom(connection);
             factory.getPlantTasksDao(sqlConn).deleteAssociationsForPlant(plant.getId());
             factory.getPlantDao(sqlConn).delete(plant);
             connection.commitTransaction();
@@ -67,8 +67,8 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public List<Plant> getAllOn(Integer areaId) {
-        try (AbstractConnectionImpl connection = pool.getConnection()) {
-            return factory.getPlantDao(pool.getSqlConnection(connection)).getAllOn(areaId);
+        try (MySqlDaoConnection connection = pool.getDaoConnection()) {
+            return factory.getPlantDao(pool.getSqlConnectionFrom(connection)).getAllOn(areaId);
         }
     }
 }

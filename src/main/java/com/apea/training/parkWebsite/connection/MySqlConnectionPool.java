@@ -1,5 +1,6 @@
 package com.apea.training.parkWebsite.connection;
 
+import com.apea.training.parkWebsite.dao.DaoException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.FileInputStream;
@@ -8,7 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MySqlConnectionPool implements ConnectionPool<AbstractConnectionImpl> {
+public class MySqlConnectionPool implements ConnectionPool<MySqlDaoConnection> {
 
     private static final String DB_CONFIG_FILENAME = "/webProject/config/dbConfig.properties";
     private static final String DB_CONFIG_PARAM_URL = "database.url";
@@ -29,7 +30,7 @@ public class MySqlConnectionPool implements ConnectionPool<AbstractConnectionImp
             mysqlDS.setUser(props.getProperty(DB_CONFIG_PARAM_USER_NAME));
             mysqlDS.setPassword(props.getProperty(DB_CONFIG_PARAM_USER_PASSWORD));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -42,16 +43,16 @@ public class MySqlConnectionPool implements ConnectionPool<AbstractConnectionImp
     }
 
     @Override
-    public AbstractConnectionImpl getConnection() {
+    public MySqlDaoConnection getDaoConnection() {
         try {
-            return new AbstractConnectionImpl(mysqlDS.getConnection());
+            return new MySqlDaoConnection(mysqlDS.getConnection());
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get connection.", e);
+            throw new DaoException("Can't get dao connection", e);
         }
     }
 
     @Override
-    public Connection getSqlConnection(AbstractConnectionImpl connection) {
+    public Connection getSqlConnectionFrom(MySqlDaoConnection connection) {
         return connection.getConnection();
     }
 }

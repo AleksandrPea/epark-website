@@ -16,13 +16,17 @@ public class MySqlPlantDao implements PlantDao {
         this.connection = connection;
     }
 
-    public Plant createOn(Integer areaId) {
+    @Override
+    public void create(Plant plant) {
         String sqlStatement = "INSERT INTO plant (name, state, imgPath, description, areaId)" +
-                "VALUES ('new plant', 'SEEDLING', '', '', ?)";
-        Plant plant;
+                "VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement,
                 Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, areaId);
+            statement.setString(1, plant.getName());
+            statement.setString(2, plant.getState().toString());
+            statement.setString(3, plant.getImgPath());
+            statement.setString(4, plant.getDescription());
+            statement.setInt(5, plant.getAreaId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DaoException("Creating plant failed.");
@@ -32,14 +36,14 @@ public class MySqlPlantDao implements PlantDao {
                 throw new DaoException("Creating plant failed, no ID obtained.");
             }
             Integer id = generatedKeys.getInt("id");
-            plant = new Plant(id, "new plant", Plant.State.SEEDLING, areaId);
+            plant.setId(id);
             generatedKeys.close();
         } catch (SQLException e) {
             throw new DaoException("Can't create plant", e);
         }
-        return plant;
     }
 
+    @Override
     public Plant getById(Integer id) {
         String sqlStatement = "SELECT * FROM plant WHERE id = ?";
         Plant plant;
@@ -54,9 +58,8 @@ public class MySqlPlantDao implements PlantDao {
             String imgPath = resultSet.getString("imgPath");
             String description = resultSet.getString("description");
             Integer areaId = resultSet.getInt("areaId");
-            plant = new Plant(id, name, Plant.State.valueOf(state), areaId);
-            plant.setImgPath(imgPath);
-            plant.setDescription(description);
+            plant = new Plant.Builder().setId(id).setName(name).setState(Plant.State.valueOf(state))
+                    .setImgPath(imgPath).setDescription(description).setAreaId(areaId).build();
             resultSet.close();
         } catch (SQLException e) {
             throw new DaoException("Can't get plant", e);
@@ -64,6 +67,7 @@ public class MySqlPlantDao implements PlantDao {
         return plant;
     }
 
+    @Override
     public void update(Plant plant) {
         String sqlStatement = "UPDATE plant SET name = ?, state = ?, imgPath = ?, description = ?," +
                 "areaId = ? WHERE id = ?";
@@ -80,6 +84,21 @@ public class MySqlPlantDao implements PlantDao {
             }
         } catch (SQLException e) {
             throw new DaoException("Can't update plant", e);
+        }
+    }
+
+    @Override
+    public void updateState(Integer plantId, Plant.State newState) {
+        String sqlStatement = "UPDATE plant SET state = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setString(1, newState.toString());
+            statement.setInt(2, plantId);
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DaoException("Updating state failed.");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Can't update state", e);
         }
     }
 
@@ -104,14 +123,13 @@ public class MySqlPlantDao implements PlantDao {
             statement.setInt(1, areaId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String state = resultSet.getString("state");
                 String imgPath = resultSet.getString("imgPath");
                 String description = resultSet.getString("description");
-                Integer id = resultSet.getInt("id");
-                Plant plant = new Plant(id, name, Plant.State.valueOf(state), areaId);
-                plant.setImgPath(imgPath);
-                plant.setDescription(description);
+                Plant plant = new Plant.Builder().setId(id).setName(name).setState(Plant.State.valueOf(state))
+                        .setImgPath(imgPath).setDescription(description).setAreaId(areaId).build();
                 plants.add(plant);
             }
             resultSet.close();

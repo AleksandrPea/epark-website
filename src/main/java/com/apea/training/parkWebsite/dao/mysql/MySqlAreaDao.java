@@ -16,6 +16,31 @@ public class MySqlAreaDao implements AreaDao {
         this.connection = connection;
     }
 
+    @Override
+    public void create(Area area) {
+        String sqlStatement = "INSERT INTO area (name, description, taskmasterId) VALUES (?,?,?)";
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, area.getName());
+            statement.setString(2, area.getDescription());
+            statement.setInt(3, area.getTaskmasterId());
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DaoException("Creating area failed.");
+            }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (!generatedKeys.next()) {
+                throw new DaoException("Creating area failed, no ID obtained.");
+            }
+            Integer id = generatedKeys.getInt("id");
+            area.setId(id);
+            generatedKeys.close();
+        } catch (SQLException e) {
+            throw new DaoException("Can't create area", e);
+        }
+    }
+
+    @Override
     public Area getByName(String name) {
         String sqlStatement = "SELECT * FROM area WHERE name = ?";
         Area area;
@@ -26,9 +51,10 @@ public class MySqlAreaDao implements AreaDao {
                 throw new DaoException("Area with name " + name + " doesn't exist");
             }
             Integer id = resultSet.getInt("id");
-            area = new Area(id, name);
             String description = resultSet.getString("description");
-            area.setDescription(description);
+            Integer taskmasterId = resultSet.getInt("taskmasterId");
+            area = new Area.Builder().setId(id).setName(name).setDescription(description)
+                    .setTaskmasterId(taskmasterId).build();
             resultSet.close();
         } catch (SQLException e) {
             throw new DaoException("Can't get area by name "+name, e);
@@ -36,6 +62,7 @@ public class MySqlAreaDao implements AreaDao {
         return area;
     }
 
+    @Override
     public Area getById(Integer id) {
         String sqlStatement = "SELECT * FROM area WHERE id = ?";
         Area area;
@@ -46,9 +73,10 @@ public class MySqlAreaDao implements AreaDao {
                 throw new DaoException("Area with id " + id + " doesn't exist");
             }
             String name = resultSet.getString("name");
-            area = new Area(id, name);
             String description = resultSet.getString("description");
-            area.setDescription(description);
+            Integer taskmasterId = resultSet.getInt("taskmasterId");
+            area = new Area.Builder().setId(id).setName(name).setDescription(description)
+                    .setTaskmasterId(taskmasterId).build();
             resultSet.close();
         } catch (SQLException e) {
             throw new DaoException("Can't get area", e);
@@ -56,18 +84,34 @@ public class MySqlAreaDao implements AreaDao {
         return area;
     }
 
+    @Override
     public void update(Area area) {
-        String sqlStatement = "UPDATE area SET name = ?, description = ? WHERE id = ?";
+        String sqlStatement = "UPDATE area SET name = ?, description = ?, taskmasterId = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
             statement.setString(1, area.getName());
             statement.setString(2, area.getDescription());
-            statement.setInt(3, area.getId());
+            statement.setInt(3, area.getTaskmasterId());
+            statement.setInt(4, area.getId());
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected == 0) {
                 throw new DaoException("Updating area failed.");
             }
         } catch (SQLException e) {
             throw new DaoException("Can't update area", e);
+        }
+    }
+
+    @Override
+    public void delete(Area area) {
+        String sqlStatement = "DELETE FROM area WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setInt(1, area.getId());
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DaoException("Deleting area failed.");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Can't delete area", e);
         }
     }
 
@@ -80,9 +124,10 @@ public class MySqlAreaDao implements AreaDao {
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                Area area = new Area(id, name);
                 String description = resultSet.getString("description");
-                area.setDescription(description);
+                Integer taskmasterId = resultSet.getInt("taskmasterId");
+                Area area = new Area.Builder().setId(id).setName(name).setDescription(description)
+                        .setTaskmasterId(taskmasterId).build();
                 areas.add(area);
             }
             resultSet.close();

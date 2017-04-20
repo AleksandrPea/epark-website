@@ -5,16 +5,15 @@ import com.apea.training.parkWebsite.service.ServiceException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class AbstractConnectionImpl implements AbstractConnection {
+public class MySqlDaoConnection implements DaoConnection {
 
     private Connection connection;
     private boolean transactBegun;
     private boolean transactCommitted;
 
-    public AbstractConnectionImpl(Connection connection) {
+    public MySqlDaoConnection(Connection connection) {
         this.connection = connection;
     }
-
 
     @Override
     public void beginTransaction() {

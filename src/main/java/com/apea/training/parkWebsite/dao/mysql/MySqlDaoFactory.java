@@ -1,5 +1,8 @@
 package com.apea.training.parkWebsite.dao.mysql;
 
+import com.apea.training.parkWebsite.connection.ConnectionPool;
+import com.apea.training.parkWebsite.connection.DaoConnection;
+import com.apea.training.parkWebsite.connection.MySqlConnectionPool;
 import com.apea.training.parkWebsite.dao.*;
 
 import java.sql.Connection;
@@ -8,41 +11,59 @@ public class MySqlDaoFactory implements DaoFactory {
 
     private static MySqlDaoFactory instance = new MySqlDaoFactory();
 
+    private ConnectionPool pool = MySqlConnectionPool.getInstance();
+
     private MySqlDaoFactory() {}
 
     public static MySqlDaoFactory getInstance() {
         return instance;
     }
 
-    public AreaDao getAreaDao(Connection connection) {
-        checkConnection(connection);
-        return new MySqlAreaDao(connection);
-    }
-
-    public PlantDao getPlantDao(Connection connection) {
-        checkConnection(connection);
-        return new MySqlPlantDao(connection);
-    }
-
-    public ReportDao getReportDao(Connection connection) {
-        checkConnection(connection);
-        return new MySqlReportDao(connection);
-    }
-
-    public TaskDao getTaskDao(Connection connection) {
-        checkConnection(connection);
-        return new MySqlTaskDao(connection);
-    }
-
-    public UserDao getUserDao(Connection connection) {
-        checkConnection(connection);
-        return new MySqlUserDao(connection);
+    @Override
+    public DaoConnection getDaoConnection() {
+        return pool.getDaoConnection();
     }
 
     @Override
-    public PlantTasksDao getPlantTasksDao(Connection connection) {
-        checkConnection(connection);
-        return new MySqlPlantTasksDao(connection);
+    public AreaDao getAreaDao(DaoConnection connection) {
+        Connection sqlConn = pool.getSqlConnectionFrom(connection);
+        checkConnection(sqlConn);
+        return new MySqlAreaDao(sqlConn);
+    }
+
+    @Override
+    public PlantDao getPlantDao(DaoConnection connection) {
+        Connection sqlConn = pool.getSqlConnectionFrom(connection);
+        checkConnection(sqlConn);
+        return new MySqlPlantDao(sqlConn);
+    }
+
+    @Override
+    public ReportDao getReportDao(DaoConnection connection) {
+        Connection sqlConn = pool.getSqlConnectionFrom(connection);
+        checkConnection(sqlConn);
+        return new MySqlReportDao(sqlConn);
+    }
+
+    @Override
+    public TaskDao getTaskDao(DaoConnection connection) {
+        Connection sqlConn = pool.getSqlConnectionFrom(connection);
+        checkConnection(sqlConn);
+        return new MySqlTaskDao(sqlConn);
+    }
+
+    @Override
+    public UserDao getUserDao(DaoConnection connection) {
+        Connection sqlConn = pool.getSqlConnectionFrom(connection);
+        checkConnection(sqlConn);
+        return new MySqlUserDao(sqlConn);
+    }
+
+    @Override
+    public CredentialsDao getCredentialsDao(DaoConnection connection) {
+        Connection sqlConn = pool.getSqlConnectionFrom(connection);
+        checkConnection(sqlConn);
+        return new MySqlCredentialsDao(sqlConn);
     }
 
     private void checkConnection(Connection connection) {

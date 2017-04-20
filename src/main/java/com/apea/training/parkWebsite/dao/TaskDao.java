@@ -4,8 +4,11 @@ import com.apea.training.parkWebsite.domain.Task;
 
 public interface TaskDao {
 
-    Task create();
+    void create(Task task);
+
     Task getById(Integer id);
-    void update(Task task);
+
+    void updateState(Integer taskId, Task.State newState);
+
     void delete(Task task);
 }

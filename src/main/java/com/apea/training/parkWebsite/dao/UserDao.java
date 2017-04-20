@@ -2,9 +2,19 @@ package com.apea.training.parkWebsite.dao;
 
 import com.apea.training.parkWebsite.domain.User;
 
+import java.util.List;
+
 public interface UserDao {
 
-    /** @return null if there is no user with this login */
-    User getByLogin(String login);
+    void create(User user);
+
+    User getById(Integer id);
+
     void update(User user);
+
+    void delete(User report);
+
+    List<User> getAllSubordinatesOf(User user);
+
+    User getOwner();
 }

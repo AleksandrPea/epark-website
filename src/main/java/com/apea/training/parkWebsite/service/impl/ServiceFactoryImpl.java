@@ -3,13 +3,13 @@ package com.apea.training.parkWebsite.service.impl;
 import com.apea.training.parkWebsite.connection.ConnectionPool;
 import com.apea.training.parkWebsite.dao.mysql.MySqlDaoFactory;
 import com.apea.training.parkWebsite.service.*;
-import com.apea.training.parkWebsite.connection.AbstractConnectionImpl;
+import com.apea.training.parkWebsite.connection.MySqlDaoConnection;
 import com.apea.training.parkWebsite.connection.MySqlConnectionPool;
 import com.apea.training.parkWebsite.dao.DaoFactory;
 
 public class ServiceFactoryImpl implements ServiceFactory {
 
-    private ConnectionPool<AbstractConnectionImpl> pool = MySqlConnectionPool.getInstance();
+    private ConnectionPool<MySqlDaoConnection> pool = MySqlConnectionPool.getInstance();
     private DaoFactory factory = MySqlDaoFactory.getInstance();
 
     private AreaService areaService;

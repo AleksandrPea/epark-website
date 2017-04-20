@@ -1,13 +1,21 @@
 package com.apea.training.parkWebsite.dao;
 
-import java.sql.Connection;
+import com.apea.training.parkWebsite.connection.DaoConnection;
 
 public interface DaoFactory {
 
-    AreaDao getAreaDao(Connection connection);
-    PlantDao getPlantDao(Connection connection);
-    ReportDao getReportDao(Connection connection);
-    TaskDao getTaskDao(Connection connection);
-    UserDao getUserDao(Connection connection);
-    PlantTasksDao getPlantTasksDao(Connection connection);
+    DaoConnection getDaoConnection();
+
+    AreaDao getAreaDao(DaoConnection connection);
+
+    PlantDao getPlantDao(DaoConnection connection);
+
+    ReportDao getReportDao(DaoConnection connection);
+
+    TaskDao getTaskDao(DaoConnection connection);
+
+    UserDao getUserDao(DaoConnection connection);
+
+    CredentialsDao getCredentialsDao(DaoConnection connection);
+
 }

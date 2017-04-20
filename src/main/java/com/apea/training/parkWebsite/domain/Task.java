@@ -99,5 +99,9 @@ public class Task {
             task.setRecieverId(recieverId);
             return this;
         }
+
+        public Task build() {
+            return task;
+        }
     }
 }
