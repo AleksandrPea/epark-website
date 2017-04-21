@@ -1,4 +1,4 @@
-package com.web.apea.parkWebsite.controller.requestHandler;
+package com.apea.training.parkWebsite.controller.requestHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
