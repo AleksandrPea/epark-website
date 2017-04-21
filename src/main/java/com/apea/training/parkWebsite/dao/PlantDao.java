@@ -12,8 +12,6 @@ public interface PlantDao {
 
     void update(Plant plant);
 
-    void updateState(Plant plant, Plant.State newState);
-
     void delete(Plant plant);
 
     List<Plant> getAllOn(Integer areaId);

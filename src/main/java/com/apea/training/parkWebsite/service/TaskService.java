@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    void createAndAssociate(Task task, List<Plant> plants);
+    void createNewAndAssociate(Task task, List<Plant> plants);
 
     Task getById(Integer id);
 

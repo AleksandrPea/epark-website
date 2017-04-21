@@ -11,4 +11,6 @@ public interface ServiceFactory {
     TaskService getTaskService();
 
     UserService getUserService();
+
+    CredentialsService getCredentialsSerice();
 }

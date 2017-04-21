@@ -1,32 +1,61 @@
 package com.apea.training.parkWebsite.service.impl;
 
 import com.apea.training.parkWebsite.connection.ConnectionPool;
+import com.apea.training.parkWebsite.connection.DaoConnection;
 import com.apea.training.parkWebsite.connection.MySqlDaoConnection;
 import com.apea.training.parkWebsite.dao.DaoFactory;
 import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.UserService;
 
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
 
-    private ConnectionPool<MySqlDaoConnection> pool;
     private DaoFactory factory;
 
-    UserServiceImpl(ConnectionPool<MySqlDaoConnection> pool, DaoFactory factory) {
-        this.pool = pool;
+    UserServiceImpl(DaoFactory factory) {
         this.factory = factory;
     }
 
     @Override
-    public User getByLogin(String login) {
-        try (MySqlDaoConnection connection = pool.getConnection()) {
-            return factory.getUserDao(pool.getSqlConnectionFrom(connection)).getByLogin(login);
+    public void create(User user) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            factory.getUserDao(connection).create(user);
         }
     }
 
     @Override
-    public void changePassword(String login, String newPassword) {
-        try (MySqlDaoConnection connection = pool.getConnection()) {
-            factory.getUserDao(pool.getSqlConnectionFrom(connection)).update(new User(login, newPassword));
+    public User getById(Integer id) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            return factory.getUserDao(connection).getById(id);
+        }
+    }
+
+    @Override
+    public void update(User user) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            factory.getUserDao(connection).update(user);
+        }
+    }
+
+    @Override
+    public void delete(User user) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            factory.getUserDao(connection).delete(user);
+        }
+    }
+
+    @Override
+    public List<User> getAllSubordinatesOf(User user) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            return factory.getUserDao(connection).getAllSubordinatesOf(user);
+        }
+    }
+
+    @Override
+    public User getOwner() {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            return factory.getUserDao(connection).getOwner();
         }
     }
 }

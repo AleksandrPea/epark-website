@@ -87,21 +87,6 @@ public class MySqlPlantDao implements PlantDao {
         }
     }
 
-    @Override
-    public void updateState(Plant plant, Plant.State newState) {
-        String sqlStatement = "UPDATE plant SET state = ? WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
-            statement.setString(1, newState.toString());
-            statement.setInt(2, plant.getId());
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DaoException("Updating state failed.");
-            }
-        } catch (SQLException e) {
-            throw new DaoException("Can't update state", e);
-        }
-    }
-
     public void delete(Plant plant) {
         String sqlStatement = "DELETE FROM plant WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {

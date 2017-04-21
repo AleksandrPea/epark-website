@@ -12,7 +12,7 @@ public interface UserDao {
 
     void update(User user);
 
-    void delete(User report);
+    void delete(User user);
 
     List<User> getAllSubordinatesOf(User user);
 

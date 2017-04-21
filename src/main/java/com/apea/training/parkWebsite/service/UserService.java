@@ -2,9 +2,19 @@ package com.apea.training.parkWebsite.service;
 
 import com.apea.training.parkWebsite.domain.User;
 
+import java.util.List;
+
 public interface UserService {
 
-    User getByLogin(String login);
+    void create(User user);
 
-    void changePassword(String login, String newPassword);
+    User getById(Integer id);
+
+    void update(User user);
+
+    void delete(User user);
+
+    List<User> getAllSubordinatesOf(User user);
+
+    User getOwner();
 }

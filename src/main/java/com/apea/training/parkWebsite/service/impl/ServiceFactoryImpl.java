@@ -1,15 +1,11 @@
 package com.apea.training.parkWebsite.service.impl;
 
-import com.apea.training.parkWebsite.connection.ConnectionPool;
-import com.apea.training.parkWebsite.connection.MySqlConnectionPool;
-import com.apea.training.parkWebsite.connection.MySqlDaoConnection;
 import com.apea.training.parkWebsite.dao.DaoFactory;
 import com.apea.training.parkWebsite.dao.mysql.MySqlDaoFactory;
 import com.apea.training.parkWebsite.service.*;
 
 public class ServiceFactoryImpl implements ServiceFactory {
 
-    private ConnectionPool<MySqlDaoConnection> pool = MySqlConnectionPool.getInstance();
     private DaoFactory factory = MySqlDaoFactory.getInstance();
 
     private AreaService areaService;
@@ -17,6 +13,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     private ReportService reportService;
     private TaskService taskService;
     private UserService userService;
+    private CredentialsService credentialsService;
 
     private static ServiceFactoryImpl instance = new ServiceFactoryImpl();
 
@@ -29,7 +26,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public AreaService getAreaService() {
         if (areaService == null) {
-            areaService = new AreaServiceImpl(pool, factory);
+            areaService = new AreaServiceImpl(factory);
         }
         return areaService;
     }
@@ -37,7 +34,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public PlantService getPlantService() {
         if (plantService == null) {
-            plantService = new PlantServiceImpl(pool, factory);
+            plantService = new PlantServiceImpl(factory);
         }
         return plantService;
     }
@@ -45,7 +42,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public ReportService getReportService() {
         if (reportService == null) {
-            reportService = new ReportServiceImpl(pool, factory);
+            reportService = new ReportServiceImpl(factory);
         }
         return reportService;
     }
@@ -53,7 +50,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public TaskService getTaskService() {
         if (taskService == null) {
-            taskService = new TaskServiceImpl(pool, factory);
+            taskService = new TaskServiceImpl(factory);
         }
         return taskService;
     }
@@ -61,8 +58,16 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public UserService getUserService() {
         if (userService == null) {
-            userService = new UserServiceImpl(pool, factory);
+            userService = new UserServiceImpl(factory);
         }
         return userService;
+    }
+
+    @Override
+    public CredentialsService getCredentialsSerice() {
+        if (credentialsService == null) {
+            credentialsService = new CredentialsServiceImpl(factory);
+        }
+        return credentialsService;
     }
 }

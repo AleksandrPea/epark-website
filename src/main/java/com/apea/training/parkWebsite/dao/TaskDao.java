@@ -13,7 +13,7 @@ public interface TaskDao {
 
     Task getById(Integer id);
 
-    void updateState(Integer taskId, Task.State newState);
+    void updateState(Task task);
 
     void delete(Task task);
 

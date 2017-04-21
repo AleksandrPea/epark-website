@@ -100,11 +100,11 @@ public class MySqlTaskDao implements TaskDao {
     }
 
     @Override
-    public void updateState(Integer taskId, Task.State newState) {
+    public void updateState(Task task) {
         String sqlStatement = "UPDATE task SET state = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
-            statement.setString(1, newState.toString());
-            statement.setInt(2, taskId);
+            statement.setString(1, task.getState().toString());
+            statement.setInt(2, task.getId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DaoException("Updating state failed.");
@@ -114,6 +114,7 @@ public class MySqlTaskDao implements TaskDao {
         }
     }
 
+    @Override
     public void delete(Task task) {
         String sqlStatement = "DELETE FROM task WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {

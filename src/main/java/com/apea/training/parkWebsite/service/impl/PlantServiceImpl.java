@@ -1,74 +1,66 @@
 package com.apea.training.parkWebsite.service.impl;
 
-import com.apea.training.parkWebsite.connection.ConnectionPool;
-import com.apea.training.parkWebsite.connection.MySqlDaoConnection;
+import com.apea.training.parkWebsite.connection.DaoConnection;
 import com.apea.training.parkWebsite.dao.DaoFactory;
 import com.apea.training.parkWebsite.dao.TaskDao;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.Task;
 import com.apea.training.parkWebsite.service.PlantService;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlantServiceImpl implements PlantService {
-    private ConnectionPool<MySqlDaoConnection> pool;
     private DaoFactory factory;
 
-    PlantServiceImpl(ConnectionPool<MySqlDaoConnection> pool, DaoFactory factory) {
-        this.pool = pool;
+    PlantServiceImpl(DaoFactory factory) {
         this.factory = factory;
     }
 
     @Override
-    public Plant createOn(Integer areaId) {
-        try (MySqlDaoConnection connection = pool.getConnection()) {
-            return factory.getPlantDao(pool.getSqlConnectionFrom(connection)).createOn(areaId);
+    public void createNew(Plant plant) {
+        plant.setState(Plant.State.SEEDLING);
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            factory.getPlantDao(connection).create(plant);
         }
     }
 
     @Override
     public Plant getById(Integer id) {
-        try (MySqlDaoConnection connection = pool.getConnection()) {
-            return factory.getPlantDao(pool.getSqlConnectionFrom(connection)).getById(id);
-        }
-    }
-
-    @Override
-    public List<Task> getAssociatedTasks(Integer plantId) {
-        try (MySqlDaoConnection connection = pool.getConnection()) {
-            Connection sqlConn = pool.getSqlConnectionFrom(connection);
-            TaskDao taskDao = factory.getTaskDao(sqlConn);
-            return factory.getPlantTasksDao(sqlConn).getAssociatedTasksIds(plantId)
-                    .stream()
-                    .map(taskDao::getById)
-                    .collect(Collectors.toList());
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            return factory.getPlantDao(connection).getById(id);
         }
     }
 
     @Override
     public void update(Plant plant) {
-        try (MySqlDaoConnection connection = pool.getConnection()) {
-            factory.getPlantDao(pool.getSqlConnectionFrom(connection)).update(plant);
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            factory.getPlantDao(connection).update(plant);
         }
     }
 
     @Override
     public void delete(Plant plant) {
-        try (MySqlDaoConnection connection = pool.getConnection()) {
-            connection.beginTransaction();
-            Connection sqlConn = pool.getSqlConnectionFrom(connection);
-            factory.getPlantTasksDao(sqlConn).deleteAssociationsForPlant(plant.getId());
-            factory.getPlantDao(sqlConn).delete(plant);
-            connection.commitTransaction();
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            factory.getPlantDao(connection).delete(plant);
         }
     }
 
     @Override
     public List<Plant> getAllOn(Integer areaId) {
-        try (MySqlDaoConnection connection = pool.getConnection()) {
-            return factory.getPlantDao(pool.getSqlConnectionFrom(connection)).getAllOn(areaId);
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            return factory.getPlantDao(connection).getAllOn(areaId);
+        }
+    }
+
+    @Override
+    public List<Task> getAssociatedTasks(Plant plant) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            TaskDao taskDao = factory.getTaskDao(connection);
+            return factory.getPlantDao(connection).getAssociatedTaskIds(plant)
+                    .stream()
+                    .map(taskDao::getById)
+                    .collect(Collectors.toList());
         }
     }
 }
