@@ -70,6 +70,34 @@ public class MySqlUserDao implements UserDao {
     }
 
     @Override
+    public User getByLogin(String login) {
+        String sqlStatement = "SELECT id, firstName, lastName, email, role, info, superiorId " +
+                "FROM user INNER JOIN credentials on user.id = credentials.userId WHERE credentials.login=?";
+        User user;
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                throw new DaoException("User with id " + login + " doesn't exist");
+            }
+            Integer id = resultSet.getInt("id");
+            String firstName = resultSet.getString("firstName");
+            String lastName = resultSet.getString("lastName");
+            String email = resultSet.getString("email");
+            String role = resultSet.getString("role");
+            String info = resultSet.getString("info");
+            Integer superiorId = resultSet.getInt("superiorId");
+            user = new User.Builder().setId(id).setFirstName(firstName).setLastName(lastName)
+                    .setEmail(email).setRole(User.Role.valueOf(role)).setInfo(info)
+                    .setSuperiorId(superiorId).build();
+            resultSet.close();
+        } catch (SQLException e) {
+            throw new DaoException("Can't get user", e);
+        }
+        return user;
+    }
+
+    @Override
     public void update(User user) {
         String sqlStatement = "UPDATE user SET firstName = ?, lastName = ?, email = ?, " +
                 "role = ?, info = ?, superiorId = ? WHERE id = ?";
@@ -102,6 +130,32 @@ public class MySqlUserDao implements UserDao {
         } catch (SQLException e) {
             throw new DaoException("Can't delete user", e);
         }
+    }
+
+    @Override
+    public List<User> getAll() {
+        String sqlStatement = "SELECT * FROM user";
+        List<User> users = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String email = resultSet.getString("email");
+                String role = resultSet.getString("role");
+                String info = resultSet.getString("info");
+                Integer superiorId = resultSet.getInt("superiorId");
+                User user = new User.Builder().setId(id).setFirstName(firstName).setLastName(lastName)
+                        .setEmail(email).setRole(User.Role.valueOf(role)).setInfo(info)
+                        .setSuperiorId(superiorId).build();
+                users.add(user);
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return users;
     }
 
     @Override
