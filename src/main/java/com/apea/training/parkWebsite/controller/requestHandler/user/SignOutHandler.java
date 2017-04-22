@@ -15,7 +15,6 @@ public class SignOutHandler implements RequestHandler {
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(CURRENT_USER_ATTR_NAME);
         request.getSession().invalidate();
-
         return REDIRECT + LOGIN_PAGE;
     }
 }
