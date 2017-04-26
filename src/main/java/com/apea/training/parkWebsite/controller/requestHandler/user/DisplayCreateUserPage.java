@@ -5,16 +5,12 @@ import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.apea.training.parkWebsite.controller.AppResources.*;
+import static com.apea.training.parkWebsite.controller.AppAssets.CREATE_USER_VIEW_NAME;
 
-public class SignOutHandler implements RequestHandler {
-
-    SignOutHandler() {}
+public class DisplayCreateUserPage implements RequestHandler{
 
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().removeAttribute(CURRENT_USER_ATTR_NAME);
-        request.getSession().invalidate();
-        return REDIRECT + LOGIN_PAGE;
+        return FORWARD + CREATE_USER_VIEW_NAME;
     }
 }
