@@ -1,0 +1,18 @@
+package com.apea.training.parkWebsite.connection;
+
+public interface DaoConnection extends AutoCloseable {
+
+    void beginTransaction();
+
+    void commitTransaction();
+
+    void rollbackTransaction();
+
+    /**
+     * Have to rollback transaction before closing
+     * if it has been begun and is not commited.
+     */
+    @Override
+    void close();
+
+}
