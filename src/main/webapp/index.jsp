@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/includes/header.jsp" %>
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-md-12">
         <h1 class="page-header">Page Heading
             <small>Secondary Text</small>
         </h1>

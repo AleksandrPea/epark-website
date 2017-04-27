@@ -1,5 +1,18 @@
-body {
-    padding-top: 50px;
+#main-container {
+    margin-top: 50px;
+    min-height: 350px;
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+.panel {
+    margin-top: 50px;
+}
+
+.panel-title {
+    padding-bottom: 8px;
 }
 
 .portfolio-item {

@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="webProject.i18n.general" var="langGeneral"/>
-<%@ page import="com.apea.training.parkWebsite.controller.AppResources"%>
+<fmt:setBundle basename="webProject.i18n.backend.general" var="langGeneral"/>
 
 <%-- <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
@@ -16,30 +15,17 @@
     <title><fmt:message key="htmlHead.title" bundle="${langGeneral}"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/css/custom.css">
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-select.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/"><fmt:message key="header.siteName" bundle="${langGeneral}"/></a>
-        </div>
-        <div class="container">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="#"><fmt:message key="header.about" bundle="${langGeneral}"/></a>
-                </li>
-                <li>
-                    <a href="#"><fmt:message key="header.contact" bundle="${langGeneral}"/></a>
-                </li>
-                <li>
-                    <a href="/plants/add">Add plant</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container">
 
+<%@include file="/WEB-INF/includes/topMenu.jsp" %>
+
+<div id="main-container" class="container">
+    <c:if test="${(not empty messages) && (not empty messages[assets.GENERAL_MESSAGES_BLOCK_NAME])}">
+        <%@include file="/WEB-INF/includes/topMessages.jsp" %>
+    </c:if>

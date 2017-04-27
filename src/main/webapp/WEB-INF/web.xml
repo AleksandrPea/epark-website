@@ -1,20 +1,50 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
   <display-name>Archetype Created Web Application</display-name>
-  <servlet>
-    <servlet-name>TestView</servlet-name>
-    <jsp-file>/index.jsp</jsp-file>
-  </servlet>
+
   <servlet>
     <servlet-name>AddPlant</servlet-name>
-    <jsp-file>/WEB-INF/plants/createPlant.jsp</jsp-file>
+    <jsp-file>/WEB-INF/backend/plants/createPlant.jsp</jsp-file>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>TestView</servlet-name>
-    <url-pattern>/index</url-pattern>
-  </servlet-mapping>
+  <servlet>
+    <servlet-name>ListUsers</servlet-name>
+    <jsp-file>/WEB-INF/backend/users/userList.jsp</jsp-file>
+  </servlet>
+  <servlet>
+    <servlet-name>ListUser</servlet-name>
+    <jsp-file>/WEB-INF/backend/users/user.jsp</jsp-file>
+  </servlet>
+  <servlet>
+    <servlet-name>CreateUser</servlet-name>
+    <jsp-file>/WEB-INF/backend/users/createUser.jsp</jsp-file>
+  </servlet>
+  <servlet>
+    <servlet-name>CreateTask</servlet-name>
+    <jsp-file>/WEB-INF/backend/tasks/createTask.jsp</jsp-file>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>AddPlant</servlet-name>
     <url-pattern>/plants/add</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ListUsers</servlet-name>
+    <url-pattern>/backend/users</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ListUser</servlet-name>
+    <url-pattern>/backend/users/user/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CreateUser</servlet-name>
+    <url-pattern> /backend/users/newUser</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CreateTask</servlet-name>
+    <url-pattern> /backend/tasks/newTask</url-pattern>
+  </servlet-mapping>
+
+  <listener>
+    <listener-class>com.apea.training.parkWebsite.controller.listener.AppContextListener</listener-class>
+  </listener>
 
 </web-app>
