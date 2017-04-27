@@ -1,0 +1,24 @@
+#main-container {
+    margin-top: 50px;
+    min-height: 350px;
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+.panel {
+    margin-top: 50px;
+}
+
+.panel-title {
+    padding-bottom: 8px;
+}
+
+.portfolio-item {
+    margin-bottom: 25px;
+}
+
+footer {
+    margin: 50px 0;
+}

@@ -1,5 +1,4 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
-
   <display-name>Park website</display-name>
   <servlet>
     <servlet-name>MainController</servlet-name>
@@ -10,4 +9,9 @@
     <servlet-name>MainController</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
+
+  <listener>
+    <listener-class>com.apea.training.parkWebsite.controller.listener.AppContextListener</listener-class>
+  </listener>
+
 </web-app>
