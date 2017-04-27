@@ -44,8 +44,8 @@
                     <fmt:message key="task.plants.label" bundle="${langTask}"/></label>
                 <select id="plants" class="selectpicker form-control" multiple data-selected-text-format="count > 3"
                         name="${assets.TASK_PLANTS_PARAM_NAME}">
-                    <c:forEach var="plant" items="${requestScope[assets.ALL_TASK_PLANTS_ATTR_NAME]}">
-                        <option value="${plant}" ${(sessionScope[assets.TASK_PLANTS_PARAM_NAME].contains(plant)) ? 'selected' : ''}>
+                    <c:forEach var="plant" items="${sessionScope[assets.ALL_TASK_PLANTS_ATTR_NAME]}">
+                        <option value="${plant}" ${(sessionScope[assets.TASK_PLANTS_ATTR_NAME].contains(plant)) ? 'selected' : ''}>
                             ${plant}
                         </option>
                     </c:forEach>

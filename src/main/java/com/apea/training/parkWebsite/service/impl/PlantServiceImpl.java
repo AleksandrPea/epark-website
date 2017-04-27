@@ -3,6 +3,7 @@ package com.apea.training.parkWebsite.service.impl;
 import com.apea.training.parkWebsite.connection.DaoConnection;
 import com.apea.training.parkWebsite.dao.DaoFactory;
 import com.apea.training.parkWebsite.dao.TaskDao;
+import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.Task;
 import com.apea.training.parkWebsite.service.PlantService;
@@ -47,9 +48,16 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public List<Plant> getAllOn(Integer areaId) {
+    public List<Plant> getAll() {
         try (DaoConnection connection = factory.getDaoConnection()) {
-            return factory.getPlantDao(connection).getAllOn(areaId);
+            return factory.getPlantDao(connection).getAll();
+        }
+    }
+
+    @Override
+    public List<Plant> getAllOn(Area area) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            return factory.getPlantDao(connection).getAllOn(area.getId());
         }
     }
 

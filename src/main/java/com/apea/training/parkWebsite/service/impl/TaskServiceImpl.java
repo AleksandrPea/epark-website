@@ -6,6 +6,7 @@ import com.apea.training.parkWebsite.dao.PlantDao;
 import com.apea.training.parkWebsite.dao.TaskDao;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.Task;
+import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.TaskService;
 
 import java.util.List;
@@ -34,6 +35,13 @@ public class TaskServiceImpl implements TaskService {
     public Task getById(Integer id) {
         try (DaoConnection connection = factory.getDaoConnection()) {
             return factory.getTaskDao(connection).getById(id);
+        }
+    }
+
+    @Override
+    public List<Task> getUserTasks(User user) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            return factory.getTaskDao(connection).getUserTasks(user.getId());
         }
     }
 

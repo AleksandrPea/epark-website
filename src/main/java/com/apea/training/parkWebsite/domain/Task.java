@@ -5,6 +5,7 @@ import java.time.Instant;
 public class Task {
     private Integer id;
     private State state;
+    private String title;
     private String comment;
     private Instant creationDate;
     private Integer senderId;
@@ -16,6 +17,10 @@ public class Task {
 
     public State getState() {
         return state;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getComment() {
@@ -40,6 +45,10 @@ public class Task {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setComment(String comment) {
@@ -77,6 +86,11 @@ public class Task {
 
         public Builder setState(State state) {
             task.setState(state);
+            return this;
+        }
+
+        public Builder setTitle(String title) {
+            task.setTitle(title);
             return this;
         }
 

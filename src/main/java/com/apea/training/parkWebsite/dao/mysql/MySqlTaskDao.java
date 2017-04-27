@@ -19,13 +19,14 @@ public class MySqlTaskDao implements TaskDao {
 
     @Override
     public void create(Task task) {
-        String sqlStatement = "INSERT INTO task (state, comment, senderId, recieverId) VALUES (?,?,?,?)";
+        String sqlStatement = "INSERT INTO task (state, title, comment, senderId, recieverId) VALUES (?,?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sqlStatement,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, task.getState().toString());
-            statement.setString(2, task.getComment());
-            statement.setInt(3, task.getSenderId());
-            statement.setInt(4, task.getRecieverId());
+            statement.setString(3, task.getTitle());
+            statement.setString(3, task.getComment());
+            statement.setInt(4, task.getSenderId());
+            statement.setInt(5, task.getRecieverId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DaoException("Creating task failed.");
@@ -85,13 +86,14 @@ public class MySqlTaskDao implements TaskDao {
                 throw new DaoException("Task with id " + id + " doesn't exist");
             }
             String state = resultSet.getString("state");
+            String title = resultSet.getString("title");
             String comment = resultSet.getString("comment");
             long creationDate = resultSet.getTimestamp("creationDate").getTime();
             Integer senderId = resultSet.getInt("senderId");
             Integer recieverId = resultSet.getInt("recieverId");
-            task = new Task.Builder().setId(id).setState(Task.State.valueOf(state)).setComment(comment)
-                    .setCreationDate(Instant.ofEpochMilli(creationDate)).setSenderId(senderId)
-                    .setRecieverId(recieverId).build();
+            task = new Task.Builder().setId(id).setState(Task.State.valueOf(state)).setTitle(title)
+                    .setComment(comment).setCreationDate(Instant.ofEpochMilli(creationDate))
+                    .setSenderId(senderId).setRecieverId(recieverId).build();
             resultSet.close();
         } catch (SQLException e) {
             throw new DaoException("Can't get task", e);
@@ -126,5 +128,33 @@ public class MySqlTaskDao implements TaskDao {
         } catch (SQLException e) {
             throw new DaoException("Can't delete task", e);
         }
+    }
+
+    @Override
+    public List<Task> getUserTasks(Integer userId) {
+        String sqlStatement = "SELECT * FROM task WHERE senderId = ? OR recieverId = ?";
+        List<Task> tasks = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String state = resultSet.getString("state");
+                String title = resultSet.getString("title");
+                String comment = resultSet.getString("comment");
+                long creationDate = resultSet.getTimestamp("creationDate").getTime();
+                Integer senderId = resultSet.getInt("senderId");
+                Integer recieverId = resultSet.getInt("recieverId");
+                Task task = new Task.Builder().setId(id).setState(Task.State.valueOf(state)).setTitle(title)
+                        .setComment(comment).setCreationDate(Instant.ofEpochMilli(creationDate))
+                        .setSenderId(senderId).setRecieverId(recieverId).build();
+                tasks.add(task);
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return tasks;
     }
 }

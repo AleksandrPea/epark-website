@@ -1,10 +1,10 @@
 package com.apea.training.parkWebsite.service;
 
+import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Credentials;
 import com.apea.training.parkWebsite.domain.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 
@@ -23,4 +23,6 @@ public interface UserService {
     List<User> getAllSubordinatesOf(User user);
 
     User getOwner();
+
+    Area getAttachedArea(User user);
 }

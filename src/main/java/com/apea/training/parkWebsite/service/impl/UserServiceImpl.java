@@ -1,9 +1,12 @@
 package com.apea.training.parkWebsite.service.impl;
 
 import com.apea.training.parkWebsite.connection.DaoConnection;
+import com.apea.training.parkWebsite.dao.AreaDao;
 import com.apea.training.parkWebsite.dao.DaoFactory;
+import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Credentials;
 import com.apea.training.parkWebsite.domain.User;
+import com.apea.training.parkWebsite.service.ServiceException;
 import com.apea.training.parkWebsite.service.UserService;
 
 import java.util.List;
@@ -74,6 +77,19 @@ public class UserServiceImpl implements UserService {
     public User getOwner() {
         try (DaoConnection connection = factory.getDaoConnection()) {
             return factory.getUserDao(connection).getOwner();
+        }
+    }
+
+    @Override
+    public Area getAttachedArea(User user) {
+        try (DaoConnection connection = factory.getDaoConnection()) {
+            AreaDao areaDao = factory.getAreaDao(connection);
+            Optional<Area> attachedArea = areaDao.getAll()
+                    .stream()
+                    .filter(area -> area.getTaskmasterId().equals(user.getId()))
+                    .findFirst();
+            return attachedArea.orElseThrow(() ->
+                    new ServiceException("There is no attached area for user with id " + user.getId()));
         }
     }
 }

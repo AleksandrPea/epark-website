@@ -5,8 +5,6 @@ import com.apea.training.parkWebsite.dao.DaoFactory;
 import com.apea.training.parkWebsite.domain.Credentials;
 import com.apea.training.parkWebsite.service.CredentialsService;
 
-import java.util.Optional;
-
 public class CredentialsServiceImpl implements CredentialsService {
     private DaoFactory factory;
 

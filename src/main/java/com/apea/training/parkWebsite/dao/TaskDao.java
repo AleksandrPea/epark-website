@@ -17,5 +17,7 @@ public interface TaskDao {
 
     void delete(Task task);
 
+    List<Task> getUserTasks(Integer userId);
+
     List<Integer> getAssociatedPlantIds(Task task);
 }

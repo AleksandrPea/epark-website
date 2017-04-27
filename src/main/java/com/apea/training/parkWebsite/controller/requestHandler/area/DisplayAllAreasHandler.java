@@ -1,20 +1,21 @@
 package com.apea.training.parkWebsite.controller.requestHandler.area;
 
+import com.apea.training.parkWebsite.controller.AppAssets;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
+import com.apea.training.parkWebsite.service.AreaService;
+import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.apea.training.parkWebsite.controller.AppAssets.ALL_AREAS_ATTR_NAME;
-import static com.apea.training.parkWebsite.controller.AppAssets.AREA_LIST_VIEW_NAME;
-
 public class DisplayAllAreasHandler implements RequestHandler {
 
-    private AreaService areaService = ServiceFactory.getInstance().getAreaService();
+    private AppAssets assets = AppAssets.getInstance();
+    private AreaService areaService = ServiceFactoryImpl.getInstance().getAreaService();
 
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute(ALL_AREAS_ATTR_NAME, areaService.getAll());
-        return FORWARD + AREA_LIST_VIEW_NAME;
+        request.setAttribute(assets.get("ALL_AREAS_ATTR_NAME"), areaService.getAll());
+        return FORWARD + assets.get("AREA_LIST_VIEW_NAME");
     }
 }

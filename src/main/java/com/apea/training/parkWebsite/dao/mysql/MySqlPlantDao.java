@@ -101,6 +101,30 @@ public class MySqlPlantDao implements PlantDao {
     }
 
     @Override
+    public List<Plant> getAll() {
+        String sqlStatement = "SELECT * FROM plant";
+        List<Plant> plants = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String state = resultSet.getString("state");
+                String imgPath = resultSet.getString("imgPath");
+                String description = resultSet.getString("description");
+                Integer areaId = resultSet.getInt("areaId");
+                Plant plant = new Plant.Builder().setId(id).setName(name).setState(Plant.State.valueOf(state))
+                        .setImgPath(imgPath).setDescription(description).setAreaId(areaId).build();
+                plants.add(plant);
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return plants;
+    }
+
+    @Override
     public List<Plant> getAllOn(Integer areaId) {
         String sqlStatement = "SELECT * FROM plant WHERE areaId = ?";
         List<Plant> plants = new ArrayList<>();

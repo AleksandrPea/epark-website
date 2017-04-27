@@ -2,8 +2,6 @@ package com.apea.training.parkWebsite.service;
 
 import com.apea.training.parkWebsite.domain.Credentials;
 
-import java.util.Optional;
-
 public interface CredentialsService {
 
     void create(Credentials credentials);

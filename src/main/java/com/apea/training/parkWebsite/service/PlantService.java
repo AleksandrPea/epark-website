@@ -1,5 +1,6 @@
 package com.apea.training.parkWebsite.service;
 
+import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.Task;
 
@@ -15,7 +16,9 @@ public interface PlantService {
 
     void delete(Plant plant);
 
-    List<Plant> getAllOn(Integer areaId);
+    List<Plant> getAll();
+
+    List<Plant> getAllOn(Area area);
 
     List<Task> getAssociatedTasks(Plant plant);
 }

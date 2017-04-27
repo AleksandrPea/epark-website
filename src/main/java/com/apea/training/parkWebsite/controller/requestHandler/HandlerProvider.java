@@ -4,5 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface HandlerProvider {
 
+    /** @return certain handler for request */
     RequestHandler getRequestHandler(HttpServletRequest request);
 }

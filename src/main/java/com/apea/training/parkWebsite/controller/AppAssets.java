@@ -86,7 +86,7 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("DISPLAY_TASK_VIEW_NAME", "tasks/task");
         assetsMap.put("AREA_LIST_VIEW_NAME", "areas/areaList");
 
-        assetsMap.put("GENERAL_ERROR_PAGE_VIEW_NAME", "/error-page");
+        assetsMap.put("GENERAL_ERROR_PAGE_VIEW_NAME", "/errors/error-page");
         assetsMap.put("LOGIN_PAGE", "/login.jsp");
 
         //************************* MESSAGES **********************************

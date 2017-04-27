@@ -14,6 +14,8 @@ public interface PlantDao {
 
     void delete(Plant plant);
 
+    List<Plant> getAll();
+
     List<Plant> getAllOn(Integer areaId);
 
     List<Integer> getAssociatedTaskIds(Plant plant);

@@ -2,6 +2,7 @@ package com.apea.training.parkWebsite.service;
 
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.Task;
+import com.apea.training.parkWebsite.domain.User;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public interface TaskService {
     Task getById(Integer id);
 
     void delete(Task task);
+
+    List<Task> getUserTasks(User user);
 
     List<Plant> getAssociatedPlants(Task task);
 

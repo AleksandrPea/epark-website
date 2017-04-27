@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.apea.training.parkWebsite.controller.AppAssets.GENERAL_ERROR_PAGE_VIEW_NAME;
-
 public class MainController extends HttpServlet {
+
     private static final Logger LOGGER = Logger.getLogger(MainController.class);
+    private AppAssets assets = AppAssets.getInstance();
     private HandlerProvider handlerProvider = HandlerProviderImpl.getInstance();
     private ViewResolver viewResolver = JspResolver.getInstance();
 
@@ -80,7 +80,8 @@ public class MainController extends HttpServlet {
                                                     RuntimeException e) {
         LOGGER.error("Error in handling request " + request.getRequestURI(), e);
 
-        sendRedirect(viewResolver.resolvePublicViewName(GENERAL_ERROR_PAGE_VIEW_NAME), request, response);
+        sendRedirect(viewResolver.resolvePublicViewName(assets.get("GENERAL_ERROR_PAGE_VIEW_NAME")),
+                request, response);
     }
 
     private void sendRedirect(String redirectUri, HttpServletRequest request, HttpServletResponse response) {
