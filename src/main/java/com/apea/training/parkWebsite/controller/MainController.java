@@ -16,6 +16,7 @@ import java.io.IOException;
 public class MainController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(MainController.class);
+    //убрать
     private AppAssets assets = AppAssets.getInstance();
     private HandlerProvider handlerProvider = HandlerProviderImpl.getInstance();
     private ViewResolver viewResolver = JspResolver.getInstance();

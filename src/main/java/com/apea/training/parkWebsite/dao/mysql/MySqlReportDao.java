@@ -1,43 +1,36 @@
 package com.apea.training.parkWebsite.dao.mysql;
 
+import com.apea.training.parkWebsite.connection.DaoConnection;
+import com.apea.training.parkWebsite.connection.mysql.MySqlTransactionHelper;
 import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.dao.ReportDao;
 import com.apea.training.parkWebsite.domain.Report;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MySqlReportDao implements ReportDao {
 
-    private Connection connection;
-
-    MySqlReportDao(Connection connection) {
-        this.connection = connection;
+    MySqlReportDao() {
     }
 
     @Override
     public void create(Report report) {
         String sqlStatement = "INSERT INTO report (comment, imgPath, taskId) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sqlStatement,
-                Statement.RETURN_GENERATED_KEYS)) {
+        try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
             statement.setString(1, report.getComment());
             statement.setString(2, report.getImgPath());
             statement.setInt(3, report.getTaskId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
-                throw new DaoException("Creating report failed.");
+                throw new DaoException("Creating report failed: no rows affected.");
             }
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (!generatedKeys.next()) {
-                throw new DaoException("Creating report failed, no ID obtained.");
-            }
-            Integer id = generatedKeys.getInt("id");
-            long creationDate = generatedKeys.getTimestamp("creationDate").getTime();
-            report.setId(id);
-            report.setCreationDate(Instant.ofEpochMilli(creationDate));
-            generatedKeys.close();
+            statement.close();
         } catch (SQLException e) {
             throw new DaoException("Can't create report", e);
         }
@@ -47,7 +40,8 @@ public class MySqlReportDao implements ReportDao {
     public Report getById(Integer id) {
         String sqlStatement = "SELECT * FROM report WHERE id = ?";
         Report report;
-        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+        try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -60,6 +54,7 @@ public class MySqlReportDao implements ReportDao {
             report = new Report.Builder().setId(id).setComment(comment).setImgPath(imgPath)
                         .setCreationDate(Instant.ofEpochMilli(creationDate)).setTaskId(taskId).build();
             resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             throw new DaoException("Can't get report", e);
         }
@@ -69,12 +64,14 @@ public class MySqlReportDao implements ReportDao {
     @Override
     public void delete(Report report) {
         String sqlStatement = "DELETE FROM report WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+        try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
             statement.setInt(1, report.getId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
-                throw new DaoException("Deleting report failed.");
+                throw new DaoException("Deleting report failed: no rows affected.");
             }
+            statement.close();
         } catch (SQLException e) {
             throw new DaoException("Can't delete report", e);
         }
@@ -84,7 +81,8 @@ public class MySqlReportDao implements ReportDao {
     public List<Report> getAllOn(Integer taskId) {
         String sqlStatement = "SELECT * FROM report WHERE taskId = ?";
         List<Report> reports = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+        try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
             statement.setInt(1, taskId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -97,8 +95,9 @@ public class MySqlReportDao implements ReportDao {
                 reports.add(report);
             }
             resultSet.close();
+            statement.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Can't get all reports on task with id "+taskId, e);
         }
         return reports;
     }

@@ -5,7 +5,7 @@ import com.apea.training.parkWebsite.controller.message.FrontMessageFactory;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
-import com.apea.training.parkWebsite.domain.Credentials;
+import com.apea.training.parkWebsite.domain.Credential;
 import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.UserService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
@@ -62,10 +62,10 @@ public class CreateUserHandler implements RequestHandler {
         String email = request.getParameter(assets.get("EMAIL_PARAM_NAME"));
         String info = request.getParameter(assets.get("USER_INFO_PARAM_NAME"));
 
-        Credentials credentials = new Credentials(login, password);
+        Credential credential = new Credential(login, password);
         User user = new User.Builder().setFirstName(firstName).setLastName(lastName).setEmail(email)
                 .setRole(role).setInfo(info).setSuperiorId(superior.getId()).build();
-        userService.create(user, credentials);
+        userService.create(user, credential);
         return true;
     }
 

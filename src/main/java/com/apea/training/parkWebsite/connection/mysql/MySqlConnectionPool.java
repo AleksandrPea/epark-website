@@ -1,15 +1,15 @@
-package com.apea.training.parkWebsite.connection;
+package com.apea.training.parkWebsite.connection.mysql;
 
+import com.apea.training.parkWebsite.connection.ConnectionPool;
 import com.apea.training.parkWebsite.dao.DaoException;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MySqlConnectionPool implements ConnectionPool<MySqlDaoConnection> {
+public class MySqlConnectionPool implements ConnectionPool {
 
     private final String DB_CONFIG_FILENAME = "webProject/config/dbConfig.properties";
     private final String DB_CONFIG_PARAM_URL = "database.url";
@@ -54,10 +54,5 @@ public class MySqlConnectionPool implements ConnectionPool<MySqlDaoConnection> {
         } catch (SQLException e) {
             throw new DaoException("Can't get dao connection", e);
         }
-    }
-
-    @Override
-    public Connection getSqlConnectionFrom(MySqlDaoConnection connection) {
-        return connection.getConnection();
     }
 }

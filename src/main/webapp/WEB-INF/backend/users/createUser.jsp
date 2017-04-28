@@ -9,7 +9,7 @@
               action="<c:url value="${asset.CREATE_USER_URI}"/>"
               accept-charset="UTF-8" role="form">
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="login">
                     <fmt:message key="user.login.label" bundle="${langUser}"/></label>
                 <input type="text" class="form-control" id="login"
@@ -23,7 +23,7 @@
                 </c:if>
             </div>
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="userPassword">
                     <fmt:message key="user.password.label" bundle="${langUser}"/></label>
                 <input type="password" class="form-control" id="userPassword"
@@ -50,7 +50,7 @@
                        value="${sessionScope[assets.LASTNAME_ATTR_NAME]}"/>
             </div>
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="userEmail">
                     <fmt:message key="user.email.label" bundle="${langUser}"/></label>
                 <input type="text" class="form-control" id="userEmail"
@@ -64,7 +64,7 @@
                 </c:if>
             </div>
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="userRole">
                     <fmt:message key="user.role.label" bundle="${langUser}"/></label>
                 <select id="userRole" class="selectpicker form-control" name="${assets.ROLE_PARAM_NAME}">
@@ -82,10 +82,10 @@
                     <fmt:message key="user.info.label" bundle="${langUser}"/></label>
                 <textarea class="form-control" id="info"
                        placeholder="<fmt:message key="user.info.label" bundle="${langUser}"/>"
-                       name="${assets.INFO_PARAM_NAME}">${sessionScope[assets.INFO_ATTR_NAME]}</textarea>
+                       name="${assets.USER_INFO_PARAM_NAME}"><${sessionScope[assets.USER_INFO_ATTR_NAME]}</textarea>
             </div>
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="superiorLogin">
                     <fmt:message key="user.superiorLogin.label" bundle="${langUser}"/></label>
                 <input type="text" class="form-control" id="superiorLogin"

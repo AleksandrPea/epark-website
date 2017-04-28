@@ -2,7 +2,7 @@
 <fmt:setBundle basename="webProject.i18n.credential" var="credential"/>
 <fmt:setBundle basename="webProject.i18n.validation" var="validation"/>
 
-<div class="row">
+<div id="loginForm" class="row">
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -10,7 +10,7 @@
                 <form method="POST" name="loginform" id="loginform"
                       action="<c:url value="${assets.SIGN_IN_URI}"/>"
                       accept-charset="UTF-8" role="form">
-                    <div class="form-group required">
+                    <div class="form-group validated required">
                         <label class="control-label" for="login">
                             <fmt:message key="credential.login.label" bundle="${credential}"/></label>
                         <input type="text" class="form-control" id="login"
@@ -24,7 +24,7 @@
                         </c:if>
 
                     </div>
-                    <div class="form-group required">
+                    <div class="form-group validated required">
                         <label class="control-label" for="userPassword">
                             <fmt:message key="credential.password.label" bundle="${credential}"/></label>
                         <input type="password" class="form-control" id="userPassword"

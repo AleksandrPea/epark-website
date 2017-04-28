@@ -1,14 +1,14 @@
 package com.apea.training.parkWebsite.service;
 
 import com.apea.training.parkWebsite.domain.Area;
-import com.apea.training.parkWebsite.domain.Credentials;
+import com.apea.training.parkWebsite.domain.Credential;
 import com.apea.training.parkWebsite.domain.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    void zzcreate(User user, Credentials credentials);
+    void create(User user, Credential credential);
 
     User getById(Integer id);
 

@@ -64,8 +64,8 @@
             </c:if>
         </form>
         <div class="col-md-offset-4">
-            <c:if test="${sessionScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'}
-                     OR ${sessionScope[assets.CURRENT_USER_ATTR_NAME].id == sessionScope[assets.USER_ATTR_NAME].id} ">
+            <c:if test="${sessionScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
+                    || sessionScope[assets.CURRENT_USER_ATTR_NAME].id == sessionScope[assets.USER_ATTR_NAME].id}">
 
                 <a href="#" class="btn btn-default" role="button">
                     <fmt:message key="user.page.editButton" bundle="${langUser}"/>

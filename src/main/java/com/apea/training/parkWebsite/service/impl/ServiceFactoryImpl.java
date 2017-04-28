@@ -1,19 +1,15 @@
 package com.apea.training.parkWebsite.service.impl;
 
-import com.apea.training.parkWebsite.dao.DaoFactory;
-import com.apea.training.parkWebsite.dao.mysql.MySqlDaoFactory;
 import com.apea.training.parkWebsite.service.*;
 
 public class ServiceFactoryImpl implements ServiceFactory {
-
-    private DaoFactory factory = MySqlDaoFactory.getInstance();
 
     private AreaService areaService;
     private PlantService plantService;
     private ReportService reportService;
     private TaskService taskService;
     private UserService userService;
-    private CredentialsService credentialsService;
+    private CredentialService credentialsService;
 
     private static ServiceFactoryImpl instance = new ServiceFactoryImpl();
 
@@ -26,7 +22,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public AreaService getAreaService() {
         if (areaService == null) {
-            areaService = new AreaServiceImpl(factory);
+            areaService = new AreaServiceImpl();
         }
         return areaService;
     }
@@ -34,7 +30,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public PlantService getPlantService() {
         if (plantService == null) {
-            plantService = new PlantServiceImpl(factory);
+            plantService = new PlantServiceImpl();
         }
         return plantService;
     }
@@ -42,7 +38,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public ReportService getReportService() {
         if (reportService == null) {
-            reportService = new ReportServiceImpl(factory);
+            reportService = new ReportServiceImpl();
         }
         return reportService;
     }
@@ -50,7 +46,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public TaskService getTaskService() {
         if (taskService == null) {
-            taskService = new TaskServiceImpl(factory);
+            taskService = new TaskServiceImpl();
         }
         return taskService;
     }
@@ -58,15 +54,15 @@ public class ServiceFactoryImpl implements ServiceFactory {
     @Override
     public UserService getUserService() {
         if (userService == null) {
-            userService = new UserServiceImpl(factory);
+            userService = new UserServiceImpl();
         }
         return userService;
     }
 
     @Override
-    public CredentialsService getCredentialsSerice() {
+    public CredentialService getCredentialsSerice() {
         if (credentialsService == null) {
-            credentialsService = new CredentialsServiceImpl(factory);
+            credentialsService = new CredentialServiceImpl();
         }
         return credentialsService;
     }

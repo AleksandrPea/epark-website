@@ -1,10 +1,11 @@
 package com.apea.training.parkWebsite.service.impl;
 
-import com.apea.training.parkWebsite.connection.DaoConnection;
-import com.apea.training.parkWebsite.dao.AreaDao;
-import com.apea.training.parkWebsite.dao.DaoFactory;
+import com.apea.training.parkWebsite.connection.mysql.MySqlTransactionHelper;
+import com.apea.training.parkWebsite.dao.DaoException;
+import com.apea.training.parkWebsite.dao.UserDao;
+import com.apea.training.parkWebsite.dao.mysql.MySqlDaoFactory;
 import com.apea.training.parkWebsite.domain.Area;
-import com.apea.training.parkWebsite.domain.Credentials;
+import com.apea.training.parkWebsite.domain.Credential;
 import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.ServiceException;
 import com.apea.training.parkWebsite.service.UserService;
@@ -14,82 +15,67 @@ import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
-    private DaoFactory factory;
-
-    UserServiceImpl(DaoFactory factory) {
-        this.factory = factory;
+    UserServiceImpl() {
     }
 
     @Override
-    public void create(User user, Credentials credentials) {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            connection.beginTransaction();
-            factory.getUserDao(connection).create(user);
-            credentials.setUserId(user.getId());
-            factory.getCredentialsDao(connection).create(credentials);
-            connection.commitTransaction();
+    public void create(User user, Credential credential) {
+        MySqlTransactionHelper.getInstance().beginTransaction();
+        try {
+            UserDao userDao = MySqlDaoFactory.getInstance().getUserDao();
+            userDao.create(user);
+            User createdUser = userDao.getByLogin(credential.getLogin());
+            credential.setUserId(createdUser.getId());
+            MySqlDaoFactory.getInstance().getCredentialDao().create(credential);
+            MySqlTransactionHelper.getInstance().commitTransaction();
+        } catch (DaoException e) {
+            MySqlTransactionHelper.getInstance().rollbackTransaction();
+            throw new ServiceException("Transaction failed.", e);
         }
     }
 
     @Override
     public User getById(Integer id) {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            return factory.getUserDao(connection).getById(id);
-        }
+        return MySqlDaoFactory.getInstance().getUserDao().getById(id);
     }
 
     @Override
     public User getByLogin(String login) {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            return factory.getUserDao(connection).getByLogin(login);
-        }
+        return MySqlDaoFactory.getInstance().getUserDao().getByLogin(login);
     }
 
     @Override
     public void update(User user) {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            factory.getUserDao(connection).update(user);
-        }
+        MySqlDaoFactory.getInstance().getUserDao().update(user);
     }
 
     @Override
     public void delete(User user) {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            factory.getUserDao(connection).delete(user);
-        }
+        MySqlDaoFactory.getInstance().getUserDao().delete(user);
     }
 
     @Override
     public List<User> getAll() {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            return factory.getUserDao(connection).getAll();
-        }
+        return MySqlDaoFactory.getInstance().getUserDao().getAll();
     }
 
     @Override
     public List<User> getAllSubordinatesOf(User user) {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            return factory.getUserDao(connection).getAllSubordinatesOf(user);
-        }
+        return MySqlDaoFactory.getInstance().getUserDao().getAllSubordinatesOf(user);
     }
 
     @Override
     public User getOwner() {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            return factory.getUserDao(connection).getOwner();
-        }
+        return MySqlDaoFactory.getInstance().getUserDao().getOwner();
     }
 
     @Override
     public Area getAttachedArea(User user) {
-        try (DaoConnection connection = factory.getDaoConnection()) {
-            AreaDao areaDao = factory.getAreaDao(connection);
-            Optional<Area> attachedArea = areaDao.getAll()
-                    .stream()
-                    .filter(area -> area.getTaskmasterId().equals(user.getId()))
-                    .findFirst();
-            return attachedArea.orElseThrow(() ->
-                    new ServiceException("There is no attached area for user with id " + user.getId()));
-        }
+        Optional<Area> attachedArea = MySqlDaoFactory.getInstance().getAreaDao().getAll()
+                .stream()
+                .filter(area -> area.getTaskmasterId().equals(user.getId()))
+                .findFirst();
+        return attachedArea.orElseThrow(() ->
+                new ServiceException("There is no attached area for user with id " + user.getId()));
     }
 }

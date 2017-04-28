@@ -49,10 +49,9 @@ public class CreateTaskHandler implements RequestHandler {
         if (isSubordinationInvalid(reciever, currentUser, formMessages)) { return false; }
         String title = request.getParameter(assets.get("TASK_TITLE_PARAM_NAME"));
         String comment = request.getParameter(assets.get("TASK_COMMENT_PARAM_NAME"));
-        Task.State state = Task.State.NEW;
         Integer senderId = currentUser.getId();
         Integer recieverId = reciever.getId();
-        Task task = new Task.Builder().setState(state).setTitle(title).setComment(comment)
+        Task task = new Task.Builder().setTitle(title).setComment(comment)
                 .setSenderId(senderId).setRecieverId(recieverId).build();
         List<Plant> plants = fetchTaskPlants(request);
         taskService.createNewAndAssociate(task, plants);
@@ -80,6 +79,9 @@ public class CreateTaskHandler implements RequestHandler {
 
     private List<Plant> fetchTaskPlants(HttpServletRequest request) {
         String[] plantNames = request.getParameterValues(assets.get("TASK_PLANTS_PARAM_NAME"));
+        if (plantNames == null) {
+            return Collections.emptyList();
+        }
         List<String> plantNamesList = Arrays.asList(plantNames);
         return ((List<Plant>) request.getSession().getAttribute(assets.get("ALL_TASK_PLANTS_ATTR_NAME")))
                 .stream()
@@ -94,9 +96,11 @@ public class CreateTaskHandler implements RequestHandler {
         String title = request.getParameter(assets.get("TASK_TITLE_PARAM_NAME"));
         String comment = request.getParameter(assets.get("TASK_COMMENT_PARAM_NAME"));
         session.setAttribute(assets.get("TASK_RECIEVER_LOGIN_ATTR_NAME"), recieverLogin);
-        session.setAttribute(assets.get("TASK_PLANTS_ATTR_NAME"), Arrays.asList(plantNames));
         session.setAttribute(assets.get("TASK_TITLE_ATTR_NAME"), title);
         session.setAttribute(assets.get("TASK_COMMENT_PARAM_NAME"), comment);
+        if (plantNames != null) {
+            session.setAttribute(assets.get("TASK_PLANTS_ATTR_NAME"), Arrays.asList(plantNames));
+        }
 
         session.setAttribute(assets.get("MESSAGES_ATTR_NAME"), formMessages);
     }

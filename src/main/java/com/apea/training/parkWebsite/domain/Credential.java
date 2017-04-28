@@ -1,18 +1,18 @@
 package com.apea.training.parkWebsite.domain;
 
-public class Credentials {
+public class Credential {
 
     private Integer userId;
     private String login;
     private String password;
 
-    public Credentials(Integer userId, String login, String password) {
+    public Credential(Integer userId, String login, String password) {
         this.userId = userId;
         this.login = login;
         this.password = password;
     }
 
-    public Credentials(String login, String password) {
+    public Credential(String login, String password) {
         this.login = login;
         this.password = password;
     }

@@ -3,8 +3,7 @@ package com.apea.training.parkWebsite.controller.requestHandler.user;
 import com.apea.training.parkWebsite.controller.AppAssets;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
-import com.apea.training.parkWebsite.domain.Credentials;
-import com.apea.training.parkWebsite.service.CredentialsService;
+import com.apea.training.parkWebsite.service.CredentialService;
 import com.apea.training.parkWebsite.service.UserService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
@@ -16,7 +15,7 @@ public class DisplayCurrentUserHandler implements RequestHandler {
     private AppAssets assets = AppAssets.getInstance();
 
     private UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-    private CredentialsService credentialsService = ServiceFactoryImpl.getInstance().getCredentialsSerice();
+    private CredentialService credentialsService = ServiceFactoryImpl.getInstance().getCredentialsSerice();
 
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {

@@ -1,18 +1,21 @@
 package com.apea.training.parkWebsite.connection;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+
 public interface DaoConnection extends AutoCloseable {
 
-    void beginTransaction();
+    PreparedStatement prepareStatement(String sql);
 
-    void commitTransaction();
+    Statement createStatement();
 
-    void rollbackTransaction();
+    void setIsInTransaction(boolean isInTransaction);
 
-    /**
-     * Have to rollback transaction before closing
-     * if it has been begun and is not commited.
-     */
+    void commit();
+
+    void rollback();
+
+    /** If is not in transaction does nothing */
     @Override
     void close();
-
 }

@@ -9,7 +9,7 @@
               action="<c:url value="${assets.CREATE_TASK_URI}"/>"
               accept-charset="UTF-8" role="form">
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="recieverLogin">
                     <fmt:message key="task.recieverLogin.label" bundle="${langTask}"/></label>
                 <input type="text" class="form-control" id="recieverLogin"

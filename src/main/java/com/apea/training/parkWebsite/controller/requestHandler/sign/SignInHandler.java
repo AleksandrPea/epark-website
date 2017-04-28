@@ -4,9 +4,9 @@ import com.apea.training.parkWebsite.controller.AppAssets;
 import com.apea.training.parkWebsite.controller.message.FrontMessageFactory;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
-import com.apea.training.parkWebsite.domain.Credentials;
+import com.apea.training.parkWebsite.domain.Credential;
 import com.apea.training.parkWebsite.domain.User;
-import com.apea.training.parkWebsite.service.CredentialsService;
+import com.apea.training.parkWebsite.service.CredentialService;
 import com.apea.training.parkWebsite.service.UserService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
@@ -20,7 +20,7 @@ public class SignInHandler implements RequestHandler {
 
     private AppAssets assets = AppAssets.getInstance();
     private UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-    private CredentialsService credentialsService = ServiceFactoryImpl.getInstance().getCredentialsSerice();
+    private CredentialService credentialsService = ServiceFactoryImpl.getInstance().getCredentialsSerice();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
@@ -40,10 +40,10 @@ public class SignInHandler implements RequestHandler {
 
     private boolean isCredentialCorrect(HttpServletRequest request) {
         String login = request.getParameter(assets.get("SIGN_IN_LOGIN_PARAM_NAME"));
-        Credentials credentials = credentialsService.getByLogin(login);
+        Credential credential = credentialsService.getByLogin(login);
         String password = request.getParameter(assets.get("PASSWORD_PARAM_NAME"));
 
-        return credentials != null && password.equals(credentials.getPassword());
+        return credential != null && password.equals(credential.getPassword());
     }
 
     private String signInUserAndGetForwardUri(HttpServletRequest request) {

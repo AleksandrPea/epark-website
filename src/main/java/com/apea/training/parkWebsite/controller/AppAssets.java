@@ -15,7 +15,7 @@ public class AppAssets extends AbstractMap<String, String> {
         return instance;
     }
 
-    private Map<String, String> assetsMap = new HashMap<String, String>();
+    private Map<String, String> assetsMap = new HashMap<>();
 
     {
         //************************* ATTRIBUTES **********************************
@@ -25,6 +25,7 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("USER_ATTR_NAME", "user");
         assetsMap.put("CREDENTIALS_ATTR_NAME", "credentials");
         assetsMap.put("ALL_USERS_ATTR_NAME", "allUsers");
+        assetsMap.put("ALL_CREDENTIALS_ATTR_NAME", "allCredentials");
         assetsMap.put("ALL_AREAS_ATTR_NAME", "allAreas");
         assetsMap.put("CURRENT_USER_TASKS_ATTR_NAME", "currentUserTasks");
 

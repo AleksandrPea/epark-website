@@ -1,17 +1,17 @@
 package com.apea.training.parkWebsite.dao.mysql;
 
-import com.apea.training.parkWebsite.connection.ConnectionPool;
-import com.apea.training.parkWebsite.connection.DaoConnection;
-import com.apea.training.parkWebsite.connection.MySqlConnectionPool;
 import com.apea.training.parkWebsite.dao.*;
-
-import java.sql.Connection;
 
 public class MySqlDaoFactory implements DaoFactory {
 
     private static MySqlDaoFactory instance = new MySqlDaoFactory();
 
-    private ConnectionPool pool = MySqlConnectionPool.getInstance();
+    private AreaDao areaDao;
+    private PlantDao plantDao;
+    private ReportDao reportDao;
+    private TaskDao taskDao;
+    private UserDao userDao;
+    private CredentialDao credentialDao;
 
     private MySqlDaoFactory() {}
 
@@ -20,55 +20,50 @@ public class MySqlDaoFactory implements DaoFactory {
     }
 
     @Override
-    public DaoConnection getDaoConnection() {
-        return pool.getConnection();
-    }
-
-    @Override
-    public AreaDao getAreaDao(DaoConnection connection) {
-        Connection sqlConn = pool.getSqlConnectionFrom(connection);
-        checkConnection(sqlConn);
-        return new MySqlAreaDao(sqlConn);
-    }
-
-    @Override
-    public PlantDao getPlantDao(DaoConnection connection) {
-        Connection sqlConn = pool.getSqlConnectionFrom(connection);
-        checkConnection(sqlConn);
-        return new MySqlPlantDao(sqlConn);
-    }
-
-    @Override
-    public ReportDao getReportDao(DaoConnection connection) {
-        Connection sqlConn = pool.getSqlConnectionFrom(connection);
-        checkConnection(sqlConn);
-        return new MySqlReportDao(sqlConn);
-    }
-
-    @Override
-    public TaskDao getTaskDao(DaoConnection connection) {
-        Connection sqlConn = pool.getSqlConnectionFrom(connection);
-        checkConnection(sqlConn);
-        return new MySqlTaskDao(sqlConn);
-    }
-
-    @Override
-    public UserDao getUserDao(DaoConnection connection) {
-        Connection sqlConn = pool.getSqlConnectionFrom(connection);
-        checkConnection(sqlConn);
-        return new MySqlUserDao(sqlConn);
-    }
-
-    @Override
-    public CredentialsDao getCredentialsDao(DaoConnection connection) {
-        Connection sqlConn = pool.getSqlConnectionFrom(connection);
-        checkConnection(sqlConn);
-        return new MySqlCredentialsDao(sqlConn);
-    }
-
-    private void checkConnection(Connection connection) {
-        if (connection == null) {
-            throw new DaoException("null connection");
+    public AreaDao getAreaDao() {
+        if (areaDao == null) {
+            areaDao = new MySqlAreaDao();
         }
+        return areaDao;
+    }
+
+    @Override
+    public PlantDao getPlantDao() {
+        if (plantDao == null) {
+            plantDao = new MySqlPlantDao();
+        }
+        return plantDao;
+    }
+
+    @Override
+    public ReportDao getReportDao() {
+        if (reportDao == null) {
+            reportDao = new MySqlReportDao();
+        }
+        return reportDao;
+    }
+
+    @Override
+    public TaskDao getTaskDao() {
+        if (taskDao == null) {
+            taskDao = new MySqlTaskDao();
+        }
+        return taskDao;
+    }
+
+    @Override
+    public UserDao getUserDao() {
+        if (userDao == null) {
+            userDao = new MySqlUserDao();
+        }
+        return userDao;
+    }
+
+    @Override
+    public CredentialDao getCredentialDao() {
+        if (credentialDao == null) {
+            credentialDao = new MySqlCredentialDao();
+        }
+        return credentialDao;
     }
 }

@@ -7,12 +7,30 @@ textarea.form-control {
     resize: vertical;
 }
 
-.panel {
+#loginForm {
     margin-top: 50px;
 }
 
 .panel-title {
     padding-bottom: 8px;
+}
+
+.validated .messages {
+    font-size: 80%;
+    font-style: italic;
+}
+
+.validated .messages.success {
+    color: darkgreen;
+}
+
+.validated .messages.error {
+    color: #a94442;
+}
+
+.required > .control-label::before {
+    content: "*";
+    color: #a94442;
 }
 
 .portfolio-item {
