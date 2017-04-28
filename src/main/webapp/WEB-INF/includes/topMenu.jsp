@@ -6,7 +6,7 @@
         <c:choose>
             <c:when test="${sessionScope[assets.CURRENT_USER_ATTR_NAME] != null}">
                 <ul class="nav navbar-nav">
-                    <li><a href="<c:url value="${assets.USERS_LIST_URI}"/>">
+                    <li><a href="<c:url value="${assets.USER_LIST_URI}"/>">
                             <fmt:message key="menu.allUsers.label" bundle="${langGeneral}"/></a></li>
                     <li><a href="<c:url value="${assets.DISPLAY_USER_TASKS_URI}"/>">
                             <fmt:message key="menu.userTasks.label" bundle="${langGeneral}"/></a></li>

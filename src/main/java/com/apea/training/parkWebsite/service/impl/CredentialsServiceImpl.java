@@ -5,6 +5,8 @@ import com.apea.training.parkWebsite.dao.DaoFactory;
 import com.apea.training.parkWebsite.domain.Credentials;
 import com.apea.training.parkWebsite.service.CredentialsService;
 
+import java.util.List;
+
 public class CredentialsServiceImpl implements CredentialsService {
     private DaoFactory factory;
 
@@ -30,6 +32,13 @@ public class CredentialsServiceImpl implements CredentialsService {
     public Credentials getByLogin(String login) {
         try(DaoConnection connection = factory.getDaoConnection()) {
             return factory.getCredentialsDao(connection).getByLogin(login);
+        }
+    }
+
+    @Override
+    public List<Credentials> getAll() {
+        try(DaoConnection connection = factory.getDaoConnection()) {
+            return factory.getCredentialsDao(connection).getAll();
         }
     }
 

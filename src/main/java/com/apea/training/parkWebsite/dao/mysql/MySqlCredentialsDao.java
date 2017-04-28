@@ -5,6 +5,8 @@ import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.domain.Credentials;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlCredentialsDao implements CredentialsDao {
 
@@ -68,6 +70,26 @@ public class MySqlCredentialsDao implements CredentialsDao {
             throw new DaoException("Can't get credentials", e);
         }
         return credentials;
+    }
+
+    @Override
+    public List<Credentials> getAll() {
+        String sqlStatement = "SELECT * FROM credentials";
+        List<Credentials> credentialsList = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Integer userId = resultSet.getInt("userId");
+                String login = resultSet.getString("login");
+                String password = resultSet.getString("password");
+                Credentials credentials = new Credentials(userId, login, password);
+                credentialsList.add(credentials);
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return credentialsList;
     }
 
     @Override

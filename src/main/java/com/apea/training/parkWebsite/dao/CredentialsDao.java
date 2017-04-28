@@ -2,6 +2,8 @@ package com.apea.training.parkWebsite.dao;
 
 import com.apea.training.parkWebsite.domain.Credentials;
 
+import java.util.List;
+
 public interface CredentialsDao {
 
     void create(Credentials credentials);
@@ -13,6 +15,8 @@ public interface CredentialsDao {
      * don't exist.
      */
     Credentials getByLogin(String login);
+
+    List<Credentials> getAll();
 
     void update(Credentials credentials);
 }

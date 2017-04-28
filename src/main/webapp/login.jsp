@@ -29,7 +29,7 @@
                             <fmt:message key="credential.password.label" bundle="${credential}"/></label>
                         <input type="password" class="form-control" id="userPassword"
                                placeholder="<fmt:message key="credential.password.label" bundle="${credential}"/>"
-                               name="assets.PASSWORD_PARAM_NAME"/>
+                               name="${assets.PASSWORD_PARAM_NAME}"/>
                         <c:if test="${(not empty messages) && (not empty messages[assets.PASSWORD_PARAM_NAME])}">
                             <label class="messages ${messages[assets.PASSWORD_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
                                 <fmt:message key="${messages[assets.PASSWORD_PARAM_NAME].messageKey}" bundle="${validation}"/>

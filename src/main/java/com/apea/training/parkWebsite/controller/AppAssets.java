@@ -23,6 +23,7 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("GENERAL_MESSAGES_BLOCK_NAME", "generalMessages");
         assetsMap.put("CURRENT_USER_ATTR_NAME", "currentUser");
         assetsMap.put("USER_ATTR_NAME", "user");
+        assetsMap.put("CREDENTIALS_ATTR_NAME", "credentials");
         assetsMap.put("ALL_USERS_ATTR_NAME", "allUsers");
         assetsMap.put("ALL_AREAS_ATTR_NAME", "allAreas");
         assetsMap.put("CURRENT_USER_TASKS_ATTR_NAME", "currentUserTasks");
@@ -86,7 +87,7 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("DISPLAY_TASK_VIEW_NAME", "tasks/task");
         assetsMap.put("AREA_LIST_VIEW_NAME", "areas/areaList");
 
-        assetsMap.put("GENERAL_ERROR_PAGE_VIEW_NAME", "/errors/error-page");
+        assetsMap.put("GENERAL_ERROR_PAGE_VIEW_NAME", "errors/error-page");
         assetsMap.put("LOGIN_PAGE", "/login.jsp");
 
         //************************* MESSAGES **********************************

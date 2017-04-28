@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
-    void create(User user, Credentials credentials);
+    void zzcreate(User user, Credentials credentials);
 
     User getById(Integer id);
 

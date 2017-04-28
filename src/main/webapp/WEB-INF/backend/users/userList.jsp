@@ -15,14 +15,14 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="user" items="${requestScope[assets.ALL_USERS_ATTR_NAME]}">
+            <c:forEach var="user-credential" items="${requestScope[assets.ALL_USERS_ATTR_NAME]}">
                 <tr>
-                    <td><a href="<c:url value="${assets.DISPLAY_USER_URI}/${user.id}"/>">
-                        ${credential.login}</a></td>
-                    <td>${user.firstName}</td>
-                    <td>${user.lastName}</td>
-                    <td>${user.role}</td>
-                    <td>${user.email}</td>
+                    <td><a href="<c:url value="${assets.DISPLAY_USER_URI}/${user-credential.key.id}"/>">
+                        ${user-credential.value.login}</a></td>
+                    <td>${user-credential.key.firstName}</td>
+                    <td>${user-credential.key.lastName}</td>
+                    <td>${user-credential.key.role}</td>
+                    <td>${user-credential.key.email}</td>
                 </tr>
             </c:forEach>
             </tbody>
