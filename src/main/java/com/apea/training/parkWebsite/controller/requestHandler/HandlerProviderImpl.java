@@ -22,19 +22,19 @@ public class HandlerProviderImpl implements HandlerProvider {
 
     private static AppAssets assets = AppAssets.getInstance();
 
-    public static final String POST_SIGN_IN_REQUEST_PATTERN = "POST:" + assets.get("SIGN_IN_URI");
-    public static final String GET_ALL_USERS_REQUEST_PATTERN = "GET:" + assets.get("USER_LIST_URI") +"/?";
-    public static final String GET_CURRENT_USER_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_CURRENT_USER_URI") +"/?";
-    public static final String GET_ONE_USER_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_URI") +"/\\d+/?";
-    public static final String GET_CREATE_USER_REQUEST_PATTERN = "GET:" + assets.get("CREATE_USER_URI") +"/?";
-    public static final String POST_CREATE_USER_REQUEST_PATTERN = "POST:" + assets.get("CREATE_USER_URI") +"/?";
-    public static final String GET_ONE_TASK_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_TASK_URI") +"/\\d+/?";
-    public static final String GET_USER_TASKS_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_TASKS_URI") +"/?";
-    public static final String GET_CREATE_TASK_REQUEST_PATTERN = "GET:" + assets.get("CREATE_TASK_URI") +"/?";
-    public static final String POST_CREATE_TASK_REQUEST_PATTERN = "POST:" + assets.get("CREATE_TASK_URI") +"/?";
-    public static final String GET_CREATE_REPORT_REQUEST_PATTERN = "GET:" + assets.get("CREATE_REPORT_URI") +"/\\d+/?";
-    public static final String POST_CREATE_REPORT_REQUEST_PATTERN = "POST" + assets.get("CREATE_REPORT_URI") +"/?";
-    public static final String GET_ALL_AREAS_REQUEST_PATTERN = "GET:" + assets.get("AREA_LIST_URI") +"/?";
+    public final String POST_SIGN_IN_REQUEST_PATTERN = "POST:" + assets.get("SIGN_IN_URI");
+    public final String GET_ALL_USERS_REQUEST_PATTERN = "GET:" + assets.get("USER_LIST_URI") +"/?";
+    public final String GET_CURRENT_USER_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_CURRENT_USER_URI") +"/?";
+    public final String GET_ONE_USER_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_URI") +"/\\d+/?";
+    public final String GET_CREATE_USER_REQUEST_PATTERN = "GET:" + assets.get("CREATE_USER_URI") +"/?";
+    public final String POST_CREATE_USER_REQUEST_PATTERN = "POST:" + assets.get("CREATE_USER_URI") +"/?";
+    public final String GET_ONE_TASK_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_TASK_URI") +"/\\d+/?";
+    public final String GET_USER_TASKS_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_TASKS_URI") +"/?";
+    public final String GET_CREATE_TASK_REQUEST_PATTERN = "GET:" + assets.get("CREATE_TASK_URI") +"/?";
+    public final String POST_CREATE_TASK_REQUEST_PATTERN = "POST:" + assets.get("CREATE_TASK_URI") +"/?";
+    public final String GET_CREATE_REPORT_REQUEST_PATTERN = "GET:" + assets.get("CREATE_REPORT_URI") +"/\\d+/?";
+    public final String POST_CREATE_REPORT_REQUEST_PATTERN = "POST" + assets.get("CREATE_REPORT_URI") +"/?";
+    public final String GET_ALL_AREAS_REQUEST_PATTERN = "GET:" + assets.get("AREA_LIST_URI") +"/?";
 
     public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:" + assets.get("SIGN_OUT_URI") +"/?";
 

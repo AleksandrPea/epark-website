@@ -9,12 +9,11 @@ import javax.servlet.http.HttpSession;
 
 public class SignOutHandler implements RequestHandler {
 
-    private AppAssets assets = AppAssets.getInstance();
-
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
+        AppAssets assets = AppAssets.getInstance();
         HttpSession session = request.getSession();
-        session.removeAttribute(assets.get("CURRENT_USER_ATTR_NAME"));
+        session.removeAttribute(assets.get("CURRENT_USER_ID_ATTR_NAME"));
         session.invalidate();
         return REDIRECT + assets.get("LOGIN_PAGE");
     }

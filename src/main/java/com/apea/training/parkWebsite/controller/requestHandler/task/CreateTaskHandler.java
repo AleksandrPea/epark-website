@@ -8,8 +8,6 @@ import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.Task;
 import com.apea.training.parkWebsite.domain.User;
-import com.apea.training.parkWebsite.service.TaskService;
-import com.apea.training.parkWebsite.service.UserService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,30 +17,31 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CreateTaskHandler implements RequestHandler {
-
-    private AppAssets assets = AppAssets.getInstance();
-    private UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-    private TaskService taskService = ServiceFactoryImpl.getInstance().getTaskService();
-    private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
+    AppAssets assets = AppAssets.getInstance();
+    FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
+        AppAssets assets = AppAssets.getInstance();
         Map<String, FrontendMessage> formMessages = new HashMap<>();
         List<FrontendMessage> generalMessages = new ArrayList<>();
+        String action;
         boolean isNewTaskCreated = tryToCreateTask(request, formMessages);
         if (!isNewTaskCreated) {
-            setSessionAttributes(request, formMessages);
+            setRequestAttributes(request, formMessages);
         } else {
-            removeSessionAttributes(request);
-            generalMessages.add(messageFactory.getSuccess(assets.get("MSG_CREATE_TASK_SUCCESS")));
+            generalMessages.add(FrontMessageFactory.getInstance()
+                    .getSuccess(assets.get("MSG_CREATE_TASK_SUCCESS")));
             ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
+            removeRequestAttributes(request);
         }
-        return REDIRECT + assets.get("CREATE_TASK_URI");
+        return FORWARD + assets.get("CREATE_TASK_URI");
     }
 
     private boolean tryToCreateTask(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        AppAssets assets = AppAssets.getInstance();
         String recieverLogin = request.getParameter(assets.get("TASK_RECIEVER_LOGIN_PARAM_NAME"));
-        User reciever = userService.getByLogin(recieverLogin);
+        User reciever = ServiceFactoryImpl.getInstance().getUserService().getByLogin(recieverLogin);
         if (checkRecieverIsNotExists(reciever,formMessages)) { return false; }
 
         User currentUser = ControllerUtils.getCurrentUser(request);
@@ -54,7 +53,7 @@ public class CreateTaskHandler implements RequestHandler {
         Task task = new Task.Builder().setTitle(title).setComment(comment)
                 .setSenderId(senderId).setRecieverId(recieverId).build();
         List<Plant> plants = fetchTaskPlants(request);
-        taskService.createNewAndAssociate(task, plants);
+        ServiceFactoryImpl.getInstance().getTaskService().createNewAndAssociate(task, plants);
 
         return true;
     }
@@ -89,7 +88,7 @@ public class CreateTaskHandler implements RequestHandler {
                 .collect(Collectors.toList());
     }
 
-    private void setSessionAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+    private void setRequestAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
         HttpSession session = request.getSession();
         String recieverLogin = request.getParameter(assets.get("TASK_RECIEVER_LOGIN_PARAM_NAME"));
         String[] plantNames = request.getParameterValues(assets.get("TASK_PLANTS_PARAM_NAME"));
@@ -105,7 +104,7 @@ public class CreateTaskHandler implements RequestHandler {
         session.setAttribute(assets.get("MESSAGES_ATTR_NAME"), formMessages);
     }
 
-    private void removeSessionAttributes(HttpServletRequest request) {
+    private void removeRequestAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute(assets.get("TASK_RECIEVER_LOGIN_ATTR_NAME"));
         session.removeAttribute(assets.get("TASK_PLANTS_ATTR_NAME"));

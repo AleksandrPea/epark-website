@@ -5,6 +5,7 @@ import com.apea.training.parkWebsite.connection.mysql.MySqlTransactionHelper;
 import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.dao.UserDao;
 import com.apea.training.parkWebsite.domain.User;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,8 @@ public class MySqlUserDao implements UserDao {
     public void create(User user) {
         String sqlStatement = "INSERT INTO user (firstName, lastName, email, role, info, superiorId) VALUES (?, ?, ?, ?, ?, ?)";
         try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                    Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getEmail());
@@ -32,6 +34,13 @@ public class MySqlUserDao implements UserDao {
             if (affectedRows == 0) {
                 throw new DaoException("Creating user failed: no rows affected.");
             }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (!generatedKeys.next()) {
+                throw new DaoException("Creating user failed: no id obtained.");
+            }
+            Integer id = generatedKeys.getInt(1);
+            user.setId(id);
+            generatedKeys.close();
             statement.close();
         } catch (SQLException e) {
             throw new DaoException("Can't create user", e);
@@ -55,6 +64,8 @@ public class MySqlUserDao implements UserDao {
             String role = resultSet.getString("role");
             String info = resultSet.getString("info");
             Integer superiorId = resultSet.getInt("superiorId");
+            if (resultSet.wasNull()) {superiorId = null;}
+
             user = new User.Builder().setId(id).setFirstName(firstName).setLastName(lastName)
                     .setEmail(email).setRole(User.Role.valueOf(role)).setInfo(info)
                     .setSuperiorId(superiorId).build();
@@ -69,7 +80,7 @@ public class MySqlUserDao implements UserDao {
     @Override
     public User getByLogin(String login) {
         String sqlStatement = "SELECT id, firstName, lastName, email, role, info, superiorId " +
-                "FROM user INNER JOIN credentials on user.id = credentials.userId WHERE credentials.login=?";
+                "FROM user INNER JOIN credential on user.id = credential.userId WHERE credential.login=?";
         User user = null;
         try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sqlStatement);
@@ -83,6 +94,8 @@ public class MySqlUserDao implements UserDao {
                 String role = resultSet.getString("role");
                 String info = resultSet.getString("info");
                 Integer superiorId = resultSet.getInt("superiorId");
+                if (resultSet.wasNull()) {superiorId = null;}
+
                 user = new User.Builder().setId(id).setFirstName(firstName).setLastName(lastName)
                         .setEmail(email).setRole(User.Role.valueOf(role)).setInfo(info)
                         .setSuperiorId(superiorId).build();
@@ -149,6 +162,8 @@ public class MySqlUserDao implements UserDao {
                 String role = resultSet.getString("role");
                 String info = resultSet.getString("info");
                 Integer superiorId = resultSet.getInt("superiorId");
+                if (resultSet.wasNull()) {superiorId = null;}
+
                 User user = new User.Builder().setId(id).setFirstName(firstName).setLastName(lastName)
                         .setEmail(email).setRole(User.Role.valueOf(role)).setInfo(info)
                         .setSuperiorId(superiorId).build();
@@ -203,6 +218,7 @@ public class MySqlUserDao implements UserDao {
             String email = resultSet.getString("email");
             String info = resultSet.getString("info");
             Integer superiorId = resultSet.getInt("superiorId");
+            if (resultSet.wasNull()) {superiorId = null;}
             user = new User.Builder().setId(id).setFirstName(firstName).setLastName(lastName)
                     .setEmail(email).setRole(User.Role.OWNER).setInfo(info)
                     .setSuperiorId(superiorId).build();

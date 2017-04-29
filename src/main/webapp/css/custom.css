@@ -7,7 +7,7 @@ textarea.form-control {
     resize: vertical;
 }
 
-#loginForm {
+#main-container + .row {
     margin-top: 50px;
 }
 

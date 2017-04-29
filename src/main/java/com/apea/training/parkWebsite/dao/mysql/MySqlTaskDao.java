@@ -9,6 +9,7 @@ import com.apea.training.parkWebsite.domain.Task;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ public class MySqlTaskDao implements TaskDao {
     public void create(Task task) {
         String sqlStatement = "INSERT INTO task (state, title, comment, senderId, recieverId) VALUES (?,?,?,?,?)";
         try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                    Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, task.getState().toString());
             statement.setString(2, task.getTitle());
             statement.setString(3, task.getComment());
@@ -31,6 +33,13 @@ public class MySqlTaskDao implements TaskDao {
             if (affectedRows == 0) {
                 throw new DaoException("Creating task failed: no rows affected.");
             }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (!generatedKeys.next()) {
+                throw new DaoException("Creating task failed: no id obtained.");
+            }
+            Integer id = generatedKeys.getInt(1);
+            task.setId(id);
+            generatedKeys.close();
             statement.close();
         } catch (SQLException e) {
             throw new DaoException("Can't create task", e);
@@ -87,7 +96,9 @@ public class MySqlTaskDao implements TaskDao {
             String comment = resultSet.getString("comment");
             long creationDate = resultSet.getTimestamp("creationDate").getTime();
             Integer senderId = resultSet.getInt("senderId");
+            if (resultSet.wasNull()) {senderId = null;}
             Integer recieverId = resultSet.getInt("recieverId");
+            if (resultSet.wasNull()) {recieverId = null;}
             task = new Task.Builder().setId(id).setState(Task.State.valueOf(state)).setTitle(title)
                     .setComment(comment).setCreationDate(Instant.ofEpochMilli(creationDate))
                     .setSenderId(senderId).setRecieverId(recieverId).build();
@@ -148,7 +159,9 @@ public class MySqlTaskDao implements TaskDao {
                 String comment = resultSet.getString("comment");
                 long creationDate = resultSet.getTimestamp("creationDate").getTime();
                 Integer senderId = resultSet.getInt("senderId");
+                if (resultSet.wasNull()) {senderId = null;}
                 Integer recieverId = resultSet.getInt("recieverId");
+                if (resultSet.wasNull()) {recieverId = null;}
                 Task task = new Task.Builder().setId(id).setState(Task.State.valueOf(state)).setTitle(title)
                         .setComment(comment).setCreationDate(Instant.ofEpochMilli(creationDate))
                         .setSenderId(senderId).setRecieverId(recieverId).build();

@@ -23,7 +23,8 @@ public class MySqlPlantDao implements PlantDao {
         String sqlStatement = "INSERT INTO plant (name, state, imgPath, description, areaId)" +
                 "VALUES (?, ?, ?, ?, ?)";
         try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                    Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, plant.getName());
             statement.setString(2, plant.getState().toString());
             statement.setString(3, plant.getImgPath());
@@ -33,6 +34,13 @@ public class MySqlPlantDao implements PlantDao {
             if (affectedRows == 0) {
                 throw new DaoException("Creating plant failed: no rows affected.");
             }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (!generatedKeys.next()) {
+                throw new DaoException("Creating plantarea failed: no id obtained.");
+            }
+            Integer id = generatedKeys.getInt(1);
+            plant.setId(id);
+            generatedKeys.close();
             statement.close();
         } catch (SQLException e) {
             throw new DaoException("Can't create plant", e);

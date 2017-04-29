@@ -24,8 +24,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserDao userDao = MySqlDaoFactory.getInstance().getUserDao();
             userDao.create(user);
-            User createdUser = userDao.getByLogin(credential.getLogin());
-            credential.setUserId(createdUser.getId());
+            credential.setUserId(user.getId());
             MySqlDaoFactory.getInstance().getCredentialDao().create(credential);
             MySqlTransactionHelper.getInstance().commitTransaction();
         } catch (DaoException e) {

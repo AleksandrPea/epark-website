@@ -4,7 +4,7 @@
             <a class="navbar-brand" href="/"><fmt:message key="header.siteName" bundle="${langGeneral}"/></a>
         </div>
         <c:choose>
-            <c:when test="${sessionScope[assets.CURRENT_USER_ATTR_NAME] != null}">
+            <c:when test="${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] != null}">
                 <ul class="nav navbar-nav">
                     <li><a href="<c:url value="${assets.USER_LIST_URI}"/>">
                             <fmt:message key="menu.allUsers.label" bundle="${langGeneral}"/></a></li>

@@ -3,8 +3,8 @@ package com.apea.training.parkWebsite.controller.requestHandler.user;
 import com.apea.training.parkWebsite.controller.AppAssets;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
+import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.CredentialService;
-import com.apea.training.parkWebsite.service.UserService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,16 +12,21 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DisplayUserHandler implements RequestHandler {
 
-    private AppAssets assets = AppAssets.getInstance();
-
-    private UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-    private CredentialService credentialsService = ServiceFactoryImpl.getInstance().getCredentialsSerice();
-
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
+        AppAssets assets = AppAssets.getInstance();
+        CredentialService credentialService = ServiceFactoryImpl.getInstance().getCredentialService();
         int userId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        request.setAttribute(assets.get("USER_ATTR_NAME"), userService.getById(userId));
-        request.setAttribute(assets.get("CREDENTIALS_ATTR_NAME"), credentialsService.getByUserId(userId));
+        User user = ServiceFactoryImpl.getInstance().getUserService().getById(userId);
+        request.setAttribute(assets.get("USER_ATTR_NAME"), user);
+        request.setAttribute(assets.get("CREDENTIAL_ATTR_NAME"),
+                credentialService.getByUserId(userId));
+        if (user.getSuperiorId() != null) {
+            request.setAttribute(assets.get("SUPERIOR_LOGIN_ATTR_NAME"),
+                    credentialService.getByUserId(user.getSuperiorId()).getLogin());
+        }
+        request.setAttribute(assets.get("CURRENT_USER_ATTR_NAME"),
+                ControllerUtils.getCurrentUser(request));
         return FORWARD + assets.get("DISPLAY_USER_VIEW_NAME");
     }
 }

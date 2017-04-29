@@ -1,9 +1,9 @@
 package com.apea.training.parkWebsite.controller;
 
-import com.apea.training.parkWebsite.controller.requestHandler.HandlerProvider;
 import com.apea.training.parkWebsite.controller.requestHandler.HandlerProviderImpl;
+import com.apea.training.parkWebsite.dao.DaoException;
+import com.apea.training.parkWebsite.service.ServiceException;
 import com.apea.training.parkWebsite.view.JspResolver;
-import com.apea.training.parkWebsite.view.ViewResolver;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -12,14 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 public class MainController extends HttpServlet {
-
-    private static final Logger LOGGER = Logger.getLogger(MainController.class);
-    //убрать
-    private AppAssets assets = AppAssets.getInstance();
-    private HandlerProvider handlerProvider = HandlerProviderImpl.getInstance();
-    private ViewResolver viewResolver = JspResolver.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,10 +31,11 @@ public class MainController extends HttpServlet {
     private void handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String abstractViewName = handlerProvider.getRequestHandler(request).handle(request, response);
+            String abstractViewName = HandlerProviderImpl.getInstance()
+                    .getRequestHandler(request).handle(request, response);
             dispatch(abstractViewName, request, response);
 
-        } catch (RuntimeException e) {
+        } catch (DaoException | ServiceException | DispatchException | NoSuchElementException e) {
             logExceptionAndRedirectToErrorPage(request, response, e);
         }
     }
@@ -65,8 +61,13 @@ public class MainController extends HttpServlet {
 
     private void performForward(String viewName, HttpServletRequest request, HttpServletResponse response) {
         try {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(
-                    viewResolver.resolvePrivateViewName(viewName));
+            String resolvedViewName;
+            if (AppAssets.getInstance().isViewPublic(viewName)) {
+                resolvedViewName = JspResolver.getInstance().resolvePublicViewName(viewName);
+            } else {
+                resolvedViewName = JspResolver.getInstance().resolvePrivateViewName(viewName);
+            }
+            RequestDispatcher dispatcher = request.getRequestDispatcher(resolvedViewName);
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {
             throw new DispatchException("Can't dispatch " + viewName, e);
@@ -74,18 +75,17 @@ public class MainController extends HttpServlet {
     }
 
     private void performRedirect(String viewName, HttpServletRequest request, HttpServletResponse response) {
-        sendRedirect(viewName, request, response);
+        sendRedirect(response, viewName);
     }
 
     private void logExceptionAndRedirectToErrorPage(HttpServletRequest request, HttpServletResponse response,
                                                     RuntimeException e) {
-        LOGGER.error("Error in handling request " + request.getRequestURI(), e);
+        Logger.getLogger(MainController.class).error("Error in handling request " + request.getRequestURI(), e);
 
-        sendRedirect(viewResolver.resolvePublicViewName(assets.get("GENERAL_ERROR_PAGE_VIEW_NAME")),
-                request, response);
+        sendRedirect(response, AppAssets.getInstance().get("GENERAL_ERROR_PAGE"));
     }
 
-    private void sendRedirect(String redirectUri, HttpServletRequest request, HttpServletResponse response) {
+    private void sendRedirect(HttpServletResponse response, String redirectUri) {
         try {
             response.sendRedirect(redirectUri);
         } catch (IOException e) {

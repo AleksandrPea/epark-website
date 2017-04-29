@@ -8,10 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DisplayCreateUserPage implements RequestHandler{
 
-    private AppAssets assets = AppAssets.getInstance();
-
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
-        return FORWARD + assets.get("CREATE_USER_VIEW_NAME");
+        return FORWARD + AppAssets.getInstance().get("CREATE_USER_VIEW_NAME");
     }
 }

@@ -9,6 +9,7 @@ import com.apea.training.parkWebsite.domain.Report;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,8 @@ public class MySqlReportDao implements ReportDao {
     public void create(Report report) {
         String sqlStatement = "INSERT INTO report (comment, imgPath, taskId) VALUES (?, ?, ?)";
         try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                    Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, report.getComment());
             statement.setString(2, report.getImgPath());
             statement.setInt(3, report.getTaskId());
@@ -30,6 +32,13 @@ public class MySqlReportDao implements ReportDao {
             if (affectedRows == 0) {
                 throw new DaoException("Creating report failed: no rows affected.");
             }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (!generatedKeys.next()) {
+                throw new DaoException("Creating report failed: no id obtained.");
+            }
+            Integer id = generatedKeys.getInt(1);
+            report.setId(id);
+            generatedKeys.close();
             statement.close();
         } catch (SQLException e) {
             throw new DaoException("Can't create report", e);

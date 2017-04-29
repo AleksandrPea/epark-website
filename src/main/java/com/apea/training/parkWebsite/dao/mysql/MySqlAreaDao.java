@@ -21,7 +21,8 @@ public class MySqlAreaDao implements AreaDao {
     public void create(Area area) {
         String sqlStatement = "INSERT INTO area (name, description, taskmasterId) VALUES (?,?,?)";
         try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            PreparedStatement statement = connection.prepareStatement(sqlStatement,
+                    Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, area.getName());
             statement.setString(2, area.getDescription());
             statement.setInt(3, area.getTaskmasterId());
@@ -29,6 +30,13 @@ public class MySqlAreaDao implements AreaDao {
             if (affectedRows == 0) {
                 throw new DaoException("Creating area failed: no rows affected.");
             }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (!generatedKeys.next()) {
+                throw new DaoException("Creating area failed: no id obtained.");
+            }
+            Integer id = generatedKeys.getInt(1);
+            area.setId(id);
+            generatedKeys.close();
             statement.close();
         } catch (SQLException e) {
             throw new DaoException("Can't create area", e);
@@ -49,6 +57,7 @@ public class MySqlAreaDao implements AreaDao {
             Integer id = resultSet.getInt("id");
             String description = resultSet.getString("description");
             Integer taskmasterId = resultSet.getInt("taskmasterId");
+            if (resultSet.wasNull()) {taskmasterId = null;}
             area = new Area.Builder().setId(id).setName(name).setDescription(description)
                     .setTaskmasterId(taskmasterId).build();
             resultSet.close();
@@ -73,6 +82,7 @@ public class MySqlAreaDao implements AreaDao {
             String name = resultSet.getString("name");
             String description = resultSet.getString("description");
             Integer taskmasterId = resultSet.getInt("taskmasterId");
+            if (resultSet.wasNull()) {taskmasterId = null;}
             area = new Area.Builder().setId(id).setName(name).setDescription(description)
                     .setTaskmasterId(taskmasterId).build();
             resultSet.close();
@@ -130,6 +140,7 @@ public class MySqlAreaDao implements AreaDao {
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
                 Integer taskmasterId = resultSet.getInt("taskmasterId");
+                if (resultSet.wasNull()) {taskmasterId = null;}
                 Area area = new Area.Builder().setId(id).setName(name).setDescription(description)
                         .setTaskmasterId(taskmasterId).build();
                 areas.add(area);

@@ -2,7 +2,7 @@
 <fmt:setBundle basename="webProject.i18n.credential" var="credential"/>
 <fmt:setBundle basename="webProject.i18n.validation" var="validation"/>
 
-<div id="loginForm" class="row">
+<div class="row">
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -15,11 +15,11 @@
                             <fmt:message key="credential.login.label" bundle="${credential}"/></label>
                         <input type="text" class="form-control" id="login"
                                placeholder="<fmt:message key="credential.login.label" bundle="${credential}"/>"
-                               name="${assets.SIGN_IN_LOGIN_PARAM_NAME}"
-                               value="${sessionScope[assets.SIGN_IN_LOGIN_ATTR_NAME]}"/>
-                        <c:if test="${(not empty messages) && (not empty messages[assets.SIGN_IN_LOGIN_PARAM_NAME])}">
-                            <label class="messages ${messages[assets.SIGN_IN_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                                <fmt:message key="${messages[assets.SIGN_IN_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
+                               name="${assets.LOGIN_PARAM_NAME}"
+                               value="${requestScope[assets.LOGIN_ATTR_NAME]}"/>
+                        <c:if test="${(not empty messages) && (not empty messages[assets.LOGIN_PARAM_NAME])}">
+                            <label class="messages ${messages[assets.LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
+                                <fmt:message key="${messages[assets.LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
                             </label>
                         </c:if>
 

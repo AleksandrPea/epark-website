@@ -6,8 +6,6 @@ import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.domain.Credential;
 import com.apea.training.parkWebsite.domain.User;
-import com.apea.training.parkWebsite.service.CredentialService;
-import com.apea.training.parkWebsite.service.UserService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,54 +16,53 @@ import java.util.Map;
 
 public class SignInHandler implements RequestHandler {
 
-    private AppAssets assets = AppAssets.getInstance();
-    private UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-    private CredentialService credentialsService = ServiceFactoryImpl.getInstance().getCredentialsSerice();
-    private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
-
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
+        AppAssets assets = AppAssets.getInstance();
         Map<String, FrontendMessage> messages = new HashMap<>();
-        String redirectUri;
+        String abstractView;
         if (isCredentialCorrect(request)) {
-            redirectUri = signInUserAndGetForwardUri(request);
+            signInUser(request);
+            abstractView = REDIRECT + assets.get("DISPLAY_CURRENT_USER_URI");
         } else {
             addErrorMessages(messages);
-            redirectUri = assets.get("LOGIN_PAGE");
+            abstractView = FORWARD + assets.get("LOGIN_VIEW_NAME");
         }
-        setSessionAttributes(request, messages);
+        setRequestAttributes(request, messages);
 
-        return REDIRECT + redirectUri;
+        return abstractView;
     }
 
     private boolean isCredentialCorrect(HttpServletRequest request) {
-        String login = request.getParameter(assets.get("SIGN_IN_LOGIN_PARAM_NAME"));
-        Credential credential = credentialsService.getByLogin(login);
+        AppAssets assets = AppAssets.getInstance();
+        String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
+        Credential credential = ServiceFactoryImpl.getInstance().getCredentialService().getByLogin(login);
         String password = request.getParameter(assets.get("PASSWORD_PARAM_NAME"));
 
         return credential != null && password.equals(credential.getPassword());
     }
 
-    private String signInUserAndGetForwardUri(HttpServletRequest request) {
-        String login = request.getParameter(assets.get("SIGN_IN_LOGIN_PARAM_NAME"));
-        User currentUser = userService.getByLogin(login);
+    private void signInUser(HttpServletRequest request) {
+        AppAssets assets = AppAssets.getInstance();
+        String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
+        User currentUser = ServiceFactoryImpl.getInstance().getUserService().getByLogin(login);
         HttpSession session = request.getSession();
-        session.setAttribute(assets.get("CURRENT_USER_ATTR_NAME"), currentUser);
-
-        return assets.get("DISPLAY_CURRENT_USER_URI");
+        session.setAttribute(assets.get("CURRENT_USER_ID_ATTR_NAME"), currentUser.getId());
     }
 
     private void addErrorMessages(Map<String, FrontendMessage> messages) {
-        messages.put(assets.get("SIGN_IN_LOGIN_PARAM_NAME"),
+        AppAssets assets = AppAssets.getInstance();
+        FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
+        messages.put(assets.get("LOGIN_PARAM_NAME"),
                 messageFactory.getError(assets.get("MSG_CREDENTIALS_ARE_NOT_CORRECT")));
         messages.put(assets.get("PASSWORD_PARAM_NAME"),
                 messageFactory.getError(assets.get("MSG_CREDENTIALS_ARE_NOT_CORRECT")));
     }
 
-    private void setSessionAttributes(HttpServletRequest request, Map<String, FrontendMessage> messages) {
-        HttpSession session = request.getSession();
-        String login = request.getParameter(assets.get("SIGN_IN_LOGIN_PARAM_NAME"));
-        session.setAttribute(assets.get("SIGN_IN_LOGIN_ATTR_NAME"), login);
-        session.setAttribute(assets.get("MESSAGES_ATTR_NAME"), messages);
+    private void setRequestAttributes(HttpServletRequest request, Map<String, FrontendMessage> messages) {
+        AppAssets assets = AppAssets.getInstance();
+        String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
+        request.setAttribute(assets.get("LOGIN_ATTR_NAME"), login);
+        request.setAttribute(assets.get("MESSAGES_ATTR_NAME"), messages);
     }
 }

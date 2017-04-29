@@ -1,9 +1,6 @@
 package com.apea.training.parkWebsite.controller;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class AppAssets extends AbstractMap<String, String> {
 
@@ -21,15 +18,15 @@ public class AppAssets extends AbstractMap<String, String> {
         //************************* ATTRIBUTES **********************************
         assetsMap.put("MESSAGES_ATTR_NAME", "messages");
         assetsMap.put("GENERAL_MESSAGES_BLOCK_NAME", "generalMessages");
+        assetsMap.put("CURRENT_USER_ID_ATTR_NAME", "currentUserId");
         assetsMap.put("CURRENT_USER_ATTR_NAME", "currentUser");
         assetsMap.put("USER_ATTR_NAME", "user");
-        assetsMap.put("CREDENTIALS_ATTR_NAME", "credentials");
+        assetsMap.put("CREDENTIAL_ATTR_NAME", "credentials");
         assetsMap.put("ALL_USERS_ATTR_NAME", "allUsers");
         assetsMap.put("ALL_CREDENTIALS_ATTR_NAME", "allCredentials");
         assetsMap.put("ALL_AREAS_ATTR_NAME", "allAreas");
         assetsMap.put("CURRENT_USER_TASKS_ATTR_NAME", "currentUserTasks");
 
-        assetsMap.put("SIGN_IN_LOGIN_ATTR_NAME", "signInLogin");
         assetsMap.put("LOGIN_ATTR_NAME", "login");
         assetsMap.put("PASSWORD_ATTR_NAME", "password");
         assetsMap.put("FIRSTNAME_ATTR_NAME", "firstName");
@@ -49,7 +46,6 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("TASK_REPORTS_ATTR_NAME", "taskReports");
 
         //************************* PARAMS **********************************
-        assetsMap.put("SIGN_IN_LOGIN_PARAM_NAME", "signInLogin");
         assetsMap.put("LOGIN_PARAM_NAME", "login");
         assetsMap.put("PASSWORD_PARAM_NAME", "password");
         assetsMap.put("FIRSTNAME_PARAM_NAME", "firstName");
@@ -88,8 +84,9 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("DISPLAY_TASK_VIEW_NAME", "tasks/task");
         assetsMap.put("AREA_LIST_VIEW_NAME", "areas/areaList");
 
-        assetsMap.put("GENERAL_ERROR_PAGE_VIEW_NAME", "errors/error-page");
+        assetsMap.put("LOGIN_VIEW_NAME", "login");
         assetsMap.put("LOGIN_PAGE", "/login.jsp");
+        assetsMap.put("GENERAL_ERROR_PAGE", "/errors/error-page.jsp");
 
         //************************* MESSAGES **********************************
         assetsMap.put("MSG_CREDENTIALS_ARE_NOT_CORRECT", "validation.credentialsAreNotCorrect");
@@ -103,6 +100,14 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("MSG_CREATE_TASK_SUCCESS", "task.createSuccess");
         assetsMap.put("MSG_CREATE_USER_SUCCESS", "user.createSuccess");
         assetsMap.put("MSG_CREATE_REPORT_SUCCESS", "report.createSuccess");
+    }
+
+    private List<String> publicViewNames = Arrays.asList(
+            assetsMap.get("LOGIN_VIEW_NAME")
+    );
+
+    public boolean isViewPublic(String viewName) {
+        return publicViewNames.contains(viewName);
     }
 
     @Override

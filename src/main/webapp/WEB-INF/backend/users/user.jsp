@@ -11,7 +11,7 @@
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.login.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static">${requestScope[assets.CREDENTIALS_ATTR_NAME].login}</p>
+                    <p class="form-control-static">${requestScope[assets.CREDENTIAL_ATTR_NAME].login}</p>
                 </div>
             </div>
             <div class="form-group">
@@ -49,14 +49,14 @@
                     <p class="form-control-static">${requestScope[assets.USER_ATTR_NAME].info}</p>
                 </div>
             </div>
-            <c:if test="${requestScope[assets.USER_ATTR_NAME].role != 'OWNER'}">
+            <c:if test="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME] != null}">
                 <div class="form-group">
                     <label class="col-xs-4 control-label">
                         <fmt:message key="user.superior.label" bundle="${langUser}"/></label>
                     <div class="col-xs-8">
                         <p class="form-control-static">
                              <a href="<c:url value="${assets.DISPLAY_USER_URI}/${user.superiorId}"/>">
-                                ${user.superiorId}
+                                ${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}
                             </a>
                         </p>
                     </div>
@@ -64,14 +64,14 @@
             </c:if>
         </form>
         <div class="col-md-offset-4">
-            <c:if test="${sessionScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
-                    || sessionScope[assets.CURRENT_USER_ATTR_NAME].id == sessionScope[assets.USER_ATTR_NAME].id}">
+            <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
+                    || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == sessionScope[assets.USER_ATTR_NAME].id}">
 
                 <a href="#" class="btn btn-default" role="button">
                     <fmt:message key="user.page.editButton" bundle="${langUser}"/>
                 </a>
             </c:if>
-            <c:if test="${sessionScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'}">
+            <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'}">
                 <a href="#" class="btn btn-danger" role="button">
                     <fmt:message key="user.page.deleteButton" bundle="${langUser}"/>
                 </a>

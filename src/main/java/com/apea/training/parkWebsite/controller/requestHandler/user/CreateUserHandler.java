@@ -12,7 +12,6 @@ import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,32 +19,29 @@ import java.util.Map;
 
 public class CreateUserHandler implements RequestHandler {
 
-    private AppAssets assets = AppAssets.getInstance();
-
-    private UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-    private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
-
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
+        AppAssets assets = AppAssets.getInstance();
         Map<String, FrontendMessage> formMessages = new HashMap<>();
         List<FrontendMessage> generalMessages = new ArrayList<>();
-        String redirectUri = assets.get("CREATE_USER_URI");
+        String abstractViewName;
         boolean isNewUserCreated = tryToCreateUser(request, formMessages);
         if (isNewUserCreated) {
-            redirectUri = assets.get("USER_LIST_URI");
-        }
-        if (assets.get("CREATE_USER_URI").equals(redirectUri)) {
-            setSessionAttributes(request, formMessages);
-        } else {
-            removeSessionAttributes(request);
-            generalMessages.add(messageFactory.getSuccess(assets.get("MSG_CREATE_USER_SUCCESS")));
+            generalMessages.add(FrontMessageFactory.getInstance()
+                    .getSuccess(assets.get("MSG_CREATE_USER_SUCCESS")));
             ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
+            abstractViewName = REDIRECT + assets.get("USER_LIST_URI");
+        } else {
+            setRequestAttributes(request, formMessages);
+            abstractViewName = FORWARD + assets.get("CREATE_USER_VIEW_NAME");
         }
 
-        return REDIRECT + redirectUri;
+        return abstractViewName;
     }
 
     private boolean tryToCreateUser(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        AppAssets assets = AppAssets.getInstance();
+        UserService userService = ServiceFactoryImpl.getInstance().getUserService();
         String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
         if (checkUserExists(login, formMessages)) {return false;}
 
@@ -70,10 +66,11 @@ public class CreateUserHandler implements RequestHandler {
     }
 
     private boolean checkUserExists(String login, Map<String, FrontendMessage> formMessages) {
-        User user = userService.getByLogin(login);
+        AppAssets assets = AppAssets.getInstance();
+        User user = ServiceFactoryImpl.getInstance().getUserService().getByLogin(login);
         if (user != null) {
             formMessages.put(assets.get("LOGIN_PARAM_NAME"),
-                    messageFactory.getError(assets.get("MSG_USERNAME_IS_NOT_UNIQUE")));
+                    FrontMessageFactory.getInstance().getError(assets.get("MSG_USERNAME_IS_NOT_UNIQUE")));
             return true;
         }
         return false;
@@ -81,15 +78,18 @@ public class CreateUserHandler implements RequestHandler {
     }
 
     private boolean checkSuperiorIsNotExists(User superior, Map<String, FrontendMessage> formMessages) {
+        AppAssets assets = AppAssets.getInstance();
         if (superior == null) {
             formMessages.put(assets.get("SUPERIOR_LOGIN_PARAM_NAME"),
-                    messageFactory.getError(assets.get("MSG_SUPERIOR_LOGIN_IS_INVALID")));
+                    FrontMessageFactory.getInstance().getError(assets.get("MSG_SUPERIOR_LOGIN_IS_INVALID")));
             return true;
         }
         return false;
     }
 
     private boolean isRoleInvalid(User.Role role, User superior, Map<String, FrontendMessage> formMessages) {
+        AppAssets assets = AppAssets.getInstance();
+        FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
         if (role == User.Role.FORESTER && superior.getRole() != User.Role.TASKMASTER) {
             formMessages.put(assets.get("SUPERIOR_LOGIN_PARAM_NAME"),
                     messageFactory.getError(assets.get("MSG_SUPERIOR_FOR_FORESTER_IS_INVALID")));
@@ -103,8 +103,8 @@ public class CreateUserHandler implements RequestHandler {
         return false;
     }
 
-    private void setSessionAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
-        HttpSession session = request.getSession();
+    private void setRequestAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        AppAssets assets = AppAssets.getInstance();
         String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
         String password = request.getParameter(assets.get("PASSWORD_PARAM_NAME"));
         String firstName = request.getParameter(assets.get("FIRSTNAME_PARAM_NAME"));
@@ -113,27 +113,15 @@ public class CreateUserHandler implements RequestHandler {
         User.Role role = User.Role.valueOf(request.getParameter(assets.get("ROLE_PARAM_NAME")));
         String info = request.getParameter(assets.get("USER_INFO_PARAM_NAME"));
         String superiorLogin = request.getParameter(assets.get("SUPERIOR_LOGIN_PARAM_NAME"));
-        session.setAttribute(assets.get("LOGIN_ATTR_NAME"), login);
-        session.setAttribute(assets.get("PASSWORD_ATTR_NAME"), password);
-        session.setAttribute(assets.get("FIRSTNAME_ATTR_NAME"), firstName);
-        session.setAttribute(assets.get("LASTNAME_ATTR_NAME"), lastName);
-        session.setAttribute(assets.get("EMAIL_ATTR_NAME"), email);
-        session.setAttribute(assets.get("ROLE_ATTR_NAME"), role);
-        session.setAttribute(assets.get("USER_INFO_ATTR_NAME"), info);
-        session.setAttribute(assets.get("SUPERIOR_LOGIN_ATTR_NAME"), superiorLogin);
+        request.setAttribute(assets.get("LOGIN_ATTR_NAME"), login);
+        request.setAttribute(assets.get("PASSWORD_ATTR_NAME"), password);
+        request.setAttribute(assets.get("FIRSTNAME_ATTR_NAME"), firstName);
+        request.setAttribute(assets.get("LASTNAME_ATTR_NAME"), lastName);
+        request.setAttribute(assets.get("EMAIL_ATTR_NAME"), email);
+        request.setAttribute(assets.get("ROLE_ATTR_NAME"), role);
+        request.setAttribute(assets.get("USER_INFO_ATTR_NAME"), info);
+        request.setAttribute(assets.get("SUPERIOR_LOGIN_ATTR_NAME"), superiorLogin);
 
-        session.setAttribute(assets.get("MESSAGES_ATTR_NAME"), formMessages);
-    }
-
-    private void removeSessionAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.removeAttribute(assets.get("LOGIN_ATTR_NAME"));
-        session.removeAttribute(assets.get("PASSWORD_ATTR_NAME"));
-        session.removeAttribute(assets.get("FIRSTNAME_ATTR_NAME"));
-        session.removeAttribute(assets.get("LASTNAME_ATTR_NAME"));
-        session.removeAttribute(assets.get("EMAIL_ATTR_NAME"));
-        session.removeAttribute(assets.get("ROLE_ATTR_NAME"));
-        session.removeAttribute(assets.get("USER_INFO_ATTR_NAME"));
-        session.removeAttribute(assets.get("SUPERIOR_LOGIN_ATTR_NAME"));
+        request.setAttribute(assets.get("MESSAGES_ATTR_NAME"), formMessages);
     }
 }

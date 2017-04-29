@@ -60,7 +60,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     }
 
     @Override
-    public CredentialService getCredentialsSerice() {
+    public CredentialService getCredentialService() {
         if (credentialsService == null) {
             credentialsService = new CredentialServiceImpl();
         }

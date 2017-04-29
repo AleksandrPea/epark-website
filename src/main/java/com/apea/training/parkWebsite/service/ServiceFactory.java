@@ -12,5 +12,5 @@ public interface ServiceFactory {
 
     UserService getUserService();
 
-    CredentialService getCredentialsSerice();
+    CredentialService getCredentialService();
 }
