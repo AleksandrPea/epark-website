@@ -15,7 +15,7 @@
                 <input type="text" class="form-control" id="recieverLogin"
                        placeholder="<fmt:message key="task.recieverLogin.label" bundle="${langTask}"/>"
                        name="${assets.TASK_RECIEVER_LOGIN_PARAM_NAME}"
-                       value="${sessionScope[assets.TASK_RECIEVER_LOGIN_ATTR_NAME]}"/>
+                       value="${requestScope[assets.TASK_RECIEVER_LOGIN_ATTR_NAME]}"/>
                 <c:if test="${(not empty messages) && (not empty messages[assets.TASK_RECIEVER_LOGIN_PARAM_NAME])}">
                     <label class="messages ${messages[assets.TASK_RECIEVER_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
                         <fmt:message key="${messages[assets.TASK_RECIEVER_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
@@ -29,7 +29,7 @@
                 <input type="text" class="form-control" id="title"
                        placeholder="<fmt:message key="task.title.label" bundle="${langTask}"/>"
                        name="${assets.TASK_TITLE_PARAM_NAME}"
-                       value="${sessionScope[assets.TASK_TITLE_ATTR_NAME]}"/>
+                       value="${requestScope[assets.TASK_TITLE_ATTR_NAME]}"/>
             </div>
 
             <div class="form-group">
@@ -37,15 +37,15 @@
                     <fmt:message key="task.comment.label" bundle="${langTask}"/></label>
                 <textarea class="form-control" id="comment" rows="12"
                        placeholder="<fmt:message key="task.comment.label" bundle="${langTask}"/>"
-                       name="${assets.TASK_COMMENT_PARAM_NAME}">${sessionScope[assets.TASK_COMMENT_ATTR_NAME]}</textarea>
+                       name="${assets.TASK_COMMENT_PARAM_NAME}">${requestScope[assets.TASK_COMMENT_ATTR_NAME]}</textarea>
             </div>
             <div class="form-group">
                 <label class="control-label" for="plants">
                     <fmt:message key="task.plants.label" bundle="${langTask}"/></label>
                 <select id="plants" class="selectpicker form-control" multiple data-selected-text-format="count > 3"
                         name="${assets.TASK_PLANTS_PARAM_NAME}">
-                    <c:forEach var="plant" items="${sessionScope[assets.ALL_TASK_PLANTS_ATTR_NAME]}">
-                        <option value="${plant}" ${(sessionScope[assets.TASK_PLANTS_ATTR_NAME].contains(plant)) ? 'selected' : ''}>
+                    <c:forEach var="plant" items="${requestScope[assets.ALL_TASK_PLANTS_ATTR_NAME]}">
+                        <option value="${plant}" ${(requestScope[assets.TASK_PLANTS_ATTR_NAME].contains(plant)) ? 'selected' : ''}>
                             ${plant}
                         </option>
                     </c:forEach>

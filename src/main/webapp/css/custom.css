@@ -3,12 +3,12 @@
     min-height: 350px;
 }
 
-textarea.form-control {
-    resize: vertical;
+#top-messages, #login-form,  #report-form {
+    margin-top: 50px;
 }
 
-#main-container + .row {
-    margin-top: 50px;
+textarea.form-control {
+    resize: vertical;
 }
 
 .panel-title {

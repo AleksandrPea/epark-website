@@ -1,13 +1,14 @@
 package com.apea.training.parkWebsite.domain;
 
 import java.time.Instant;
+import java.util.Date;
 
 public class Report {
 
     private Integer id;
     private String comment = "";
     private String imgPath = "";
-    private Instant creationDate;
+    private Instant creationTimestamp;
     private Integer taskId;
 
     public Integer getId() {
@@ -22,8 +23,12 @@ public class Report {
         return imgPath;
     }
 
-    public Instant getCreationDate() {
-        return creationDate;
+    public Date getCreationDate() {
+        return Date.from(creationTimestamp);
+    }
+
+    public Instant getCreationTimestamp() {
+        return creationTimestamp;
     }
 
     public Integer getTaskId() {
@@ -42,8 +47,8 @@ public class Report {
         this.imgPath = imgPath;
     }
 
-    public void setCreationDate(Instant creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationTimestamp(Instant creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
     }
 
     public void setTaskId(Integer taskId) {
@@ -74,7 +79,7 @@ public class Report {
         }
 
         public Builder setCreationDate(Instant creationDate) {
-            report.setCreationDate(creationDate);
+            report.setCreationTimestamp(creationDate);
             return this;
         }
 

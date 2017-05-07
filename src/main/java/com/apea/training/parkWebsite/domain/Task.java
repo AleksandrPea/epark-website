@@ -1,15 +1,16 @@
 package com.apea.training.parkWebsite.domain;
 
 import java.time.Instant;
+import java.util.Date;
 
 public class Task {
     private Integer id;
     private State state;
     private String title;
     private String comment;
-    private Instant creationDate;
+    private Instant creationTimestamp;
     private Integer senderId;
-    private Integer recieverId;
+    private Integer receiverId;
 
     public Integer getId() {
         return id;
@@ -27,16 +28,20 @@ public class Task {
         return comment;
     }
 
-    public Instant getCreationDate() {
-        return creationDate;
+    public Date getCreationDate() {
+        return Date.from(creationTimestamp);
+    }
+
+    public Instant getCreationTimestamp() {
+        return creationTimestamp;
     }
 
     public Integer getSenderId() {
         return senderId;
     }
 
-    public Integer getRecieverId() {
-        return recieverId;
+    public Integer getReceiverId() {
+        return receiverId;
     }
 
     public void setId(Integer id) {
@@ -55,16 +60,16 @@ public class Task {
         this.comment = comment;
     }
 
-    public void setCreationDate(Instant creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationTimestamp(Instant creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
     }
 
     public void setSenderId(Integer senderId) {
         this.senderId = senderId;
     }
 
-    public void setRecieverId(Integer recieverId) {
-        this.recieverId = recieverId;
+    public void setReceiverId(Integer receiverId) {
+        this.receiverId = receiverId;
     }
 
     public enum State {
@@ -100,7 +105,7 @@ public class Task {
         }
 
         public Builder setCreationDate(Instant creationDate) {
-            task.setCreationDate(creationDate);
+            task.setCreationTimestamp(creationDate);
             return this;
         }
 
@@ -109,8 +114,8 @@ public class Task {
             return this;
         }
 
-        public Builder setRecieverId(Integer recieverId) {
-            task.setRecieverId(recieverId);
+        public Builder setReceiverId(Integer recieverId) {
+            task.setReceiverId(recieverId);
             return this;
         }
 

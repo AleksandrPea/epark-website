@@ -2,12 +2,12 @@
 <fmt:setBundle basename="webProject.i18n.credential" var="credential"/>
 <fmt:setBundle basename="webProject.i18n.validation" var="validation"/>
 
-<div class="row">
+<div id="login-form" class="row">
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><fmt:message key="credential.signIn.title" bundle="${credential}"/></h3>
-                <form method="POST" name="loginform" id="loginform"
+                <form method="POST" name="loginform"
                       action="<c:url value="${assets.SIGN_IN_URI}"/>"
                       accept-charset="UTF-8" role="form">
                     <div class="form-group validated required">

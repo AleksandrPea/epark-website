@@ -1,7 +1,7 @@
 <fmt:setBundle basename="webProject.i18n.validation" var="langValidation"/>
 
 <c:if test="${not empty messages[assets.GENERAL_MESSAGES_BLOCK_NAME]}">
-    <div class="row">
+    <div id="top-messages" class="row">
         <div class="col-md-12">
             <c:forEach items="${messages[assets.GENERAL_MESSAGES_BLOCK_NAME]}"
                     var="message">

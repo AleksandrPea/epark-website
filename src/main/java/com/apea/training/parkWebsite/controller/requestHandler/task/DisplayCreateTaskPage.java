@@ -6,8 +6,6 @@ import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
 import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.User;
-import com.apea.training.parkWebsite.service.PlantService;
-import com.apea.training.parkWebsite.service.UserService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +14,10 @@ import java.util.List;
 
 public class DisplayCreateTaskPage implements RequestHandler {
 
-    private AppAssets assets = AppAssets.getInstance();
-    private PlantService plantService = ServiceFactoryImpl.getInstance().getPlantService();
-    private UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().setAttribute(assets.get("ALL_TASK_PLANTS_ATTR_NAME"),
+        AppAssets assets = AppAssets.getInstance();
+        request.setAttribute(assets.get("ALL_TASK_PLANTS_ATTR_NAME"),
                 getCurrentUserPlants(request));
         return FORWARD + assets.get("CREATE_TASK_VIEW_NAME");
     }
@@ -30,10 +25,10 @@ public class DisplayCreateTaskPage implements RequestHandler {
     private List<Plant> getCurrentUserPlants(HttpServletRequest request) {
         User currentUser = ControllerUtils.getCurrentUser(request);
         if (currentUser.getRole() == User.Role.OWNER) {
-            return plantService.getAll();
+            return ServiceFactoryImpl.getInstance().getPlantService().getAll();
         } else {
-            Area attachedArea = userService.getAttachedArea(currentUser);
-            return plantService.getAllOn(attachedArea);
+            Area attachedArea = ServiceFactoryImpl.getInstance().getUserService().getAttachedArea(currentUser);
+            return ServiceFactoryImpl.getInstance().getPlantService().getAllOn(attachedArea);
         }
     }
 }

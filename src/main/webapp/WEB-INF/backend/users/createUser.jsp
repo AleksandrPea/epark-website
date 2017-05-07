@@ -6,7 +6,7 @@
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">
         <h3 class="text-center"><fmt:message key="user.createPage.title" bundle="${langUser}"/></h3>
         <form method="POST" name="createUserForm" id="createUserForm"
-              action="<c:url value="${asset.CREATE_USER_URI}"/>"
+              action="<c:url value="${assets.CREATE_USER_URI}"/>"
               accept-charset="UTF-8" role="form">
 
             <div class="form-group validated required">

@@ -25,7 +25,8 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("ALL_USERS_ATTR_NAME", "allUsers");
         assetsMap.put("ALL_CREDENTIALS_ATTR_NAME", "allCredentials");
         assetsMap.put("ALL_AREAS_ATTR_NAME", "allAreas");
-        assetsMap.put("CURRENT_USER_TASKS_ATTR_NAME", "currentUserTasks");
+        assetsMap.put("CURRENT_USER_SENDED_TASKS_ATTR_NAME", "currentUserSendedTasks");
+        assetsMap.put("CURRENT_USER_RECEIVED_TASKS_ATTR_NAME", "currentUserReceivedTasks");
 
         assetsMap.put("LOGIN_ATTR_NAME", "login");
         assetsMap.put("PASSWORD_ATTR_NAME", "password");
@@ -41,9 +42,10 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("TASK_COMMENT_ATTR_NAME", "taskComment");
         assetsMap.put("TASK_PLANTS_ATTR_NAME", "taskPlants");
         assetsMap.put("ALL_TASK_PLANTS_ATTR_NAME", "allTaskPlants");
-        assetsMap.put("TASK_ID_ATTR_NAME", "taskId");
         assetsMap.put("TASK_ATTR_NAME", "task");
         assetsMap.put("TASK_REPORTS_ATTR_NAME", "taskReports");
+        assetsMap.put("REPORT_COMMENT_ATTR_NAME", "reportComment");
+        assetsMap.put("REPORT_IMG_PATH_ATTR_NAME", "reportImg");
 
         //************************* PARAMS **********************************
         assetsMap.put("LOGIN_PARAM_NAME", "login");
@@ -80,7 +82,6 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("CREATE_USER_VIEW_NAME", "users/createUser");
         assetsMap.put("CURRENT_USER_TASKS_LIST_VIEW_NAME", "tasks/taskList");
         assetsMap.put("CREATE_TASK_VIEW_NAME", "tasks/createTask");
-        assetsMap.put("CREATE_REPORT_VIEW_NAME", "tasks/createReport");
         assetsMap.put("DISPLAY_TASK_VIEW_NAME", "tasks/task");
         assetsMap.put("AREA_LIST_VIEW_NAME", "areas/areaList");
 
