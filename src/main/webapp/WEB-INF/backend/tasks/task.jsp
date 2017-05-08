@@ -29,7 +29,7 @@
                             <fmt:message key="task.report.comment.label" bundle="${langTask}"/></label>
                         <textarea class="form-control" id="comment" rows="6"
                                placeholder="<fmt:message key="task.report.comment.label" bundle="${langTask}"/>"
-                               name="${assets.REPORT_COMMENT_PARAM_NAME}">${requestScope[assets.REPORT_COMMENT_ATTR_NAME]}</textarea>
+                               name="${assets.REPORT_COMMENT_PARAM_NAME}"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -37,8 +37,7 @@
                             <fmt:message key="task.report.imgPath.label" bundle="${langTask}"/></label>
                         <input type="text" class="form-control" id="imgPath"
                                placeholder="<fmt:message key="task.report.imgPath.label" bundle="${langTask}"/>"
-                               name="${assets.REPORT_IMG_PATH_PARAM_NAME}"
-                               value="${requestScope[assets.REPORT_IMG_PATH_ATTR_NAME]}"/>
+                               name="${assets.REPORT_IMG_PATH_PARAM_NAME}"/>
                     </div>
 
 

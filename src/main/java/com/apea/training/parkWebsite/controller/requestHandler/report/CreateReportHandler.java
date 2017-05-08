@@ -6,7 +6,6 @@ import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
 import com.apea.training.parkWebsite.domain.Report;
-import com.apea.training.parkWebsite.domain.Task;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;

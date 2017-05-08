@@ -64,7 +64,7 @@
                 </c:if>
             </div>
 
-            <div class="form-group validated required">
+            <div class="form-group required">
                 <label class="control-label" for="userRole">
                     <fmt:message key="user.role.label" bundle="${langUser}"/></label>
                 <select id="userRole" class="selectpicker form-control" name="${assets.ROLE_PARAM_NAME}">

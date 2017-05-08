@@ -8,7 +8,7 @@
             <p><fmt:message key="auth.text" bundle="${frontGeneral}"/>
                 <a href="<c:url value="${assets[DISPLAY_CURRENT_USER_URI]}"/>">
                     <fmt:message key="linkAccount.text" bundle="${frontGeneral}"/>
-                </a>.
+                </a>
             </p>
         </c:when>
         <c:otherwise>

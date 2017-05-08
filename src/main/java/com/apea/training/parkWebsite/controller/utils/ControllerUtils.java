@@ -2,6 +2,8 @@ package com.apea.training.parkWebsite.controller.utils;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
+import com.apea.training.parkWebsite.domain.Area;
+import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
@@ -34,10 +36,16 @@ public class ControllerUtils {
     }
 
     public static int getFirstIdFromUri(String uri) {
+        return getIntFromUri(uri, 0);
+    }
+
+    public static int getIntFromUri(String uri, int index) {
         Matcher matcher = Pattern.compile("\\d+").matcher(uri);
 
-        if (!matcher.find()) {
-            throw new IllegalArgumentException("There is no id in uri " +uri);
+        for(int i = 0; i <= index; i++) {
+            if (!matcher.find()) {
+                throw new IllegalArgumentException("There is no id in uri " + uri);
+            }
         }
 
         return Integer.parseInt(matcher.group());
@@ -49,5 +57,15 @@ public class ControllerUtils {
         frontMessageMap.put(assets.get("GENERAL_MESSAGES_BLOCK_NAME"), generalMessages);
         HttpSession session = request.getSession();
         session.setAttribute(assets.get("MESSAGES_ATTR_NAME"), frontMessageMap);
+    }
+
+    public static List<Plant> getCurrentUserPlants(HttpServletRequest request) {
+        User currentUser = ControllerUtils.getCurrentUser(request);
+        if (currentUser.getRole() == User.Role.OWNER) {
+            return ServiceFactoryImpl.getInstance().getPlantService().getAll();
+        } else {
+            Area attachedArea = ServiceFactoryImpl.getInstance().getUserService().getAttachedArea(currentUser);
+            return ServiceFactoryImpl.getInstance().getPlantService().getAllOn(attachedArea.getId());
+        }
     }
 }

@@ -45,8 +45,8 @@
                 <select id="plants" class="selectpicker form-control" multiple data-selected-text-format="count > 3"
                         name="${assets.TASK_PLANTS_PARAM_NAME}">
                     <c:forEach var="plant" items="${requestScope[assets.ALL_TASK_PLANTS_ATTR_NAME]}">
-                        <option value="${plant}" ${(requestScope[assets.TASK_PLANTS_ATTR_NAME].contains(plant)) ? 'selected' : ''}>
-                            ${plant}
+                        <option value="${plant.name}" ${(requestScope[assets.TASK_PLANTS_ATTR_NAME].contains(plant.name)) ? 'selected' : ''}>
+                            ${plant.name}
                         </option>
                     </c:forEach>
                 </select>

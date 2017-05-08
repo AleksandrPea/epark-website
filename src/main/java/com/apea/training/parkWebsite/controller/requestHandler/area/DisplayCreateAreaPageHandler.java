@@ -1,4 +1,4 @@
-package com.apea.training.parkWebsite.controller.requestHandler.user;
+package com.apea.training.parkWebsite.controller.requestHandler.area;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
@@ -6,10 +6,11 @@ import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DisplayCreateUserPage implements RequestHandler{
+public class DisplayCreateAreaPageHandler implements RequestHandler {
 
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
-        return FORWARD + AppAssets.getInstance().get("CREATE_USER_VIEW_NAME");
+        AppAssets assets = AppAssets.getInstance();
+        return FORWARD + assets.get("CREATE_AREA_VIEW_NAME");
     }
 }

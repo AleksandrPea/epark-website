@@ -5,7 +5,6 @@ import com.apea.training.parkWebsite.connection.mysql.MySqlTransactionHelper;
 import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.dao.UserDao;
 import com.apea.training.parkWebsite.domain.User;
-import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

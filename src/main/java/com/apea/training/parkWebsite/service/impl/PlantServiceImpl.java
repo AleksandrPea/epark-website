@@ -2,7 +2,6 @@ package com.apea.training.parkWebsite.service.impl;
 
 import com.apea.training.parkWebsite.dao.TaskDao;
 import com.apea.training.parkWebsite.dao.mysql.MySqlDaoFactory;
-import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.Task;
 import com.apea.training.parkWebsite.service.PlantService;
@@ -16,8 +15,7 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public void createNew(Plant plant) {
-        plant.setState(Plant.State.SEEDLING);
+    public void create(Plant plant) {
         MySqlDaoFactory.getInstance().getPlantDao().create(plant);
     }
 
@@ -42,8 +40,8 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public List<Plant> getAllOn(Area area) {
-        return MySqlDaoFactory.getInstance().getPlantDao().getAllOn(area.getId());
+    public List<Plant> getAllOn(Integer areaId) {
+        return MySqlDaoFactory.getInstance().getPlantDao().getAllOn(areaId);
     }
 
     @Override

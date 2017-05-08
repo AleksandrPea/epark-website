@@ -83,7 +83,7 @@ public class CreateTaskHandler implements RequestHandler {
             return Collections.emptyList();
         }
         List<String> plantNamesList = Arrays.asList(plantNames);
-        return ((List<Plant>) request.getAttribute(assets.get("ALL_TASK_PLANTS_ATTR_NAME")))
+        return ControllerUtils.getCurrentUserPlants(request)
                 .stream()
                 .filter(plant -> plantNamesList.contains(plant.getName()))
                 .collect(Collectors.toList());
@@ -101,7 +101,8 @@ public class CreateTaskHandler implements RequestHandler {
         if (plantNames != null) {
             request.setAttribute(assets.get("TASK_PLANTS_ATTR_NAME"), Arrays.asList(plantNames));
         }
-
+        request.setAttribute(assets.get("ALL_TASK_PLANTS_ATTR_NAME"),
+                ControllerUtils.getCurrentUserPlants(request));
         request.setAttribute(assets.get("MESSAGES_ATTR_NAME"), formMessages);
     }
 }

@@ -25,7 +25,7 @@ public class MySqlAreaDao implements AreaDao {
                     Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, area.getName());
             statement.setString(2, area.getDescription());
-            statement.setInt(3, area.getTaskmasterId());
+            statement.setObject(3, area.getTaskmasterId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DaoException("Creating area failed: no rows affected.");

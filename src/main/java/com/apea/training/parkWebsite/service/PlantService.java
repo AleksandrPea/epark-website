@@ -1,6 +1,5 @@
 package com.apea.training.parkWebsite.service;
 
-import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.Task;
 
@@ -8,7 +7,7 @@ import java.util.List;
 
 public interface PlantService {
 
-    void createNew(Plant plant);
+    void create(Plant plant);
 
     Plant getById(Integer id);
 
@@ -18,7 +17,7 @@ public interface PlantService {
 
     List<Plant> getAll();
 
-    List<Plant> getAllOn(Area area);
+    List<Plant> getAllOn(Integer areaId);
 
     List<Task> getAssociatedTasks(Plant plant);
 }

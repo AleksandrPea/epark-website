@@ -1,12 +1,17 @@
 package com.apea.training.parkWebsite.controller.requestHandler;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
+import com.apea.training.parkWebsite.controller.requestHandler.area.CreateAreaHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.area.DisplayAllAreasHandler;
+import com.apea.training.parkWebsite.controller.requestHandler.area.DisplayCreateAreaPageHandler;
+import com.apea.training.parkWebsite.controller.requestHandler.plant.CreatePlantHandler;
+import com.apea.training.parkWebsite.controller.requestHandler.plant.DisplayCreatePlantPageHandler;
+import com.apea.training.parkWebsite.controller.requestHandler.plant.DisplayPlantsHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.report.CreateReportHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.sign.SignInHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.sign.SignOutHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.task.CreateTaskHandler;
-import com.apea.training.parkWebsite.controller.requestHandler.task.DisplayCreateTaskPage;
+import com.apea.training.parkWebsite.controller.requestHandler.task.DisplayCreateTaskPageHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.task.DisplayTaskHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.task.DisplayUserTasksHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.user.*;
@@ -33,6 +38,11 @@ public class HandlerProviderImpl implements HandlerProvider {
     public final String POST_CREATE_TASK_REQUEST_PATTERN = "POST:" + assets.get("CREATE_TASK_URI") +"/?";
     public final String POST_CREATE_REPORT_REQUEST_PATTERN = "POST:" + assets.get("CREATE_REPORT_URI") +"/\\d+/?";
     public final String GET_ALL_AREAS_REQUEST_PATTERN = "GET:" + assets.get("AREA_LIST_URI") +"/?";
+    public final String GET_CREATE_AREA_REQUEST_PATTERN = "GET:" + assets.get("CREATE_AREA_URI") + "/?";
+    public final String POST_CREATE_AREA_REQUEST_PATTERN = "POST:" + assets.get("CREATE_AREA_URI") + "/?";
+    public final String GET_PLANTS_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_PLANTS_URI") +"/\\d" +"/\\d" +"/?";
+    public final String GET_CREATE_PLANT_REQUEST_PATTERN = "GET:" + assets.get("CREATE_PLANT_URI") +"/\\d" + "/?";
+    public final String POST_CREATE_PLANT_REQUEST_PATTERN = "POST:" + assets.get("CREATE_PLANT_URI") +"/\\d" + "/?";
 
     public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:" + assets.get("SIGN_OUT_URI") +"/?";
 
@@ -47,14 +57,19 @@ public class HandlerProviderImpl implements HandlerProvider {
         requestMapping.put(GET_ALL_USERS_REQUEST_PATTERN,       new DisplayAllUsersHandler());
         requestMapping.put(GET_CURRENT_USER_REQUEST_PATTERN,    new DisplayCurrentUserHandler());
         requestMapping.put(GET_ONE_USER_REQUEST_PATTERN,        new DisplayUserHandler());
-        requestMapping.put(GET_CREATE_USER_REQUEST_PATTERN,     new DisplayCreateUserPage());
+        requestMapping.put(GET_CREATE_USER_REQUEST_PATTERN,     new DisplayCreateUserPageHandler());
         requestMapping.put(POST_CREATE_USER_REQUEST_PATTERN,    new CreateUserHandler());
         requestMapping.put(GET_ONE_TASK_REQUEST_PATTERN,        new DisplayTaskHandler());
         requestMapping.put(GET_USER_TASKS_REQUEST_PATTERN,      new DisplayUserTasksHandler());
-        requestMapping.put(GET_CREATE_TASK_REQUEST_PATTERN,     new DisplayCreateTaskPage());
+        requestMapping.put(GET_CREATE_TASK_REQUEST_PATTERN,     new DisplayCreateTaskPageHandler());
         requestMapping.put(POST_CREATE_TASK_REQUEST_PATTERN,    new CreateTaskHandler());
         requestMapping.put(POST_CREATE_REPORT_REQUEST_PATTERN,  new CreateReportHandler());
         requestMapping.put(GET_ALL_AREAS_REQUEST_PATTERN,       new DisplayAllAreasHandler());
+        requestMapping.put(GET_CREATE_AREA_REQUEST_PATTERN,     new DisplayCreateAreaPageHandler());
+        requestMapping.put(POST_CREATE_AREA_REQUEST_PATTERN,    new CreateAreaHandler());
+        requestMapping.put(GET_PLANTS_REQUEST_PATTERN,          new DisplayPlantsHandler());
+        requestMapping.put(GET_CREATE_PLANT_REQUEST_PATTERN,    new DisplayCreatePlantPageHandler());
+        requestMapping.put(POST_CREATE_PLANT_REQUEST_PATTERN,   new CreatePlantHandler());
         requestMapping.put(GET_SIGN_OUT_REQUEST_PATTERN,        new SignOutHandler());
     }
 

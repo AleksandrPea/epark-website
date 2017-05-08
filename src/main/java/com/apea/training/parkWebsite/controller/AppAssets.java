@@ -44,8 +44,12 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("ALL_TASK_PLANTS_ATTR_NAME", "allTaskPlants");
         assetsMap.put("TASK_ATTR_NAME", "task");
         assetsMap.put("TASK_REPORTS_ATTR_NAME", "taskReports");
-        assetsMap.put("REPORT_COMMENT_ATTR_NAME", "reportComment");
-        assetsMap.put("REPORT_IMG_PATH_ATTR_NAME", "reportImg");
+
+        assetsMap.put("AREA_ATTR_NAME", "area");
+        assetsMap.put("PLANTS_ATTR_NAME", "plants");
+        assetsMap.put("CURRENT_PLANT_PAGE_ATTR_NAME", "currentPlantPage");
+        assetsMap.put("MAX_PLANT_PAGES_ATTR_NAME", "maxPlantPages");
+        assetsMap.put("AREA_ID_ATTR_NAME", "areaId");
 
         //************************* PARAMS **********************************
         assetsMap.put("LOGIN_PARAM_NAME", "login");
@@ -64,6 +68,14 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("REPORT_COMMENT_PARAM_NAME", "reportComment");
         assetsMap.put("REPORT_IMG_PATH_PARAM_NAME", "reportImg");
 
+        assetsMap.put("AREA_NAME_PARAM_NAME", "areaName");
+        assetsMap.put("AREA_DESCRIPTION_PARAM_NAME", "areaDescription");
+
+        assetsMap.put("PLANT_NAME_PARAM_NAME", "plantName");
+        assetsMap.put("PLANT_DESCRIPTION_PARAM_NAME", "plantDescription");
+        assetsMap.put("PLANT_IMG_PATH_PARAM_NAME", "plantImgPath");
+        assetsMap.put("PLANT_STATE_PARAM_NAME", "plantState");
+
         //************************* VIEWS and URIS **********************************
         assetsMap.put("SIGN_IN_URI", "/backend/signIn");
         assetsMap.put("DISPLAY_CURRENT_USER_URI", "/backend/users/currentUser");
@@ -75,6 +87,9 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("DISPLAY_TASK_URI", "/backend/tasks/task");
         assetsMap.put("CREATE_REPORT_URI", "/backend/reports/newReport");
         assetsMap.put("AREA_LIST_URI", "/backend/areas");
+        assetsMap.put("CREATE_AREA_URI", "/backend/areas/newArea");
+        assetsMap.put("DISPLAY_PLANTS_URI", "/backend/plants");
+        assetsMap.put("CREATE_PLANT_URI", "/backend/plants/newPlant");
         assetsMap.put("SIGN_OUT_URI", "/backend/signOut");
 
         assetsMap.put("DISPLAY_USER_VIEW_NAME", "users/user");
@@ -84,6 +99,9 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("CREATE_TASK_VIEW_NAME", "tasks/createTask");
         assetsMap.put("DISPLAY_TASK_VIEW_NAME", "tasks/task");
         assetsMap.put("AREA_LIST_VIEW_NAME", "areas/areaList");
+        assetsMap.put("CREATE_AREA_VIEW_NAME", "areas/createArea");
+        assetsMap.put("PLANT_LIST_VIEW_NAME", "plants/plantList");
+        assetsMap.put("CREATE_PLANT_VIEW_NAME", "plants/createPlant");
 
         assetsMap.put("LOGIN_VIEW_NAME", "login");
         assetsMap.put("LOGIN_PAGE", "/login.jsp");
@@ -101,6 +119,8 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("MSG_CREATE_TASK_SUCCESS", "task.createSuccess");
         assetsMap.put("MSG_CREATE_USER_SUCCESS", "user.createSuccess");
         assetsMap.put("MSG_CREATE_REPORT_SUCCESS", "report.createSuccess");
+        assetsMap.put("MSG_CREATE_AREA_SUCCESS", "area.createSuccess");
+        assetsMap.put("MSG_CREATE_PLANT_SUCCESS", "plant.createSuccess");
     }
 
     private List<String> publicViewNames = Arrays.asList(
