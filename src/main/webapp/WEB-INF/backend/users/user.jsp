@@ -64,18 +64,20 @@
             </c:if>
         </form>
         <div class="col-md-offset-4">
-            <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
-                    || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.USER_ATTR_NAME].id}">
+            <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
+                    || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.USER_ATTR_NAME].id
+                    || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.USER_ATTR_NAME].superiorId}">
 
                 <a href="<c:url value="${assets.EDIT_USER_URI}/${requestScope[assets.USER_ATTR_NAME].id}"/>"
                         class="btn btn-default" role="button">
                     <fmt:message key="user.page.editButton" bundle="${langUser}"/>
                 </a>
             </c:if>
-            <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
-                    && sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] != requestScope[assets.USER_ATTR_NAME].id}">
+            <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
+                    && sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] != requestScope[assets.USER_ATTR_NAME].id
+                    || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.USER_ATTR_NAME].superiorId}">
                 <a href="<c:url value="${assets.DELETE_USER_URI}/${requestScope[assets.USER_ATTR_NAME].id}"/>"
-                        class="btn btn-danger confirmDelete" role="button">
+                        class="btn btn-danger confirm" role="button">
                     <fmt:message key="user.page.deleteButton" bundle="${langUser}"/>
                 </a>
             </c:if>

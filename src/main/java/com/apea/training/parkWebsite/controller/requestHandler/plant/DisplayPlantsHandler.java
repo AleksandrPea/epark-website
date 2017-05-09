@@ -26,8 +26,6 @@ public class DisplayPlantsHandler implements RequestHandler {
         request.setAttribute(assets.get("CURRENT_PLANT_PAGE_ATTR_NAME"), page);
         request.setAttribute(assets.get("AREA_ATTR_NAME"),
                 ServiceFactoryImpl.getInstance().getAreaService().getById(areaId));
-        request.setAttribute(assets.get("CURRENT_USER_ATTR_NAME"),
-                ControllerUtils.getCurrentUser(request));
         return FORWARD + assets.get("PLANT_LIST_VIEW_NAME");
     }
 

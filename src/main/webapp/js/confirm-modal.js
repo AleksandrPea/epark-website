@@ -1,10 +1,10 @@
 $(function () {
-    $("a.confirmDelete").click(function(e) {
+    $("a.confirm").click(function(e) {
         console.log("HEY!");
         e.preventDefault();
         var location = $(this).attr('href');
         bootbox.confirm({
-            message: "Confirm delete?",
+            message: "Are you sure?",
             size: "small",
             callback: function (confirmed) {
                 if(confirmed) {

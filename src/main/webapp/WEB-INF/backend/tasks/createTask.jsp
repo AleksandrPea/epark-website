@@ -10,15 +10,15 @@
               accept-charset="UTF-8" role="form">
 
             <div class="form-group validated required">
-                <label class="control-label" for="recieverLogin">
-                    <fmt:message key="task.recieverLogin.label" bundle="${langTask}"/></label>
-                <input type="text" class="form-control" id="recieverLogin"
-                       placeholder="<fmt:message key="task.recieverLogin.label" bundle="${langTask}"/>"
-                       name="${assets.TASK_RECIEVER_LOGIN_PARAM_NAME}"
-                       value="${requestScope[assets.TASK_RECIEVER_LOGIN_ATTR_NAME]}"/>
-                <c:if test="${(not empty messages) && (not empty messages[assets.TASK_RECIEVER_LOGIN_PARAM_NAME])}">
-                    <label class="messages ${messages[assets.TASK_RECIEVER_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                        <fmt:message key="${messages[assets.TASK_RECIEVER_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
+                <label class="control-label" for="receiverLogin">
+                    <fmt:message key="task.receiverLogin.label" bundle="${langTask}"/></label>
+                <input type="text" class="form-control" id="receiverLogin"
+                       placeholder="<fmt:message key="task.receiverLogin.label" bundle="${langTask}"/>"
+                       name="${assets.TASK_RECEIVER_LOGIN_PARAM_NAME}"
+                       value="${requestScope[assets.TASK_RECEIVER_LOGIN_ATTR_NAME]}"/>
+                <c:if test="${(not empty messages) && (not empty messages[assets.TASK_RECEIVER_LOGIN_PARAM_NAME])}">
+                    <label class="messages ${messages[assets.TASK_RECEIVER_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
+                        <fmt:message key="${messages[assets.TASK_RECEIVER_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
                     </label>
                 </c:if>
             </div>

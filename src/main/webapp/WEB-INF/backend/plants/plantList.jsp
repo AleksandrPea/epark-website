@@ -14,12 +14,24 @@
     <div class="row">
         <c:forEach var="plant" items="${plantRow}">
         <div class="col-md-4 plant-item">
-            <a href="<c:url value="${assets.EDIT_PLANT_URI}/${plant.id}"/>">
-                <img class="img-responsive plant-img" src="${plant.imgPath}" alt=""/>
-            </a>
-            <a href="<c:url value="${assets.DELETE_PLANT_URI}/${plant.id}"/>" class="confirmDelete" role="button">
-                <span class="glyphicon glyphicon-remove-circle"></span>
-            </a>
+            <c:choose>
+                <c:when test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
+                        || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.AREA_ATTR_NAME].taskmasterId}">
+                    <a href="<c:url value="${assets.EDIT_PLANT_URI}/${plant.id}"/>">
+                        <img class="img-responsive plant-img" src="${plant.imgPath}" alt=""/>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <img class="img-responsive plant-img" src="${plant.imgPath}" alt=""/>
+                </c:otherwise>
+            </c:choose>
+
+            <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
+                    || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.AREA_ATTR_NAME].taskmasterId}">
+                <a href="<c:url value="${assets.DELETE_PLANT_URI}/${plant.id}"/>" class="confirm" role="button">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+            </c:if>
             <h3>
                 ${plant.name}
                 <small><em>
@@ -32,7 +44,8 @@
     </div>
 </c:forEach>
 
-<c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'}">
+<c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
+        || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.AREA_ATTR_NAME].taskmasterId}">
     <a href="<c:url value="${assets.CREATE_PLANT_URI}/${requestScope[assets.AREA_ATTR_NAME].id}"/>"
             class="btn btn-primary" role="button">
         <fmt:message key="plant.plantList.createButton" bundle="${langPlant}"/>

@@ -14,6 +14,7 @@ public class SignOutHandler implements RequestHandler {
         AppAssets assets = AppAssets.getInstance();
         HttpSession session = request.getSession();
         session.removeAttribute(assets.get("CURRENT_USER_ID_ATTR_NAME"));
+        session.removeAttribute(assets.get("CURRENT_USER_ROLE_ATTR_NAME"));
         session.invalidate();
         return REDIRECT + assets.get("LOGIN_PAGE");
     }

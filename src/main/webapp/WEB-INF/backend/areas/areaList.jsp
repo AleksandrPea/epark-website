@@ -13,7 +13,7 @@
                     <div id="area${area.id}" class="collapse">
                         <div class="list-group-item clearfix">
                             <p>${area.description}</p>
-                            <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
+                            <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
                                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == area.taskmasterId}">
 
                                 <a href="<c:url value="${assets.EDIT_AREA_URI}/${area.id}"/>"
@@ -21,9 +21,9 @@
                                     <fmt:message key="area.areaListPage.editButton" bundle="${langArea}"/>
                                 </a>
                             </c:if>
-                            <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'}">
+                            <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'}">
                                 <a href="<c:url value="${assets.DELETE_AREA_URI}/${area.id}"/>"
-                                        class="btn btn-danger confirmDelete" role="button">
+                                        class="btn btn-danger confirm" role="button">
                                     <fmt:message key="area.areaListPage.deleteButton" bundle="${langArea}"/>
                                 </a>
                             </c:if>
@@ -37,7 +37,7 @@
                 </c:forEach>
             </ul>
         </div>
-        <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'}">
+        <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'}">
             <a href="<c:url value="${assets.CREATE_AREA_URI}"/>" class="btn btn-primary" role="button">
                 <fmt:message key="area.areaList.createButton" bundle="${langArea}"/>
             </a>

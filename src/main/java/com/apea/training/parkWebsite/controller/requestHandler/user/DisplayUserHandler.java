@@ -25,8 +25,6 @@ public class DisplayUserHandler implements RequestHandler {
             request.setAttribute(assets.get("SUPERIOR_LOGIN_ATTR_NAME"),
                     credentialService.getByUserId(user.getSuperiorId()).getLogin());
         }
-        request.setAttribute(assets.get("CURRENT_USER_ATTR_NAME"),
-                ControllerUtils.getCurrentUser(request));
         return FORWARD + assets.get("DISPLAY_USER_VIEW_NAME");
     }
 }

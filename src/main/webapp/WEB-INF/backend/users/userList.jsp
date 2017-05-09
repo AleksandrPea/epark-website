@@ -27,9 +27,11 @@
             </c:forEach>
             </tbody>
         </table>
-        <a href="<c:url value="${assets.CREATE_USER_URI}"/>" class="btn btn-primary" role="button">
-            <fmt:message key="user.userList.createButton" bundle="${langUser}"/>
-        </a>
+        <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] != 'FORESTER'}">
+            <a href="<c:url value="${assets.CREATE_USER_URI}"/>" class="btn btn-primary" role="button">
+                <fmt:message key="user.userList.createButton" bundle="${langUser}"/>
+            </a>
+        </c:if>
     </div>
 </div>
 

@@ -58,29 +58,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void finishAndUpdatePlantStates(Task task, List<Plant> plants) {
-        MySqlTransactionHelper.getInstance().beginTransaction();
-        try {
-            task.setState(Task.State.FINISHED);
-            MySqlDaoFactory.getInstance().getTaskDao().updateState(task);
-            PlantDao plantDao = MySqlDaoFactory.getInstance().getPlantDao();
-            plants.forEach(plantDao::update);
-            MySqlTransactionHelper.getInstance().commitTransaction();
-        } catch (DaoException e) {
-            MySqlTransactionHelper.getInstance().rollbackTransaction();
-            throw new ServiceException("Transaction failed.", e);
-        }
-    }
-
-    @Override
-    public void abort(Task task) {
-        task.setState(Task.State.INCOMPLETED);
-        MySqlDaoFactory.getInstance().getTaskDao().updateState(task);
-    }
-
-    @Override
-    public void confirmRecieving(Task task) {
-        task.setState(Task.State.RUNNING);
-        MySqlDaoFactory.getInstance().getTaskDao().updateState(task);
+    public void setState(Integer taskId, Task.State newState) {
+        TaskDao taskDao = MySqlDaoFactory.getInstance().getTaskDao();
+        Task task = taskDao.getById(taskId);
+        task.setState(newState);
+        taskDao.updateState(task);
     }
 }

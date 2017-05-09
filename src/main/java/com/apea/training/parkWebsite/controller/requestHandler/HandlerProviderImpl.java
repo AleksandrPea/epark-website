@@ -8,6 +8,9 @@ import com.apea.training.parkWebsite.controller.requestHandler.report.DeleteRepo
 import com.apea.training.parkWebsite.controller.requestHandler.sign.SignInHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.sign.SignOutHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.task.*;
+import com.apea.training.parkWebsite.controller.requestHandler.task.stateHandlers.AbortTaskHandler;
+import com.apea.training.parkWebsite.controller.requestHandler.task.stateHandlers.FinishTaskHandler;
+import com.apea.training.parkWebsite.controller.requestHandler.task.stateHandlers.ReceiveTaskHandler;
 import com.apea.training.parkWebsite.controller.requestHandler.user.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +37,9 @@ public class HandlerProviderImpl implements HandlerProvider {
     public final String GET_USER_TASKS_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_TASKS_URI") +"/?";
     public final String GET_DELETE_TASK_REQUEST_PATTERN = "GET:" + assets.get("DELETE_TASK_URI") +"/\\d/?";
     public final String GET_CREATE_TASK_REQUEST_PATTERN = "GET:" + assets.get("CREATE_TASK_URI") +"/?";
+    public final String GET_RECEIVE_TASK_REQUEST_PATTERN = "GET:" + assets.get("RECEIVE_TASK_URI") +"/\\d/?";
+    public final String GET_FINISH_TASK_REQUEST_PATTERN = "GET:" + assets.get("FINISH_TASK_URI") +"/\\d/?";
+    public final String GET_ABORT_TASK_REQUEST_PATTERN = "GET:" + assets.get("ABORT_TASK_URI") +"/\\d/?";
     public final String POST_CREATE_TASK_REQUEST_PATTERN = "POST:" + assets.get("CREATE_TASK_URI") +"/?";
 
     public final String GET_DELETE_REPORT_REQUEST_PATTERN = "GET:" + assets.get("DELETE_REPORT_URI") +"/\\d/?";
@@ -76,6 +82,9 @@ public class HandlerProviderImpl implements HandlerProvider {
         requestMapping.put(GET_USER_TASKS_REQUEST_PATTERN,      new DisplayUserTasksHandler());
         requestMapping.put(GET_DELETE_TASK_REQUEST_PATTERN,     new DeleteTaskHandler());
         requestMapping.put(GET_CREATE_TASK_REQUEST_PATTERN,     new DisplayCreateTaskPageHandler());
+        requestMapping.put(GET_RECEIVE_TASK_REQUEST_PATTERN,    new ReceiveTaskHandler());
+        requestMapping.put(GET_FINISH_TASK_REQUEST_PATTERN,     new FinishTaskHandler());
+        requestMapping.put(GET_ABORT_TASK_REQUEST_PATTERN,      new AbortTaskHandler());
         requestMapping.put(POST_CREATE_TASK_REQUEST_PATTERN,    new CreateTaskHandler());
 
         requestMapping.put(GET_DELETE_REPORT_REQUEST_PATTERN,   new DeleteReportHandler());

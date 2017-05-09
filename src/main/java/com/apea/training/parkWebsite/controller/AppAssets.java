@@ -20,6 +20,8 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("GENERAL_MESSAGES_BLOCK_NAME", "generalMessages");
         assetsMap.put("CURRENT_USER_ID_ATTR_NAME", "currentUserId");
         assetsMap.put("CURRENT_USER_ATTR_NAME", "currentUser");
+        assetsMap.put("CURRENT_USER_ROLE_ATTR_NAME", "currentUserRole");
+        assetsMap.put("CURRENT_USER_LOGIN_ATTR_NAME", "currentUserLogin");
         assetsMap.put("USER_ATTR_NAME", "user");
         assetsMap.put("CREDENTIAL_ATTR_NAME", "credentials");
         assetsMap.put("ALL_USERS_ATTR_NAME", "allUsers");
@@ -105,6 +107,9 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("USER_LIST_URI", "/backend/users");
 
         assetsMap.put("CREATE_TASK_URI", "/backend/tasks/newTask");
+        assetsMap.put("RECEIVE_TASK_URI", "/backend/tasks/receive");
+        assetsMap.put("FINISH_TASK_URI", "/backend/tasks/finish");
+        assetsMap.put("ABORT_TASK_URI", "/backend/tasks/abort");
         assetsMap.put("DELETE_TASK_URI", "/backend/tasks/deleteTask");
         assetsMap.put("DISPLAY_USER_TASKS_URI", "/backend/tasks");
         assetsMap.put("DISPLAY_TASK_URI", "/backend/tasks/task");

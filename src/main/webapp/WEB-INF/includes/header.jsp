@@ -21,7 +21,7 @@
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap-select.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootbox.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/confirm-delete.js"></script>
+    <script src="${pageContext.request.contextPath}/js/confirm-modal.js"></script>
 </head>
 <body>
 

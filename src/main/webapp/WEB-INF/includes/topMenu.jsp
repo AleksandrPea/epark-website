@@ -12,8 +12,10 @@
                             <fmt:message key="menu.allUsers.label" bundle="${langGeneral}"/></a></li>
                     <li><a href="<c:url value="${assets.DISPLAY_USER_TASKS_URI}"/>">
                             <fmt:message key="menu.userTasks.label" bundle="${langGeneral}"/></a></li>
-                    <li><a href="<c:url value="${assets.CREATE_TASK_URI}"/>">
-                            <fmt:message key="menu.createTask.label" bundle="${langGeneral}"/></a></li>
+                    <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] != 'FORESTER'}">
+                        <li><a href="<c:url value="${assets.CREATE_TASK_URI}"/>">
+                                <fmt:message key="menu.createTask.label" bundle="${langGeneral}"/></a></li>
+                    </c:if>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="<c:url value="${assets.DISPLAY_CURRENT_USER_URI}"/>">

@@ -48,7 +48,7 @@
                     <option value="SICK" ${(requestScope[assets.PLANT_STATE_ATTR_NAME] == 'SICK') ? 'selected' : ''}>
                         <fmt:message key="plant.state.SICK" bundle="${langPlant}"/>
                     </option>
-                    <c:if test="${!requestScope[assets.IS_CREATING_AREA_ATTR_NAME]}">
+                    <c:if test="${!requestScope[assets.IS_CREATING_PLANT_ATTR_NAME]}">
                         <option value="EXTRACTED" ${(requestScope[assets.PLANT_STATE_ATTR_NAME] == 'EXTRACTED') ? 'selected' : ''}>
                             <fmt:message key="plant.state.EXTRACTED" bundle="${langPlant}"/>
                         </option>

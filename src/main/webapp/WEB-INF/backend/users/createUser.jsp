@@ -84,7 +84,8 @@
                 <label class="control-label" for="userRole">
                     <fmt:message key="user.role.label" bundle="${langUser}"/></label>
                 <c:choose>
-                    <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
+                    <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]
+                            && sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'}">
                         <select id="userRole" class="selectpicker form-control" name="${assets.ROLE_PARAM_NAME}">
                             <option value="FORESTER" ${(requestScope[assets.ROLE_ATTR_NAME] == 'FORESTER') ? 'selected' : ''}>
                                 <fmt:message key="user.role.forester" bundle="${langUser}"/>
@@ -94,8 +95,15 @@
                             </option>
                         </select>
                     </c:when>
-                    <c:otherwise>
+                    <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]
+                             && sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'TASKMASTER'}">
                         <input type="text" class="form-control" id="userRole"
+                               readonly
+                               name="${assets.ROLE_PARAM_NAME}"
+                               value="FORESTER"/>
+                    </c:when>
+                    <c:otherwise>
+                         <input type="text" class="form-control" id="userRole"
                                readonly
                                name="${assets.ROLE_PARAM_NAME}"
                                value="${requestScope[assets.ROLE_ATTR_NAME]}"/>
@@ -115,16 +123,32 @@
             <div class="form-group validated required">
                 <label class="control-label" for="superiorLogin">
                     <fmt:message key="user.superiorLogin.label" bundle="${langUser}"/></label>
-                <input type="text" class="form-control" id="superiorLogin"
-                       placeholder="<fmt:message key="user.superiorLogin.label" bundle="${langUser}"/>"
-                       name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
-                       value="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}"/>
-                <c:if test="${(not empty messages) && (not empty messages[assets.SUPERIOR_LOGIN_PARAM_NAME])}">
-                    <label class="messages ${messages[assets.SUPERIOR_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                        <fmt:message key="${messages[assets.SUPERIOR_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
-                    </label>
-                </c:if>
-            </div>
+                <c:choose>
+                    <c:when test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'}">
+                        <input type="text" class="form-control" id="superiorLogin"
+                               placeholder="<fmt:message key="user.superiorLogin.label" bundle="${langUser}"/>"
+                               name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
+                               value="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}"/>
+                        <c:if test="${(not empty messages) && (not empty messages[assets.SUPERIOR_LOGIN_PARAM_NAME])}">
+                            <label class="messages ${messages[assets.SUPERIOR_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
+                                <fmt:message key="${messages[assets.SUPERIOR_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
+                            </label>
+                        </c:if>
+                    </c:when>
+                    <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
+                        <input type="text" class="form-control" id="superiorLogin"
+                                readonly
+                                name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
+                                value="${requestScope[assets.CURRENT_USER_LOGIN_ATTR_NAME]}"/>
+                    </c:when>
+                    <c:otherwise>
+                        <input type="text" class="form-control" id="superiorLogin"
+                                readonly
+                                name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
+                                value="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}"/>
+                    </c:otherwise>
+                </c:choose>
+             </div>
 
             <c:choose>
                 <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">

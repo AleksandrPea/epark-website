@@ -18,10 +18,6 @@ public interface TaskService {
 
     List<Plant> getAssociatedPlants(Task task);
 
-    void finishAndUpdatePlantStates(Task task, List<Plant> plants);
-
-    void abort(Task task);
-
-    void confirmRecieving(Task task);
+    void setState(Integer taskId, Task.State newState);
 
 }

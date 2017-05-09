@@ -48,6 +48,7 @@ public class SignInHandler implements RequestHandler {
         User currentUser = ServiceFactoryImpl.getInstance().getUserService().getByLogin(login);
         HttpSession session = request.getSession();
         session.setAttribute(assets.get("CURRENT_USER_ID_ATTR_NAME"), currentUser.getId());
+        session.setAttribute(assets.get("CURRENT_USER_ROLE_ATTR_NAME"), currentUser.getRole());
     }
 
     private void addErrorMessages(Map<String, FrontendMessage> messages) {
