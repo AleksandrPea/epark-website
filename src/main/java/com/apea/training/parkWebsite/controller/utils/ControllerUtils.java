@@ -2,13 +2,13 @@ package com.apea.training.parkWebsite.controller.utils;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
-import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +64,12 @@ public class ControllerUtils {
         if (currentUser.getRole() == User.Role.OWNER) {
             return ServiceFactoryImpl.getInstance().getPlantService().getAll();
         } else {
-            Area attachedArea = ServiceFactoryImpl.getInstance().getUserService().getAttachedArea(currentUser);
-            return ServiceFactoryImpl.getInstance().getPlantService().getAllOn(attachedArea.getId());
+            List<Plant> userPlants = new ArrayList<>();
+            ServiceFactoryImpl.getInstance().getUserService().getAttachedAreas(currentUser)
+                    .stream()
+                    .map(area -> ServiceFactoryImpl.getInstance().getPlantService().getAllOn(area.getId()))
+                    .forEach(userPlants::addAll);
+            return userPlants;
         }
     }
 }

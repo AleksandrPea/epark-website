@@ -6,6 +6,7 @@ import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
 import com.apea.training.parkWebsite.domain.Plant;
+import com.apea.training.parkWebsite.service.PlantService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,29 +14,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreatePlantHandler implements RequestHandler {
+public class DeletePlantHandler implements RequestHandler {
 
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
         List<FrontendMessage> generalMessages = new ArrayList<>();
-        createPlant(request);
-        generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_CREATE_PLANT_SUCCESS")));
+        Integer areaId = deletePlant(request, generalMessages);
         ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
-        String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
         return REDIRECT + assets.get("DISPLAY_PLANTS_URI")+"/"+areaId+"/1";
     }
 
-    private void createPlant(HttpServletRequest request) {
+    /** @return area id */
+    private Integer deletePlant(HttpServletRequest request, List<FrontendMessage> generalMessages) {
         AppAssets assets = AppAssets.getInstance();
-        String name = request.getParameter(assets.get("PLANT_NAME_PARAM_NAME"));
-        String description = request.getParameter(assets.get("PLANT_DESCRIPTION_PARAM_NAME"));
-        String imgPath = request.getParameter(assets.get("PLANT_IMG_PATH_PARAM_NAME"));
-        String state = request.getParameter(assets.get("PLANT_STATE_PARAM_NAME"));
-        String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
-        Plant plant = new Plant.Builder().setName(name).setDescription(description)
-                .setImgPath(imgPath).setState(Plant.State.valueOf(state))
-                .setAreaId(Integer.valueOf(areaId)).build();
-        ServiceFactoryImpl.getInstance().getPlantService().create(plant);
+        PlantService plantService = ServiceFactoryImpl.getInstance().getPlantService();
+        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
+        Plant plant = plantService.getById(id);
+        plantService.delete(plant);
+        generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_DELETE_PLANT_SUCCESS")));
+        return plant.getAreaId();
     }
 }

@@ -14,7 +14,7 @@ public interface UserService {
 
     User getByLogin(String login);
 
-    void update(User user);
+    void update(User user, Credential credential);
 
     void delete(User user);
 
@@ -24,5 +24,5 @@ public interface UserService {
 
     User getOwner();
 
-    Area getAttachedArea(User user);
+    List<Area> getAttachedAreas(User user);
 }

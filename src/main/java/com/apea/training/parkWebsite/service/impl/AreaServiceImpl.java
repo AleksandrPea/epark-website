@@ -17,11 +17,6 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public Area getByName(String name) {
-        return MySqlDaoFactory.getInstance().getAreaDao().getByName(name);
-    }
-
-    @Override
     public Area getById(Integer id) {
         return MySqlDaoFactory.getInstance().getAreaDao().getById(id);
     }

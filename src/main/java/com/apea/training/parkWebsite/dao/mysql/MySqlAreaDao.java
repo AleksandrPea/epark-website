@@ -44,31 +44,6 @@ public class MySqlAreaDao implements AreaDao {
     }
 
     @Override
-    public Area getByName(String name) {
-        String sqlStatement = "SELECT * FROM area WHERE name = ?";
-        Area area;
-        try (DaoConnection connection = MySqlTransactionHelper.getInstance().getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
-            statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                throw new DaoException("Area with name " + name + " doesn't exist");
-            }
-            Integer id = resultSet.getInt("id");
-            String description = resultSet.getString("description");
-            Integer taskmasterId = resultSet.getInt("taskmasterId");
-            if (resultSet.wasNull()) {taskmasterId = null;}
-            area = new Area.Builder().setId(id).setName(name).setDescription(description)
-                    .setTaskmasterId(taskmasterId).build();
-            resultSet.close();
-            statement.close();
-        } catch (SQLException e) {
-            throw new DaoException("Can't get area by name "+name, e);
-        }
-        return area;
-    }
-
-    @Override
     public Area getById(Integer id) {
         String sqlStatement = "SELECT * FROM area WHERE id = ?";
         Area area;

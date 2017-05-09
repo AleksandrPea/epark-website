@@ -16,12 +16,14 @@
                             <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
                                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == area.taskmasterId}">
 
-                                <a href="#" class="btn btn-default" role="button">
+                                <a href="<c:url value="${assets.EDIT_AREA_URI}/${area.id}"/>"
+                                        class="btn btn-default" role="button">
                                     <fmt:message key="area.areaListPage.editButton" bundle="${langArea}"/>
                                 </a>
                             </c:if>
                             <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'}">
-                                <a href="#" class="btn btn-danger" role="button">
+                                <a href="<c:url value="${assets.DELETE_AREA_URI}/${area.id}"/>"
+                                        class="btn btn-danger confirmDelete" role="button">
                                     <fmt:message key="area.areaListPage.deleteButton" bundle="${langArea}"/>
                                 </a>
                             </c:if>

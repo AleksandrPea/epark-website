@@ -4,18 +4,33 @@
 
 <div class="row">
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">
-        <h3 class="text-center"><fmt:message key="user.createPage.title" bundle="${langUser}"/></h3>
+        <h3 class="text-center">
+            <fmt:message key="${requestScope[assets.IS_CREATING_USER_ATTR_NAME] ?
+                'user.createPage.title' : 'user.editPage.title'}" bundle="${langUser}"/>
+        </h3>
         <form method="POST" name="createUserForm" id="createUserForm"
-              action="<c:url value="${assets.CREATE_USER_URI}"/>"
+              action="<c:url value="${requestScope[assets.IS_CREATING_USER_ATTR_NAME] ?
+                    assets.CREATE_USER_URI : assets.EDIT_USER_URI}"/>"
               accept-charset="UTF-8" role="form">
 
             <div class="form-group validated required">
                 <label class="control-label" for="login">
                     <fmt:message key="user.login.label" bundle="${langUser}"/></label>
-                <input type="text" class="form-control" id="login"
-                       placeholder="<fmt:message key="user.login.label" bundle="${langUser}"/>"
-                       name="${assets.LOGIN_PARAM_NAME}"
-                       value="${requestScope[assets.LOGIN_ATTR_NAME]}"/>
+                <c:choose>
+                    <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
+                        <input type="text" class="form-control" id="login"
+                               placeholder="<fmt:message key="user.login.label" bundle="${langUser}"/>"
+                               name="${assets.LOGIN_PARAM_NAME}"
+                               value="${requestScope[assets.LOGIN_ATTR_NAME]}"/>
+                    </c:when>
+                    <c:otherwise>
+                        <input type="text" class="form-control" id="login"
+                               readonly
+                               name="${assets.LOGIN_PARAM_NAME}"
+                               value="${requestScope[assets.LOGIN_ATTR_NAME]}"/>
+                    </c:otherwise>
+                </c:choose>
+
                 <c:if test="${(not empty messages) && (not empty messages[assets.LOGIN_PARAM_NAME])}">
                     <label class="messages ${messages[assets.LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
                         <fmt:message key="${messages[assets.LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
@@ -26,9 +41,10 @@
             <div class="form-group validated required">
                 <label class="control-label" for="userPassword">
                     <fmt:message key="user.password.label" bundle="${langUser}"/></label>
-                <input type="password" class="form-control" id="userPassword"
+                <input type="text" class="form-control" id="userPassword"
                        placeholder="<fmt:message key="user.password.label" bundle="${langUser}"/>"
-                       name="${assets.PASSWORD_PARAM_NAME}"/>
+                       name="${assets.PASSWORD_PARAM_NAME}"
+                       value="${requestScope[assets.PASSWORD_ATTR_NAME]}"/>
 
             </div>
 
@@ -67,14 +83,25 @@
             <div class="form-group required">
                 <label class="control-label" for="userRole">
                     <fmt:message key="user.role.label" bundle="${langUser}"/></label>
-                <select id="userRole" class="selectpicker form-control" name="${assets.ROLE_PARAM_NAME}">
-                    <option value="FORESTER" ${(requestScope[assets.ROLE_ATTR_NAME] == 'FORESTER') ? 'selected' : ''}>
-                        <fmt:message key="user.role.forester" bundle="${langUser}"/>
-                    </option>
-                    <option value="TASKMASTER" ${(requestScope[assets.ROLE_ATTR_NAME] == 'TASKMASTER') ? 'selected' : ''}>
-                        <fmt:message key="user.role.taskmaster" bundle="${langUser}"/>
-                    </option>
-                </select>
+                <c:choose>
+                    <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
+                        <select id="userRole" class="selectpicker form-control" name="${assets.ROLE_PARAM_NAME}">
+                            <option value="FORESTER" ${(requestScope[assets.ROLE_ATTR_NAME] == 'FORESTER') ? 'selected' : ''}>
+                                <fmt:message key="user.role.forester" bundle="${langUser}"/>
+                            </option>
+                            <option value="TASKMASTER" ${(requestScope[assets.ROLE_ATTR_NAME] == 'TASKMASTER') ? 'selected' : ''}>
+                                <fmt:message key="user.role.taskmaster" bundle="${langUser}"/>
+                            </option>
+                        </select>
+                    </c:when>
+                    <c:otherwise>
+                        <input type="text" class="form-control" id="userRole"
+                               readonly
+                               name="${assets.ROLE_PARAM_NAME}"
+                               value="${requestScope[assets.ROLE_ATTR_NAME]}"/>
+                    </c:otherwise>
+                </c:choose>
+
             </div>
 
             <div class="form-group">
@@ -99,9 +126,18 @@
                 </c:if>
             </div>
 
-            <button type="submit"
-                    class="btn btn-lg btn-primary btn-block">
-                <fmt:message key="user.createPage.submit" bundle="${langUser}"/></button>
+            <c:choose>
+                <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
+                    <button type="submit"
+                            class="btn btn-lg btn-primary btn-block">
+                        <fmt:message key="user.createPage.submitCreate" bundle="${langUser}"/></button>
+                </c:when>
+                <c:otherwise>
+                    <button type="submit"
+                        class="btn btn-lg btn-default btn-block">
+                    <fmt:message key="user.createPage.submitEdit" bundle="${langUser}"/></button>
+                </c:otherwise>
+            </c:choose>
         </form>
     </div>
 </div>

@@ -14,10 +14,18 @@
     <div class="row">
         <c:forEach var="plant" items="${plantRow}">
         <div class="col-md-4 plant-item">
-            <a href="#">
-                <img class="img-responsive" src="${plant.imgPath}" alt="">
+            <a href="<c:url value="${assets.EDIT_PLANT_URI}/${plant.id}"/>">
+                <img class="img-responsive plant-img" src="${plant.imgPath}" alt=""/>
             </a>
-            <h3>${plant.name}</h3>
+            <a href="<c:url value="${assets.DELETE_PLANT_URI}/${plant.id}"/>" class="confirmDelete" role="button">
+                <span class="glyphicon glyphicon-remove-circle"></span>
+            </a>
+            <h3>
+                ${plant.name}
+                <small><em>
+                    <fmt:message key="plant.state.${plant.state}" bundle="${langPlant}"/>
+                </em></small>
+            </h3>
             <p>${plant.description}</p>
         </div>
         </c:forEach>
@@ -42,15 +50,13 @@
                         <a href="#">&laquo;</a>
                     </c:when>
                     <c:otherwise>
-                    <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/
-                            ${requestScope[assets.AREA_ATTR_NAME].id}/
-                            ${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME]-1}"/>">&laquo;</a>
+                        <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/${requestScope[assets.AREA_ATTR_NAME].id}/${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME]-1}"/>">&laquo;</a>
                     </c:otherwise>
                 </c:choose>
             </li>
             <c:forEach var = "page" begin = "1" end = "${requestScope[assets.MAX_PLANT_PAGES_ATTR_NAME]}">
                 <li class="${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME] == page ? 'active' :''}">
-                    <a href="<c:url value="${plant.imgPath}"/>">${page}</a>
+                    <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/${requestScope[assets.AREA_ATTR_NAME].id}/${page}"/>">${page}</a>
                 </li>
             </c:forEach>
             <li>
@@ -59,9 +65,7 @@
                         <a href="#">&raquo;</a>
                     </c:when>
                     <c:otherwise>
-                    <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/
-                            ${requestScope[assets.AREA_ATTR_NAME].id}/
-                            ${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME]+1}"/>">&raquo;</a>
+                        <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/${requestScope[assets.AREA_ATTR_NAME].id}/${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME]+1}"/>">&raquo;</a>
                     </c:otherwise>
                 </c:choose>
             </li>

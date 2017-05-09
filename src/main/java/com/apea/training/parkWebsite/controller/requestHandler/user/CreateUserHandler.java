@@ -32,10 +32,10 @@ public class CreateUserHandler implements RequestHandler {
             ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
             abstractViewName = REDIRECT + assets.get("USER_LIST_URI");
         } else {
-            setRequestAttributes(request, formMessages);
+            setFormAttributes(request, formMessages);
+            request.setAttribute(assets.get("IS_CREATING_USER_ATTR_NAME"), true);
             abstractViewName = FORWARD + assets.get("CREATE_USER_VIEW_NAME");
         }
-
         return abstractViewName;
     }
 
@@ -77,7 +77,7 @@ public class CreateUserHandler implements RequestHandler {
 
     }
 
-    private boolean checkSuperiorIsNotExists(User superior, Map<String, FrontendMessage> formMessages) {
+    protected boolean checkSuperiorIsNotExists(User superior, Map<String, FrontendMessage> formMessages) {
         AppAssets assets = AppAssets.getInstance();
         if (superior == null) {
             formMessages.put(assets.get("SUPERIOR_LOGIN_PARAM_NAME"),
@@ -87,7 +87,7 @@ public class CreateUserHandler implements RequestHandler {
         return false;
     }
 
-    private boolean isRoleInvalid(User.Role role, User superior, Map<String, FrontendMessage> formMessages) {
+    protected boolean isRoleInvalid(User.Role role, User superior, Map<String, FrontendMessage> formMessages) {
         AppAssets assets = AppAssets.getInstance();
         FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
         if (role == User.Role.FORESTER && superior.getRole() != User.Role.TASKMASTER) {
@@ -103,7 +103,7 @@ public class CreateUserHandler implements RequestHandler {
         return false;
     }
 
-    private void setRequestAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+    protected void setFormAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
         AppAssets assets = AppAssets.getInstance();
         String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
         String password = request.getParameter(assets.get("PASSWORD_PARAM_NAME"));

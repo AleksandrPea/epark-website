@@ -49,6 +49,6 @@ public class DisplayPlantsHandler implements RequestHandler {
     }
 
     private int calcMaxPage(List<Plant> areaPlants) {
-        return (int) Math.ceil((double)areaPlants.size() / PAGE_ROW_NUM*PAGE_COLUMN_NUM);
+        return (int) Math.ceil((double)areaPlants.size() / (PAGE_ROW_NUM*PAGE_COLUMN_NUM));
     }
 }

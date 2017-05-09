@@ -14,6 +14,7 @@ public class DisplayCreatePlantPageHandler implements RequestHandler {
         AppAssets assets = AppAssets.getInstance();
         Integer taskId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
         request.setAttribute(assets.get("AREA_ID_ATTR_NAME"), taskId);
+        request.setAttribute(assets.get("IS_CREATING_PLANT_ATTR_NAME"), true);
         return FORWARD + assets.get("CREATE_PLANT_VIEW_NAME");
     }
 }

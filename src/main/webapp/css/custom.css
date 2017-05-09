@@ -3,8 +3,21 @@
     min-height: 350px;
 }
 
-#top-messages, #login-form,  #report-form {
-    margin-top: 50px;
+#login-form,  #report-form {
+    margin-top: 25px;
+}
+
+#top-messages {
+    margin-top: 15px;
+}
+
+.reports {
+    margin-left: 20px;
+}
+
+.report-text {
+    padding-left: 20px;
+    margin-top: 15px;
 }
 
 textarea.form-control {
@@ -35,6 +48,10 @@ textarea.form-control {
 
 .plant-item {
     margin-bottom: 25px;
+}
+
+.plant-img {
+    display: inline-block;
 }
 
 footer {

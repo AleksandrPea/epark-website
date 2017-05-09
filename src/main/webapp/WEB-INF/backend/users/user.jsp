@@ -67,13 +67,15 @@
             <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.USER_ATTR_NAME].id}">
 
-                <a href="#" class="btn btn-default" role="button">
+                <a href="<c:url value="${assets.EDIT_USER_URI}/${requestScope[assets.USER_ATTR_NAME].id}"/>"
+                        class="btn btn-default" role="button">
                     <fmt:message key="user.page.editButton" bundle="${langUser}"/>
                 </a>
             </c:if>
             <c:if test="${requestScope[assets.CURRENT_USER_ATTR_NAME].role == 'OWNER'
                     && sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] != requestScope[assets.USER_ATTR_NAME].id}">
-                <a href="#" class="btn btn-danger" role="button">
+                <a href="<c:url value="${assets.DELETE_USER_URI}/${requestScope[assets.USER_ATTR_NAME].id}"/>"
+                        class="btn btn-danger confirmDelete" role="button">
                     <fmt:message key="user.page.deleteButton" bundle="${langUser}"/>
                 </a>
             </c:if>

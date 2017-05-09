@@ -2,7 +2,6 @@ package com.apea.training.parkWebsite.service.impl;
 
 import com.apea.training.parkWebsite.connection.mysql.MySqlTransactionHelper;
 import com.apea.training.parkWebsite.dao.DaoException;
-import com.apea.training.parkWebsite.dao.UserDao;
 import com.apea.training.parkWebsite.dao.mysql.MySqlDaoFactory;
 import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Credential;
@@ -11,7 +10,7 @@ import com.apea.training.parkWebsite.service.ServiceException;
 import com.apea.training.parkWebsite.service.UserService;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
 
@@ -22,8 +21,7 @@ public class UserServiceImpl implements UserService {
     public void create(User user, Credential credential) {
         MySqlTransactionHelper.getInstance().beginTransaction();
         try {
-            UserDao userDao = MySqlDaoFactory.getInstance().getUserDao();
-            userDao.create(user);
+            MySqlDaoFactory.getInstance().getUserDao().create(user);
             credential.setUserId(user.getId());
             MySqlDaoFactory.getInstance().getCredentialDao().create(credential);
             MySqlTransactionHelper.getInstance().commitTransaction();
@@ -44,8 +42,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user) {
-        MySqlDaoFactory.getInstance().getUserDao().update(user);
+    public void update(User user, Credential credential) {
+        MySqlTransactionHelper.getInstance().beginTransaction();
+        try {
+            MySqlDaoFactory.getInstance().getUserDao().update(user);
+            MySqlDaoFactory.getInstance().getCredentialDao().update(credential);
+            MySqlTransactionHelper.getInstance().commitTransaction();
+        } catch (DaoException e) {
+            MySqlTransactionHelper.getInstance().rollbackTransaction();
+            throw new ServiceException("Transaction failed.", e);
+        }
     }
 
     @Override
@@ -69,12 +75,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Area getAttachedArea(User user) {
-        Optional<Area> attachedArea = MySqlDaoFactory.getInstance().getAreaDao().getAll()
+    public List<Area> getAttachedAreas(User user) {
+        return MySqlDaoFactory.getInstance().getAreaDao().getAll()
                 .stream()
                 .filter(area -> area.getTaskmasterId().equals(user.getId()))
-                .findFirst();
-        return attachedArea.orElseThrow(() ->
-                new ServiceException("There is no attached area for user with id " + user.getId()));
+                .collect(Collectors.toList());
     }
 }

@@ -13,29 +13,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreatePlantHandler implements RequestHandler {
+public class EditPlantHandler implements RequestHandler {
 
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
         List<FrontendMessage> generalMessages = new ArrayList<>();
-        createPlant(request);
-        generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_CREATE_PLANT_SUCCESS")));
+        editPlant(request);
+        generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_EDIT_PLANT_SUCCESS")));
         ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
         String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
         return REDIRECT + assets.get("DISPLAY_PLANTS_URI")+"/"+areaId+"/1";
     }
 
-    private void createPlant(HttpServletRequest request) {
+    private void editPlant(HttpServletRequest request) {
         AppAssets assets = AppAssets.getInstance();
+        String id = request.getParameter(assets.get("PLANT_ID_PARAM_NAME"));
         String name = request.getParameter(assets.get("PLANT_NAME_PARAM_NAME"));
         String description = request.getParameter(assets.get("PLANT_DESCRIPTION_PARAM_NAME"));
         String imgPath = request.getParameter(assets.get("PLANT_IMG_PATH_PARAM_NAME"));
         String state = request.getParameter(assets.get("PLANT_STATE_PARAM_NAME"));
         String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
-        Plant plant = new Plant.Builder().setName(name).setDescription(description)
-                .setImgPath(imgPath).setState(Plant.State.valueOf(state))
+        Plant plant = new Plant.Builder().setId(Integer.valueOf(id)).setName(name)
+                .setDescription(description).setImgPath(imgPath).setState(Plant.State.valueOf(state))
                 .setAreaId(Integer.valueOf(areaId)).build();
-        ServiceFactoryImpl.getInstance().getPlantService().create(plant);
+        ServiceFactoryImpl.getInstance().getPlantService().update(plant);
     }
 }

@@ -118,7 +118,7 @@ public class MySqlUserDao implements UserDao {
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getRole().toString());
             statement.setString(5, user.getInfo());
-            statement.setInt(6, user.getSuperiorId());
+            statement.setObject(6, user.getSuperiorId());
             statement.setInt(7, user.getId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
