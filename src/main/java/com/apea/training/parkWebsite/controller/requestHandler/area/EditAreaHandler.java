@@ -1,6 +1,7 @@
 package com.apea.training.parkWebsite.controller.requestHandler.area;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
+import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
 import com.apea.training.parkWebsite.controller.message.FrontMessageFactory;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
@@ -20,6 +21,10 @@ public class EditAreaHandler extends CreateAreaHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        if (ControllerUtils.getCurrentUserRole(request) == User.Role.FORESTER) {throw new AccessDeniedException("User is not the owner or a taskmaster");}
+
         Map<String, FrontendMessage> formMessages = new HashMap<>();
         List<FrontendMessage> generalMessages = new ArrayList<>();
         String abstractViewName;

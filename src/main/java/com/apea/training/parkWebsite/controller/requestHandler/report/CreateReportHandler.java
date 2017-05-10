@@ -18,6 +18,9 @@ public class CreateReportHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+
         List<FrontendMessage> generalMessages = new ArrayList<>();
         createReport(request);
         generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_CREATE_REPORT_SUCCESS")));

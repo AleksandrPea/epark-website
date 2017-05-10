@@ -1,10 +1,12 @@
 package com.apea.training.parkWebsite.controller.requestHandler.plant;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
+import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
 import com.apea.training.parkWebsite.domain.Area;
 import com.apea.training.parkWebsite.domain.Plant;
+import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,10 @@ public class DisplayEditPlantPageHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        if (ControllerUtils.getCurrentUserRole(request) == User.Role.FORESTER) {throw new AccessDeniedException("User is not the owner or a taskmaster");}
+
         setFormAttributes(request);
         request.setAttribute(assets.get("ALL_AREAS_ATTR_NAME"),
                 ServiceFactoryImpl.getInstance().getAreaService().getAll());

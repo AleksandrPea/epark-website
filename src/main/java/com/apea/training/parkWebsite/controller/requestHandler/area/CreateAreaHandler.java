@@ -1,6 +1,7 @@
 package com.apea.training.parkWebsite.controller.requestHandler.area;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
+import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
 import com.apea.training.parkWebsite.controller.message.FrontMessageFactory;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
@@ -21,6 +22,10 @@ public class CreateAreaHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        if (ControllerUtils.getCurrentUserRole(request) != User.Role.OWNER) {throw new AccessDeniedException("User is not the owner");}
+
         Map<String, FrontendMessage> formMessages = new HashMap<>();
         List<FrontendMessage> generalMessages = new ArrayList<>();
         boolean isAreaCreated = tryToCreateArea(request, formMessages);
@@ -38,6 +43,8 @@ public class CreateAreaHandler implements RequestHandler {
 
         return abstractViewName;
     }
+
+
 
     private boolean tryToCreateArea(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
         AppAssets assets = AppAssets.getInstance();

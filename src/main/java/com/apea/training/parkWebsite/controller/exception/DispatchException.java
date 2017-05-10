@@ -1,4 +1,4 @@
-package com.apea.training.parkWebsite.controller;
+package com.apea.training.parkWebsite.controller.exception;
 
 public class DispatchException extends RuntimeException {
 

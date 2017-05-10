@@ -15,6 +15,9 @@ public class DisplayUserHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+
         CredentialService credentialService = ServiceFactoryImpl.getInstance().getCredentialService();
         int userId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
         User user = ServiceFactoryImpl.getInstance().getUserService().getById(userId);

@@ -1,6 +1,7 @@
 package com.apea.training.parkWebsite.controller.requestHandler.user;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
+import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
 import com.apea.training.parkWebsite.controller.message.FrontMessageFactory;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
@@ -21,10 +22,16 @@ public class EditUserHandler extends CreateUserHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        User userToEdit = getUser(request);
+        if (!ifCurrentUserHasRights(request, userToEdit)) {throw new AccessDeniedException("Current user doesn't have" +
+                " rights to edit user with id " + userToEdit.getId());}
+
         Map<String, FrontendMessage> formMessages = new HashMap<>();
         List<FrontendMessage> generalMessages = new ArrayList<>();
         String abstractViewName;
-        boolean isUserEdited = tryToEditUser(request, formMessages);
+        boolean isUserEdited = tryToEditUser(request, userToEdit, formMessages);
         if (isUserEdited) {
             generalMessages.add(FrontMessageFactory.getInstance()
                     .getSuccess(assets.get("MSG_EDIT_USER_SUCCESS")));
@@ -40,11 +47,32 @@ public class EditUserHandler extends CreateUserHandler {
         return abstractViewName;
     }
 
-    private boolean tryToEditUser(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+    private User getUser(HttpServletRequest request) {
+        String login = request.getParameter(AppAssets.getInstance().get("LOGIN_PARAM_NAME"));
+        return ServiceFactoryImpl.getInstance().getUserService().getByLogin(login);
+    }
+
+    private boolean ifCurrentUserHasRights(HttpServletRequest request, User userToEdit) {
+        User currentUser = ControllerUtils.getCurrentUser(request);
+        if (currentUser.getRole() == User.Role.OWNER) {
+            return true;
+        }
+        if (currentUser.getRole() == User.Role.FORESTER) {
+            return false;
+        }
+        if (userToEdit.getId().equals(currentUser.getId())) {
+            return true;
+        }
+        if (userToEdit.getSuperiorId().equals(currentUser.getId())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean tryToEditUser(HttpServletRequest request, User user, Map<String, FrontendMessage> formMessages) {
         AppAssets assets = AppAssets.getInstance();
         UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-        String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
-        User user = userService.getByLogin(login);
         String superiorLogin = request.getParameter(assets.get("SUPERIOR_LOGIN_PARAM_NAME"));
         if(user.getRole() == User.Role.OWNER &&
                 checkOwnerSuperiorIsNotEmpty(superiorLogin, formMessages)) {return false;}
@@ -65,6 +93,7 @@ public class EditUserHandler extends CreateUserHandler {
         String email = request.getParameter(assets.get("EMAIL_PARAM_NAME"));
         String info = request.getParameter(assets.get("USER_INFO_PARAM_NAME"));
 
+        String login = request.getParameter(AppAssets.getInstance().get("LOGIN_PARAM_NAME"));
         Credential credential = ServiceFactoryImpl.getInstance().getCredentialService().getByLogin(login);
         credential.setPassword(password);
         user.setFirstName(firstName);

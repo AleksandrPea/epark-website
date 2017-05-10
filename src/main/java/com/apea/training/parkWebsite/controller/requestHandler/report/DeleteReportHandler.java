@@ -1,12 +1,16 @@
 package com.apea.training.parkWebsite.controller.requestHandler.report;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
+import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
 import com.apea.training.parkWebsite.controller.message.FrontMessageFactory;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
 import com.apea.training.parkWebsite.domain.Report;
+import com.apea.training.parkWebsite.domain.Task;
+import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.ReportService;
+import com.apea.training.parkWebsite.service.ServiceFactory;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,19 +23,36 @@ public class DeleteReportHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        Report report = getReport(request);
+        if (!checkIfReportBelongsToCurrentUser(request, report)) {throw new AccessDeniedException("Report doesn't belong to current user.");}
+
         List<FrontendMessage> generalMessages = new ArrayList<>();
-        Integer taskId = deleteReport(request, generalMessages);
+        Integer taskId = deleteReport(report, generalMessages);
         ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
         return REDIRECT + assets.get("DISPLAY_TASK_URI")+"/"+taskId;
     }
 
-    /** @return task id */
-    private Integer deleteReport(HttpServletRequest request, List<FrontendMessage> generalMessages) {
-        AppAssets assets = AppAssets.getInstance();
+    private Report getReport(HttpServletRequest request) {
         Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        ReportService reportService = ServiceFactoryImpl.getInstance().getReportService();
-        Report report = reportService.getById(id);
-        reportService.delete(report);
+        return ServiceFactoryImpl.getInstance().getReportService().getById(id);
+    }
+
+    private boolean checkIfReportBelongsToCurrentUser(HttpServletRequest request, Report report) {
+        User currentUser = ControllerUtils.getCurrentUser(request);
+        Task task = ServiceFactoryImpl.getInstance().getTaskService().getById(report.getTaskId());
+        if (task.getReceiverId().equals(currentUser.getId())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /** @return task id */
+    private Integer deleteReport(Report report, List<FrontendMessage> generalMessages) {
+        AppAssets assets = AppAssets.getInstance();
+        ServiceFactoryImpl.getInstance().getReportService().delete(report);
         generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_DELETE_REPORT_SUCCESS")));
         return report.getTaskId();
     }

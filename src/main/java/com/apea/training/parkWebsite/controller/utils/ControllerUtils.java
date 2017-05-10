@@ -1,17 +1,17 @@
 package com.apea.training.parkWebsite.controller.utils;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
+import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
+import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
+import com.apea.training.parkWebsite.view.JspResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +24,11 @@ public class ControllerUtils {
     /** @return null if there is no current user */
     public static Integer getCurrentUserId(HttpServletRequest request) {
         return (Integer)request.getSession().getAttribute(assets.get("CURRENT_USER_ID_ATTR_NAME"));
+    }
+
+    /** @return null if there is no current user */
+    public static User.Role getCurrentUserRole(HttpServletRequest request) {
+        return (User.Role)request.getSession().getAttribute(assets.get("CURRENT_USER_ROLE_ATTR_NAME"));
     }
 
     /** @return null if there is no current user */
@@ -71,5 +76,32 @@ public class ControllerUtils {
                     .forEach(userPlants::addAll);
             return userPlants;
         }
+    }
+
+    public static String resolveViewName(String viewName) {
+        String resolvedViewName;
+        if (AppAssets.getInstance().isViewPublic(viewName)) {
+            resolvedViewName = JspResolver.getInstance().resolvePublicViewName(viewName);
+        } else {
+            resolvedViewName = JspResolver.getInstance().resolvePrivateViewName(viewName);
+        }
+        return resolvedViewName;
+    }
+
+    public static String getErrorViewName(Throwable exception) {
+        AppAssets assets = AppAssets.getInstance();
+        if (exception instanceof DaoException) {
+            return assets.get("STORAGE_ERROR_VIEW_NAME");
+        }
+
+        if (exception instanceof NoSuchElementException) {
+            return assets.get("404_ERROR_VIEW_NAME");
+        }
+
+        if (exception instanceof AccessDeniedException) {
+            return assets.get("ACCESS_DENIED_ERROR_VIEW_NAME");
+        }
+
+        return assets.get("GENERAL_ERROR_VIEW_NAME");
     }
 }

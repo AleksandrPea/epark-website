@@ -1,9 +1,11 @@
 package com.apea.training.parkWebsite.controller;
 
+import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
+import com.apea.training.parkWebsite.controller.exception.DispatchException;
 import com.apea.training.parkWebsite.controller.requestHandler.HandlerProviderImpl;
+import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
 import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.service.ServiceException;
-import com.apea.training.parkWebsite.view.JspResolver;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -35,7 +37,8 @@ public class MainController extends HttpServlet {
                     .getRequestHandler(request).handle(request, response);
             dispatch(abstractViewName, request, response);
 
-        } catch (DaoException | ServiceException | DispatchException | NoSuchElementException e) {
+        } catch (DaoException | ServiceException | DispatchException
+                | NoSuchElementException | AccessDeniedException e) {
             logExceptionAndRedirectToErrorPage(request, response, e);
         }
     }
@@ -61,13 +64,7 @@ public class MainController extends HttpServlet {
 
     private void performForward(String viewName, HttpServletRequest request, HttpServletResponse response) {
         try {
-            String resolvedViewName;
-            if (AppAssets.getInstance().isViewPublic(viewName)) {
-                resolvedViewName = JspResolver.getInstance().resolvePublicViewName(viewName);
-            } else {
-                resolvedViewName = JspResolver.getInstance().resolvePrivateViewName(viewName);
-            }
-            RequestDispatcher dispatcher = request.getRequestDispatcher(resolvedViewName);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(ControllerUtils.resolveViewName(viewName));
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {
             throw new DispatchException("Can't dispatch " + viewName, e);
@@ -78,18 +75,19 @@ public class MainController extends HttpServlet {
         sendRedirect(response, viewName);
     }
 
-    private void logExceptionAndRedirectToErrorPage(HttpServletRequest request, HttpServletResponse response,
-                                                    RuntimeException e) {
-        Logger.getLogger(MainController.class).error("Error in handling request " + request.getRequestURI(), e);
-
-        sendRedirect(response, AppAssets.getInstance().get("GENERAL_ERROR_PAGE"));
-    }
-
     private void sendRedirect(HttpServletResponse response, String redirectUri) {
         try {
             response.sendRedirect(redirectUri);
         } catch (IOException e) {
             throw new DispatchException("Can't redirect to " + redirectUri, e);
         }
+    }
+
+    private void logExceptionAndRedirectToErrorPage(HttpServletRequest request, HttpServletResponse response,
+                                                    RuntimeException e) {
+        Logger.getLogger(MainController.class).error("Error in handling request " + request.getRequestURI(), e);
+        String errorViewName = ControllerUtils.getErrorViewName(e);
+
+        sendRedirect(response, ControllerUtils.resolveViewName(errorViewName));
     }
 }

@@ -19,6 +19,9 @@ public class DisplayUserTasksHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+
         User currentUser = ControllerUtils.getCurrentUser(request);
         Map<Task, String> sendedTasksMap = new HashMap<>();
         List<Task> receivedTasks = new ArrayList<>();

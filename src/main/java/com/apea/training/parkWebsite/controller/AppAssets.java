@@ -15,6 +15,8 @@ public class AppAssets extends AbstractMap<String, String> {
     private Map<String, String> assetsMap = new HashMap<>();
 
     {
+        assetsMap.put("CHARACTER_ENCODING", "UTF-8");
+
         //************************* ATTRIBUTES *********************************
         assetsMap.put("MESSAGES_ATTR_NAME", "messages");
         assetsMap.put("GENERAL_MESSAGES_BLOCK_NAME", "generalMessages");
@@ -139,8 +141,13 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("CREATE_PLANT_VIEW_NAME", "plants/createPlant");
 
         assetsMap.put("LOGIN_VIEW_NAME", "login");
+        assetsMap.put("HOME_VIEW_NAME", "home");
+        assetsMap.put("GENERAL_ERROR_VIEW_NAME", "errors/error-page");
+        assetsMap.put("404_ERROR_VIEW_NAME", "errors/page-404");
+        assetsMap.put("STORAGE_ERROR_VIEW_NAME", "errors/storage-error-page");
+        assetsMap.put("ACCESS_DENIED_ERROR_VIEW_NAME", "errors/accessDenied");
+
         assetsMap.put("LOGIN_PAGE", "/login.jsp");
-        assetsMap.put("GENERAL_ERROR_PAGE", "/errors/error-page.jsp");
 
         //************************* MESSAGES **********************************
         assetsMap.put("MSG_CREDENTIALS_ARE_NOT_CORRECT", "validation.credentialsAreNotCorrect");
@@ -174,7 +181,12 @@ public class AppAssets extends AbstractMap<String, String> {
     }
 
     private List<String> publicViewNames = Arrays.asList(
-            assetsMap.get("LOGIN_VIEW_NAME")
+            assetsMap.get("LOGIN_VIEW_NAME"),
+            assetsMap.get("HOME_VIEW_NAME"),
+            assetsMap.get("GENERAL_ERROR_VIEW_NAME"),
+            assetsMap.get("404_ERROR_VIEW_NAME"),
+            assetsMap.get("STORAGE_ERROR_VIEW_NAME"),
+            assetsMap.get("ACCESS_DENIED_ERROR_VIEW_NAME")
     );
 
     public boolean isViewPublic(String viewName) {

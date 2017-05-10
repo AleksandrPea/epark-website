@@ -1,9 +1,11 @@
 package com.apea.training.parkWebsite.controller.requestHandler.task.stateHandlers;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
+import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
 import com.apea.training.parkWebsite.controller.requestHandler.RequestHandler;
 import com.apea.training.parkWebsite.controller.utils.ControllerUtils;
 import com.apea.training.parkWebsite.domain.Task;
+import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +16,23 @@ public class ReceiveTaskHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        if (!isCurrentUserReceiver(request)) {throw new AccessDeniedException("Current user is not a receiver.");}
+
         Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
         ServiceFactoryImpl.getInstance().getTaskService().setState(id, Task.State.RUNNING);
         return REDIRECT + assets.get("DISPLAY_TASK_URI")+"/"+id;
+    }
+
+    private boolean isCurrentUserReceiver(HttpServletRequest request) {
+        Integer taskId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
+        Task task = ServiceFactoryImpl.getInstance().getTaskService().getById(taskId);
+        User currentUser = ControllerUtils.getCurrentUser(request);
+        if (task.getReceiverId().equals(currentUser.getId())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

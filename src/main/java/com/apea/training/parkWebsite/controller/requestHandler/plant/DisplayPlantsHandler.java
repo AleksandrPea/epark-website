@@ -18,6 +18,9 @@ public class DisplayPlantsHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+
         int page = ControllerUtils.getIntFromUri(request.getRequestURI(), 1);
         Integer areaId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
         List<Plant> areaPlants = ServiceFactoryImpl.getInstance().getPlantService().getAllOn(areaId);

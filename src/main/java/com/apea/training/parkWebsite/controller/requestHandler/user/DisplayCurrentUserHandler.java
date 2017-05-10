@@ -15,6 +15,9 @@ public class DisplayCurrentUserHandler implements RequestHandler {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) {
         AppAssets assets = AppAssets.getInstance();
+
+        if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+
         CredentialService credentialService = ServiceFactoryImpl.getInstance().getCredentialService();
         User currentUser = ControllerUtils.getCurrentUser(request);
         request.setAttribute(assets.get("USER_ATTR_NAME"), currentUser);
