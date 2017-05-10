@@ -17,11 +17,9 @@
                                placeholder="<fmt:message key="credential.login.label" bundle="${credential}"/>"
                                name="${assets.LOGIN_PARAM_NAME}"
                                value="${requestScope[assets.LOGIN_ATTR_NAME]}"/>
-                        <c:if test="${(not empty messages) && (not empty messages[assets.LOGIN_PARAM_NAME])}">
-                            <label class="messages ${messages[assets.LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                                <fmt:message key="${messages[assets.LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
-                            </label>
-                        </c:if>
+
+                        <mytags:formMessages formInputName="${assets.LOGIN_PARAM_NAME}"/>
+
 
                     </div>
                     <div class="form-group validated required">
@@ -30,11 +28,8 @@
                         <input type="password" class="form-control" id="userPassword"
                                placeholder="<fmt:message key="credential.password.label" bundle="${credential}"/>"
                                name="${assets.PASSWORD_PARAM_NAME}"/>
-                        <c:if test="${(not empty messages) && (not empty messages[assets.PASSWORD_PARAM_NAME])}">
-                            <label class="messages ${messages[assets.PASSWORD_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                                <fmt:message key="${messages[assets.PASSWORD_PARAM_NAME].messageKey}" bundle="${validation}"/>
-                            </label>
-                        </c:if>
+
+                        <mytags:formMessages formInputName="${assets.PASSWORD_PARAM_NAME}"/>
                     </div>
 
                     <button type="submit"

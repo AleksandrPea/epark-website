@@ -30,4 +30,11 @@
     <listener-class>com.apea.training.parkWebsite.controller.listener.AppContextListener</listener-class>
   </listener>
 
+  <jsp-config>
+    <taglib>
+      <taglib-uri>http://parkWebsite.com/jsp/tlds/mytags</taglib-uri>
+      <taglib-location>/WEB-INF/customTags.tld</taglib-location>
+    </taglib>
+  </jsp-config>
+
 </web-app>

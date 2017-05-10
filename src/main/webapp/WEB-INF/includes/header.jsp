@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="mytags" uri="http://parkWebsite.com/jsp/tlds/mytags" %>
 <fmt:setBundle basename="webProject.i18n.backend.general" var="langGeneral"/>
 
 <%-- <c:set var="language"
