@@ -29,8 +29,6 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("ALL_USERS_ATTR_NAME", "allUsers");
         assetsMap.put("ALL_CREDENTIALS_ATTR_NAME", "allCredentials");
         assetsMap.put("ALL_AREAS_ATTR_NAME", "allAreas");
-        assetsMap.put("CURRENT_USER_SENDED_TASKS_ATTR_NAME", "currentUserSendedTasks");
-        assetsMap.put("CURRENT_USER_RECEIVED_TASKS_ATTR_NAME", "currentUserReceivedTasks");
 
         assetsMap.put("IS_CREATING_USER_ATTR_NAME", "isCreatingUser");
         assetsMap.put("IS_CREATING_AREA_ATTR_NAME", "isCreatingArea");
@@ -44,13 +42,14 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("ROLE_ATTR_NAME", "role");
         assetsMap.put("USER_INFO_ATTR_NAME", "info");
         assetsMap.put("SUPERIOR_LOGIN_ATTR_NAME", "superiorLogin");
+        assetsMap.put("SUBORDINATES_ATTR_NAME", "subordinates");
 
         assetsMap.put("AREA_ID_ATTR_NAME", "areaId");
         assetsMap.put("TASKMASTER_LOGIN_ATTR_NAME", "taskmasterLogin");
         assetsMap.put("AREA_NAME_ATTR_NAME", "areaName");
         assetsMap.put("AREA_DESCRIPTION_ATTR_NAME", "areaDescription");
 
-        assetsMap.put("TASK_RECIEVER_LOGIN_ATTR_NAME", "receiverLogin");
+        assetsMap.put("TASK_RECEIVER_LOGIN_ATTR_NAME", "receiverLogin");
         assetsMap.put("TASK_TITLE_ATTR_NAME", "taskTitle");
         assetsMap.put("TASK_COMMENT_ATTR_NAME", "taskComment");
         assetsMap.put("TASK_PLANTS_ATTR_NAME", "taskPlants");
@@ -60,10 +59,15 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("TASK_RECEIVER_ATTR_NAME", "taskReceiver");
         assetsMap.put("TASK_SENDER_ATTR_NAME", "taskSender");
 
+        assetsMap.put("CURRENT_USER_SENDED_TASKS_ATTR_NAME", "currentUserSendedTasks");
+        assetsMap.put("CURRENT_USER_RECEIVED_TASKS_ATTR_NAME", "currentUserReceivedTasks");
+        assetsMap.put("NEW_RECEIVED_COUNT_ATTR_NAME", "newReceivedCount");
+
         assetsMap.put("AREA_ATTR_NAME", "area");
         assetsMap.put("PLANTS_ATTR_NAME", "plants");
         assetsMap.put("CURRENT_PLANT_PAGE_ATTR_NAME", "currentPlantPage");
         assetsMap.put("MAX_PLANT_PAGES_ATTR_NAME", "maxPlantPages");
+        assetsMap.put("AREA_TASKMASTERS_ATTR_NAME", "areaTaskmasters");
 
         assetsMap.put("PLANT_ID_ATTR_NAME", "plantId");
         assetsMap.put("PLANT_NAME_ATTR_NAME", "plantName");
@@ -85,8 +89,10 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("TASK_TITLE_PARAM_NAME", "taskTitle");
         assetsMap.put("TASK_COMMENT_PARAM_NAME", "taskComment");
         assetsMap.put("TASK_PLANTS_PARAM_NAME", "taskPlants");
+
         assetsMap.put("REPORT_COMMENT_PARAM_NAME", "reportComment");
         assetsMap.put("REPORT_IMG_PATH_PARAM_NAME", "reportImg");
+        assetsMap.put("TASK_ID_PARAM_NAME", "taskId");
 
         assetsMap.put("AREA_ID_PARAM_NAME", "areaId");
         assetsMap.put("AREA_NAME_PARAM_NAME", "areaName");
@@ -101,7 +107,6 @@ public class AppAssets extends AbstractMap<String, String> {
 
         //************************* VIEWS and URIS **********************************
         assetsMap.put("SIGN_IN_URI", "/backend/signIn");
-        assetsMap.put("DISPLAY_CURRENT_USER_URI", "/backend/users/currentUser");
         assetsMap.put("DISPLAY_USER_URI", "/backend/users/user");
         assetsMap.put("CREATE_USER_URI", "/backend/users/newUser");
         assetsMap.put("EDIT_USER_URI", "/backend/users/editUser");

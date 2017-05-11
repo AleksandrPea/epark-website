@@ -9,6 +9,7 @@
                 <c:forEach var="area" items="${requestScope[assets.ALL_AREAS_ATTR_NAME]}">
                     <a href="#area${area.id}" data-toggle="collapse" class="list-group-item">
                         ${area.name}
+                        <em class="pull-right">${requestScope[assets.AREA_TASKMASTERS_ATTR_NAME][area.id]}</em>
                     </a>
                     <div id="area${area.id}" class="collapse">
                         <div class="list-group-item clearfix">

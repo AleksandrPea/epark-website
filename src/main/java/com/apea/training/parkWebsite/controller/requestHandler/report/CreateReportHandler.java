@@ -25,17 +25,17 @@ public class CreateReportHandler implements RequestHandler {
         createReport(request);
         generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_CREATE_REPORT_SUCCESS")));
         ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
-        Integer taskId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
+        String taskId = request.getParameter(assets.get("TASK_ID_PARAM_NAME"));
         return REDIRECT + assets.get("DISPLAY_TASK_URI") + "/"+taskId;
     }
 
     private void createReport(HttpServletRequest request) {
         AppAssets assets = AppAssets.getInstance();
-        Integer taskId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
+        String taskId = request.getParameter(assets.get("TASK_ID_PARAM_NAME"));
         String comment = request.getParameter(assets.get("REPORT_COMMENT_PARAM_NAME"));
         String imgPath = request.getParameter(assets.get("REPORT_IMG_PATH_PARAM_NAME"));
         Report report = new Report.Builder().setComment(comment).setImgPath(imgPath)
-                .setTaskId(taskId).build();
+                .setTaskId(Integer.valueOf(taskId)).build();
         ServiceFactoryImpl.getInstance().getReportService().create(report);
     }
 }

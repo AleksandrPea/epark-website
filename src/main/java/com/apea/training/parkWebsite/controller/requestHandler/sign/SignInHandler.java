@@ -22,8 +22,8 @@ public class SignInHandler implements RequestHandler {
         Map<String, FrontendMessage> messages = new HashMap<>();
         String abstractView;
         if (isCredentialCorrect(request)) {
-            signInUser(request);
-            abstractView = REDIRECT + assets.get("DISPLAY_CURRENT_USER_URI");
+            Integer id = signInUser(request);
+            abstractView = REDIRECT + assets.get("DISPLAY_USER_URI") + "/"+id;
         } else {
             addErrorMessages(messages);
             abstractView = FORWARD + assets.get("LOGIN_VIEW_NAME");
@@ -42,13 +42,15 @@ public class SignInHandler implements RequestHandler {
         return credential != null && password.equals(credential.getPassword());
     }
 
-    private void signInUser(HttpServletRequest request) {
+    /** return id of signed user */
+    private Integer signInUser(HttpServletRequest request) {
         AppAssets assets = AppAssets.getInstance();
         String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
         User currentUser = ServiceFactoryImpl.getInstance().getUserService().getByLogin(login);
         HttpSession session = request.getSession();
         session.setAttribute(assets.get("CURRENT_USER_ID_ATTR_NAME"), currentUser.getId());
         session.setAttribute(assets.get("CURRENT_USER_ROLE_ATTR_NAME"), currentUser.getRole());
+        return currentUser.getId();
     }
 
     private void addErrorMessages(Map<String, FrontendMessage> messages) {

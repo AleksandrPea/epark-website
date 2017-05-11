@@ -18,7 +18,17 @@
                     </c:if>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="<c:url value="${assets.DISPLAY_CURRENT_USER_URI}"/>">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="glyphicon glyphicon-flag"></span>
+                            <fmt:message key="language.label" bundle="${langGeneral}"/>
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">English</a></li>
+                            <li><a href="#"></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="<c:url value="${assets.DISPLAY_USER_URI}/${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME]}"/>">
                         <span class="glyphicon glyphicon-user">
                         </span> <fmt:message key="myAccount.label" bundle="${langGeneral}"/>
                     </a></li>

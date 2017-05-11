@@ -24,7 +24,7 @@
                 <input type="text" class="form-control" id="name"
                        placeholder="<fmt:message key="plant.name.label" bundle="${langPlant}"/>"
                        name="${assets.PLANT_NAME_PARAM_NAME}"
-                       value="${requestScope[assets.PLANT_NAME_ATTR_NAME]}"/>
+                       value="${fn:escapeXml(requestScope[assets.PLANT_NAME_ATTR_NAME])}"/>
             </div>
 
             <div class="form-group">
@@ -62,7 +62,7 @@
                 <input type="text" class="form-control" id="imgPath"
                        placeholder="<fmt:message key="plant.imgPath.label" bundle="${langPlant}"/>"
                        name="${assets.PLANT_IMG_PATH_PARAM_NAME}"
-                       value="${requestScope[assets.PLANT_IMG_PATH_ATTR_NAME]}"/>
+                       value="${fn:escapeXml(requestScope[assets.PLANT_IMG_PATH_ATTR_NAME])}"/>
             </div>
 
             <c:choose>

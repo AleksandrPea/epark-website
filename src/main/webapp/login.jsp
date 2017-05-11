@@ -16,7 +16,7 @@
                         <input type="text" class="form-control" id="login"
                                placeholder="<fmt:message key="credential.login.label" bundle="${credential}"/>"
                                name="${assets.LOGIN_PARAM_NAME}"
-                               value="${requestScope[assets.LOGIN_ATTR_NAME]}"/>
+                               value="${fn:escapeXml(requestScope[assets.LOGIN_ATTR_NAME])}"/>
 
                         <mytags:formMessages formInputName="${assets.LOGIN_PARAM_NAME}"/>
 

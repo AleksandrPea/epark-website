@@ -6,7 +6,7 @@
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">
         <h3 class="text-center">
             <fmt:message key="${requestScope[assets.IS_CREATING_AREA_ATTR_NAME] ?
-                            'area.createPage.title' : 'area.editPage.title'}" bundle="${langArea}"/>
+                    'area.createPage.title' : 'area.editPage.title'}" bundle="${langArea}"/>
         </h3>
         <form method="POST" name="createAreaForm"
               action="<c:url value="${requestScope[assets.IS_CREATING_AREA_ATTR_NAME] ?
@@ -23,7 +23,7 @@
                 <input type="text" class="form-control" id="name"
                        placeholder="<fmt:message key="area.name.label" bundle="${langArea}"/>"
                        name="${assets.AREA_NAME_PARAM_NAME}"
-                       value="${requestScope[assets.AREA_NAME_ATTR_NAME]}"/>
+                       value="${fn:escapeXml(requestScope[assets.AREA_NAME_ATTR_NAME])}"/>
             </div>
 
             <div class="form-group">
@@ -31,7 +31,7 @@
                     <fmt:message key="area.description.label" bundle="${langArea}"/></label>
                 <textarea class="form-control" id="description" rows="8"
                        placeholder="<fmt:message key="area.description.label" bundle="${langArea}"/>"
-                       name="${assets.AREA_DESCRIPTION_PARAM_NAME}">${requestScope[assets.AREA_DESCRIPTION_ATTR_NAME]}</textarea>
+                       name="${assets.AREA_DESCRIPTION_PARAM_NAME}"><c:out value="${requestScope[assets.AREA_DESCRIPTION_ATTR_NAME]}"/></textarea>
             </div>
 
             <div class="form-group validated required">
@@ -40,12 +40,8 @@
                 <input type="text" class="form-control" id="taskmasterLogin"
                        placeholder="<fmt:message key="area.taskmasterLogin.label" bundle="${langArea}"/>"
                        name="${assets.TASKMASTER_LOGIN_PARAM_NAME}"
-                       value="${requestScope[assets.TASKMASTER_LOGIN_ATTR_NAME]}"/>
-                <c:if test="${(not empty messages) && (not empty messages[assets.TASKMASTER_LOGIN_PARAM_NAME])}">
-                    <label class="messages ${messages[assets.TASKMASTER_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                        <fmt:message key="${messages[assets.TASKMASTER_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
-                    </label>
-                </c:if>
+                       value="${fn:escapeXml(requestScope[assets.TASKMASTER_LOGIN_ATTR_NAME])}"/>
+                <mytags:formMessages formInputName="${assets.TASKMASTER_LOGIN_PARAM_NAME}"/>
             </div>
 
             <c:choose>

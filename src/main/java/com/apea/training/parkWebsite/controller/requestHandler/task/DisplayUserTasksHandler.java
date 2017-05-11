@@ -34,8 +34,13 @@ public class DisplayUserTasksHandler implements RequestHandler {
                                 .getByUserId(t.getReceiverId()).getLogin());
                     }
                 });
+        long newReceived = receivedTasks
+                .stream()
+                .filter(task -> task.getState() == Task.State.NEW)
+                .count();
         request.setAttribute(assets.get("CURRENT_USER_SENDED_TASKS_ATTR_NAME"), sendedTasksMap);
         request.setAttribute(assets.get("CURRENT_USER_RECEIVED_TASKS_ATTR_NAME"), receivedTasks);
+        request.setAttribute(assets.get("NEW_RECEIVED_COUNT_ATTR_NAME"), newReceived);
         return FORWARD + assets.get("CURRENT_USER_TASKS_LIST_VIEW_NAME");
     }
 }

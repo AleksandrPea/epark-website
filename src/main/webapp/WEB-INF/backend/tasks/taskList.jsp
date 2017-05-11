@@ -8,7 +8,9 @@
             <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] != 'OWNER'}">
                 <div class="panel panel-default">
                     <a href="#received" data-toggle="collapse" class="list-group-item">
-                        <h3><fmt:message key="task.taskListPage.received.label" bundle="${langTask}"/></h3></a>
+                        <h3><fmt:message key="task.taskListPage.received.label" bundle="${langTask}"/>
+                            <span class="badge">${requestScope[assets.NEW_RECEIVED_COUNT_ATTR_NAME]}</span></h3>
+                    </a>
                     <div id="received" class="panel-collapse collapse">
                         <div class="panel-body">
                             <c:forEach var="task" items="${requestScope[assets.CURRENT_USER_RECEIVED_TASKS_ATTR_NAME]}">

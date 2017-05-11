@@ -21,21 +21,16 @@
                         <input type="text" class="form-control" id="login"
                                placeholder="<fmt:message key="user.login.label" bundle="${langUser}"/>"
                                name="${assets.LOGIN_PARAM_NAME}"
-                               value="${requestScope[assets.LOGIN_ATTR_NAME]}"/>
+                               value="${fn:escapeXml(requestScope[assets.LOGIN_ATTR_NAME])}"/>
                     </c:when>
                     <c:otherwise>
                         <input type="text" class="form-control" id="login"
                                readonly
                                name="${assets.LOGIN_PARAM_NAME}"
-                               value="${requestScope[assets.LOGIN_ATTR_NAME]}"/>
+                               value="${fn:escapeXml(requestScope[assets.LOGIN_ATTR_NAME])}"/>
                     </c:otherwise>
                 </c:choose>
-
-                <c:if test="${(not empty messages) && (not empty messages[assets.LOGIN_PARAM_NAME])}">
-                    <label class="messages ${messages[assets.LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                        <fmt:message key="${messages[assets.LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
-                    </label>
-                </c:if>
+                <mytags:formMessages formInputName="${assets.LOGIN_PARAM_NAME}"/>
             </div>
 
             <div class="form-group validated required">
@@ -44,7 +39,7 @@
                 <input type="text" class="form-control" id="userPassword"
                        placeholder="<fmt:message key="user.password.label" bundle="${langUser}"/>"
                        name="${assets.PASSWORD_PARAM_NAME}"
-                       value="${requestScope[assets.PASSWORD_ATTR_NAME]}"/>
+                       value="${fn:escapeXml(requestScope[assets.PASSWORD_ATTR_NAME])}"/>
 
             </div>
 
@@ -54,7 +49,7 @@
                 <input type="text" class="form-control" id="firstName"
                        placeholder="<fmt:message key="user.firstName.label" bundle="${langUser}"/>"
                        name="${assets.FIRSTNAME_PARAM_NAME}"
-                       value="${requestScope[assets.FIRSTNAME_ATTR_NAME]}"/>
+                       value="${fn:escapeXml(requestScope[assets.FIRSTNAME_ATTR_NAME])}"/>
             </div>
 
             <div class="form-group required">
@@ -63,7 +58,7 @@
                 <input type="text" class="form-control" id="lastName"
                        placeholder="<fmt:message key="user.lastName.label" bundle="${langUser}"/>"
                        name="${assets.LASTNAME_PARAM_NAME}"
-                       value="${requestScope[assets.LASTNAME_ATTR_NAME]}"/>
+                       value="${fn:escapeXml(requestScope[assets.LASTNAME_ATTR_NAME])}"/>
             </div>
 
             <div class="form-group validated required">
@@ -72,12 +67,8 @@
                 <input type="text" class="form-control" id="userEmail"
                        placeholder="<fmt:message key="user.email.label" bundle="${langUser}"/>"
                        name="${assets.EMAIL_PARAM_NAME}"
-                       value="${requestScope[assets.EMAIL_ATTR_NAME]}"/>
-                <c:if test="${(not empty messages) && (not empty messages['userEmail'])}">
-                    <label class="messages ${messages['userEmail'].type == 'ERROR' ? 'error' : ''}">
-                        <fmt:message key="${messages['userEmail'].messageKey}" bundle="${validation}"/>
-                    </label>
-                </c:if>
+                       value="${fn:escapeXml(requestScope[assets.EMAIL_ATTR_NAME])}"/>
+                <mytags:formMessages formInputName="${assets.EMAIL_PARAM_NAME}"/>
             </div>
 
             <div class="form-group required">
@@ -88,10 +79,10 @@
                             && sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'}">
                         <select id="userRole" class="selectpicker form-control" name="${assets.ROLE_PARAM_NAME}">
                             <option value="FORESTER" ${(requestScope[assets.ROLE_ATTR_NAME] == 'FORESTER') ? 'selected' : ''}>
-                                <fmt:message key="user.role.forester" bundle="${langUser}"/>
+                                <fmt:message key="user.role.FORESTER" bundle="${langUser}"/>
                             </option>
                             <option value="TASKMASTER" ${(requestScope[assets.ROLE_ATTR_NAME] == 'TASKMASTER') ? 'selected' : ''}>
-                                <fmt:message key="user.role.taskmaster" bundle="${langUser}"/>
+                                <fmt:message key="user.role.TASKMASTER" bundle="${langUser}"/>
                             </option>
                         </select>
                     </c:when>
@@ -100,7 +91,7 @@
                         <input type="text" class="form-control" id="userRole"
                                readonly
                                name="${assets.ROLE_PARAM_NAME}"
-                               value="FORESTER"/>
+                               value="<fmt:message key="user.role.FORESTER" bundle="${langUser}"/>"/>
                     </c:when>
                     <c:otherwise>
                          <input type="text" class="form-control" id="userRole"
@@ -117,7 +108,7 @@
                     <fmt:message key="user.info.label" bundle="${langUser}"/></label>
                 <textarea class="form-control" id="info"
                        placeholder="<fmt:message key="user.info.label" bundle="${langUser}"/>"
-                       name="${assets.USER_INFO_PARAM_NAME}">${requestScope[assets.USER_INFO_ATTR_NAME]}</textarea>
+                       name="${assets.USER_INFO_PARAM_NAME}"><c:out value="${requestScope[assets.USER_INFO_ATTR_NAME]}"/></textarea>
             </div>
 
             <div class="form-group validated required">
@@ -128,24 +119,20 @@
                         <input type="text" class="form-control" id="superiorLogin"
                                placeholder="<fmt:message key="user.superiorLogin.label" bundle="${langUser}"/>"
                                name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
-                               value="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}"/>
-                        <c:if test="${(not empty messages) && (not empty messages[assets.SUPERIOR_LOGIN_PARAM_NAME])}">
-                            <label class="messages ${messages[assets.SUPERIOR_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                                <fmt:message key="${messages[assets.SUPERIOR_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
-                            </label>
-                        </c:if>
+                               value="${fn:escapeXml(requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME])}"/>
+                        <mytags:formMessages formInputName="${assets.SUPERIOR_LOGIN_PARAM_NAME}"/>
                     </c:when>
                     <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
                         <input type="text" class="form-control" id="superiorLogin"
                                 readonly
                                 name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
-                                value="${requestScope[assets.CURRENT_USER_LOGIN_ATTR_NAME]}"/>
+                                value="${fn:escapeXml(requestScope[assets.CURRENT_USER_LOGIN_ATTR_NAME])}"/>
                     </c:when>
                     <c:otherwise>
                         <input type="text" class="form-control" id="superiorLogin"
                                 readonly
                                 name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
-                                value="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}"/>
+                                value="${fn:escapeXml(requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME])}"/>
                     </c:otherwise>
                 </c:choose>
              </div>

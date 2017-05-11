@@ -4,7 +4,10 @@
 
 <div class="row">
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">
-        <h3 class="text-center"><fmt:message key="task.createPage.title" bundle="${langTask}"/></h3>
+        <h3 class="text-center">
+            <fmt:message key="${requestScope[assets.IS_CREATING_TASK_ATTR_NAME] ?
+                'task.createPage.title' : 'task.editPage.title'}" bundle="${langTask}"/>
+        </h3>
         <form method="POST" name="createTaskForm" id="createTaskForm"
               action="<c:url value="${assets.CREATE_TASK_URI}"/>"
               accept-charset="UTF-8" role="form">
@@ -15,12 +18,8 @@
                 <input type="text" class="form-control" id="receiverLogin"
                        placeholder="<fmt:message key="task.receiverLogin.label" bundle="${langTask}"/>"
                        name="${assets.TASK_RECEIVER_LOGIN_PARAM_NAME}"
-                       value="${requestScope[assets.TASK_RECEIVER_LOGIN_ATTR_NAME]}"/>
-                <c:if test="${(not empty messages) && (not empty messages[assets.TASK_RECEIVER_LOGIN_PARAM_NAME])}">
-                    <label class="messages ${messages[assets.TASK_RECEIVER_LOGIN_PARAM_NAME].type == 'ERROR' ? 'error' : ''}">
-                        <fmt:message key="${messages[assets.TASK_RECEIVER_LOGIN_PARAM_NAME].messageKey}" bundle="${validation}"/>
-                    </label>
-                </c:if>
+                       value="${fn:escapeXml(requestScope[assets.TASK_RECEIVER_LOGIN_ATTR_NAME])}"/>
+                <mytags:formMessages formInputName="${assets.TASK_RECEIVER_LOGIN_PARAM_NAME}"/>
             </div>
 
             <div class="form-group required">
@@ -29,7 +28,7 @@
                 <input type="text" class="form-control" id="title"
                        placeholder="<fmt:message key="task.title.label" bundle="${langTask}"/>"
                        name="${assets.TASK_TITLE_PARAM_NAME}"
-                       value="${requestScope[assets.TASK_TITLE_ATTR_NAME]}"/>
+                       value="${fn:escapeXml(requestScope[assets.TASK_TITLE_ATTR_NAME])}"/>
             </div>
 
             <div class="form-group">
@@ -37,7 +36,7 @@
                     <fmt:message key="task.comment.label" bundle="${langTask}"/></label>
                 <textarea class="form-control" id="comment" rows="12"
                        placeholder="<fmt:message key="task.comment.label" bundle="${langTask}"/>"
-                       name="${assets.TASK_COMMENT_PARAM_NAME}">${requestScope[assets.TASK_COMMENT_ATTR_NAME]}</textarea>
+                       name="${assets.TASK_COMMENT_PARAM_NAME}"><c:out value="${requestScope[assets.TASK_COMMENT_ATTR_NAME]}"/></textarea>
             </div>
             <div class="form-group">
                 <label class="control-label" for="plants">

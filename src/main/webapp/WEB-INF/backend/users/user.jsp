@@ -39,7 +39,7 @@
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.role.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static">${requestScope[assets.USER_ATTR_NAME].role}</p>
+                    <p class="form-control-static"><fmt:message key="user.role.${requestScope[assets.USER_ATTR_NAME].role}" bundle="${langUser}"/></p>
                 </div>
             </div>
             <div class="form-group">
@@ -55,9 +55,24 @@
                         <fmt:message key="user.superior.label" bundle="${langUser}"/></label>
                     <div class="col-xs-8">
                         <p class="form-control-static">
-                             <a href="<c:url value="${assets.DISPLAY_USER_URI}/${user.superiorId}"/>">
+                            <a href="<c:url value="${assets.DISPLAY_USER_URI}/${user.superiorId}"/>">
                                 ${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}
                             </a>
+                        </p>
+                    </div>
+                </div>
+            </c:if>
+            <c:if test="${requestScope[assets.USER_ATTR_NAME].role != 'FORESTER'}">
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">
+                        <fmt:message key="user.subordinates.label" bundle="${langUser}"/></label>
+                    <div class="col-xs-8">
+                        <p class="form-control-static">
+                            <c:forEach var="subordinateEntry" items="${requestScope[assets.SUBORDINATES_ATTR_NAME]}">
+                                <a href="<c:url value="${assets.DISPLAY_USER_URI}/${subordinateEntry.key}"/>">
+                                    ${subordinateEntry.value}
+                                </a>
+                            </c:forEach>
                         </p>
                     </div>
                 </div>

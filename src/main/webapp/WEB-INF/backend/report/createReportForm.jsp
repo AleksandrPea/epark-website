@@ -1,7 +1,7 @@
 <fmt:setBundle basename="webProject.i18n.backend.report" var="langReport"/>
 
 <form method="POST" name="createReportForm" id="createReportForm"
-      action="<c:url value="${assets.CREATE_REPORT_URI}/${requestScope[assets.TASK_ATTR_NAME].id}"/>"
+      action="<c:url value="${assets.CREATE_REPORT_URI}"/>"
       accept-charset="UTF-8" role="form">
 
     <div class="form-group">
@@ -20,6 +20,9 @@
                name="${assets.REPORT_IMG_PATH_PARAM_NAME}"/>
     </div>
 
+        <input type="hidden"
+                name="${assets.TASK_ID_PARAM_NAME}"
+                value="${requestScope[assets.TASK_ATTR_NAME].id}"/>
 
     <button type="submit"
             class="btn btn-success btn-block">

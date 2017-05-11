@@ -21,7 +21,7 @@
                         ${requestScope[assets.ALL_CREDENTIALS_ATTR_NAME][user.id].login}</a></td>
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
-                    <td>${user.role}</td>
+                    <td><fmt:message key="user.role.${user.role}" bundle="${langUser}"/></td>
                     <td>${user.email}</td>
                 </tr>
             </c:forEach>

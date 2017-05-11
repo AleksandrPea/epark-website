@@ -1,6 +1,5 @@
 $(function () {
     $("a.confirm").click(function(e) {
-        console.log("HEY!");
         e.preventDefault();
         var location = $(this).attr('href');
         bootbox.confirm({
@@ -12,5 +11,12 @@ $(function () {
                 }
             }
         });
+    });
+
+    $('.nav a').each(function(i,e){
+        var href = window.location.href;
+        if (href.split(/http:\/\/[^\/.]+/).pop() === $(this).attr('href')) {
+            $(this).parent().addClass('active');
+        }
     });
 });
