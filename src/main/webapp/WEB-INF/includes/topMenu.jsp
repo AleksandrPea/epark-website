@@ -1,3 +1,5 @@
+<fmt:setBundle basename="webProject.i18n.backend.general" var="langGeneral"/>
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -26,8 +28,8 @@
                             <fmt:message key="language.label" bundle="${langGeneral}"/>
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">English</a></li>
-                            <li><a href="#"></a></li>
+                            <li><a class="language-picker" href="en_EN"><fmt:message key="language.english" bundle="${langGeneral}"/></a></li>
+                            <li><a class="language-picker" href="ru_RU"><fmt:message key="language.russian" bundle="${langGeneral}"/></a></li>
                         </ul>
                     </li>
                     <li><a href="<c:url value="${assets.DISPLAY_USER_URI}/${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME]}"/>">

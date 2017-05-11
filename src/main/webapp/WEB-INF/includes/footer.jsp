@@ -1,5 +1,6 @@
-</div>
+<fmt:setBundle basename="webProject.i18n.backend.general" var="langGeneral"/>
 
+</div>
 <footer class="container">
     <div class="row">
         <div class="col-md-12">

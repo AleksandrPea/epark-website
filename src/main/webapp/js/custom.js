@@ -1,4 +1,5 @@
 $(function () {
+    // making confirm modal
     $("a.confirm").click(function(e) {
         e.preventDefault();
         var location = $(this).attr('href');
@@ -13,7 +14,16 @@ $(function () {
         });
     });
 
-    $('.nav a').each(function(i,e){
+    //setting language
+    $("a.language-picker").click(function(e) {
+        e.preventDefault();
+        var language = $(this).attr('href');
+        var href = window.location.href.split(/\?language=[\w]{5}/)[0];
+        window.location.replace(href+"?language="+language);
+    });
+
+    // for activating top buttons on navigation
+    $(".nav a").each(function(i,e){
         var href = window.location.href;
         if (href.split(/http:\/\/[^\/.]+/).pop() === $(this).attr('href')) {
             $(this).parent().addClass('active');

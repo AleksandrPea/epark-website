@@ -6,7 +6,7 @@
     <c:choose>
         <c:when test="${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] != null}">
             <p><fmt:message key="auth.text" bundle="${frontGeneral}"/>
-                <a href="<c:url value="${assets[DISPLAY_CURRENT_USER_URI]}"/>">
+                <a href="<c:url value="${assets[DISPLAY_USER_URI]}/${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME]}"/>">
                     <fmt:message key="linkAccount.text" bundle="${frontGeneral}"/>
                 </a>
             </p>
