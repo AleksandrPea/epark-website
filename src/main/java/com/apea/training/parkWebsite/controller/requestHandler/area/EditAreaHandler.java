@@ -43,6 +43,7 @@ public class EditAreaHandler extends CreateAreaHandler {
     }
 
     private boolean tryToEditArea(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        if (areParametersInvalid(request, formMessages)) { return false; }
         AppAssets assets = AppAssets.getInstance();
         String taskmasterLogin = request.getParameter(assets.get("TASKMASTER_LOGIN_PARAM_NAME"));
         User taskmaster = ServiceFactoryImpl.getInstance().getUserService().getByLogin(taskmasterLogin);

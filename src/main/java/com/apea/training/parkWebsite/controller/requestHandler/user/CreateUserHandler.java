@@ -13,10 +13,7 @@ import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CreateUserHandler implements RequestHandler {
 
@@ -44,7 +41,35 @@ public class CreateUserHandler implements RequestHandler {
         return abstractViewName;
     }
 
+    protected boolean areParametersInvalid(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        AppAssets assets = AppAssets.getInstance();
+        Set<FrontendMessage> validationMessages = new HashSet<>();
+        ControllerUtils.validateName(request.getParameter(assets.get("LOGIN_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("LOGIN_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateName(request.getParameter(assets.get("SUPERIOR_LOGIN_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("SUPERIOR_LOGIN_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validatePassword(request.getParameter(assets.get("PASSWORD_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("PASSWORD_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateName(request.getParameter(assets.get("FIRSTNAME_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("FIRSTNAME_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateName(request.getParameter(assets.get("LASTNAME_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("LASTNAME_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateEmail(request.getParameter(assets.get("EMAIL_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("EMAIL_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateText(request.getParameter(assets.get("USER_INFO_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("USER_INFO_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        return !validationMessages.isEmpty();
+    }
+
     private boolean tryToCreateUser(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        if (areParametersInvalid(request, formMessages)) {return false;}
         AppAssets assets = AppAssets.getInstance();
         UserService userService = ServiceFactoryImpl.getInstance().getUserService();
         String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
@@ -62,6 +87,7 @@ public class CreateUserHandler implements RequestHandler {
         String lastName = request.getParameter(assets.get("LASTNAME_PARAM_NAME"));
         String email = request.getParameter(assets.get("EMAIL_PARAM_NAME"));
         String info = request.getParameter(assets.get("USER_INFO_PARAM_NAME"));
+
 
         Credential credential = new Credential(login, password);
         User user = new User.Builder().setFirstName(firstName).setLastName(lastName).setEmail(email)

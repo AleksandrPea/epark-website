@@ -18,7 +18,7 @@
                     <fmt:message key="user.login.label" bundle="${langUser}"/></label>
                 <c:choose>
                     <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
-                        <input type="text" class="form-control" id="login"
+                        <input type="text" class="form-control" id="login" required
                                placeholder="<fmt:message key="user.login.label" bundle="${langUser}"/>"
                                name="${assets.LOGIN_PARAM_NAME}"
                                value="${fn:escapeXml(requestScope[assets.LOGIN_ATTR_NAME])}"/>
@@ -36,35 +36,37 @@
             <div class="form-group validated required">
                 <label class="control-label" for="userPassword">
                     <fmt:message key="user.password.label" bundle="${langUser}"/></label>
-                <input type="text" class="form-control" id="userPassword"
+                <input type="text" class="form-control" id="userPassword" required
                        placeholder="<fmt:message key="user.password.label" bundle="${langUser}"/>"
                        name="${assets.PASSWORD_PARAM_NAME}"
                        value="${fn:escapeXml(requestScope[assets.PASSWORD_ATTR_NAME])}"/>
-
+                <mytags:formMessages formInputName="${assets.PASSWORD_PARAM_NAME}"/>
             </div>
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="firstName">
                     <fmt:message key="user.firstName.label" bundle="${langUser}"/></label>
-                <input type="text" class="form-control" id="firstName"
+                <input type="text" class="form-control" id="firstName" required
                        placeholder="<fmt:message key="user.firstName.label" bundle="${langUser}"/>"
                        name="${assets.FIRSTNAME_PARAM_NAME}"
                        value="${fn:escapeXml(requestScope[assets.FIRSTNAME_ATTR_NAME])}"/>
+                <mytags:formMessages formInputName="${assets.FIRSTNAME_PARAM_NAME}"/>
             </div>
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="lastName">
                     <fmt:message key="user.lastName.label" bundle="${langUser}"/></label>
-                <input type="text" class="form-control" id="lastName"
+                <input type="text" class="form-control" id="lastName" required
                        placeholder="<fmt:message key="user.lastName.label" bundle="${langUser}"/>"
                        name="${assets.LASTNAME_PARAM_NAME}"
                        value="${fn:escapeXml(requestScope[assets.LASTNAME_ATTR_NAME])}"/>
+                <mytags:formMessages formInputName="${assets.LASTNAME_PARAM_NAME}"/>
             </div>
 
             <div class="form-group validated required">
                 <label class="control-label" for="userEmail">
                     <fmt:message key="user.email.label" bundle="${langUser}"/></label>
-                <input type="text" class="form-control" id="userEmail"
+                <input type="text" class="form-control" id="userEmail" required
                        placeholder="<fmt:message key="user.email.label" bundle="${langUser}"/>"
                        name="${assets.EMAIL_PARAM_NAME}"
                        value="${fn:escapeXml(requestScope[assets.EMAIL_ATTR_NAME])}"/>
@@ -103,12 +105,13 @@
 
             </div>
 
-            <div class="form-group">
+            <div class="form-group validated">
                 <label class="control-label" for="info">
                     <fmt:message key="user.info.label" bundle="${langUser}"/></label>
                 <textarea class="form-control" id="info"
                        placeholder="<fmt:message key="user.info.label" bundle="${langUser}"/>"
                        name="${assets.USER_INFO_PARAM_NAME}"><c:out value="${requestScope[assets.USER_INFO_ATTR_NAME]}"/></textarea>
+                <mytags:formMessages formInputName="${assets.USER_INFO_PARAM_NAME}"/>
             </div>
 
             <div class="form-group validated required">
@@ -116,11 +119,10 @@
                     <fmt:message key="user.superiorLogin.label" bundle="${langUser}"/></label>
                 <c:choose>
                     <c:when test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'}">
-                        <input type="text" class="form-control" id="superiorLogin"
+                        <input type="text" class="form-control" id="superiorLogin" required
                                placeholder="<fmt:message key="user.superiorLogin.label" bundle="${langUser}"/>"
                                name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
                                value="${fn:escapeXml(requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME])}"/>
-                        <mytags:formMessages formInputName="${assets.SUPERIOR_LOGIN_PARAM_NAME}"/>
                     </c:when>
                     <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
                         <input type="text" class="form-control" id="superiorLogin"
@@ -135,6 +137,7 @@
                                 value="${fn:escapeXml(requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME])}"/>
                     </c:otherwise>
                 </c:choose>
+                <mytags:formMessages formInputName="${assets.SUPERIOR_LOGIN_PARAM_NAME}"/>
              </div>
 
             <c:choose>

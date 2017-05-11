@@ -30,7 +30,7 @@ public class CreateTaskHandler implements RequestHandler {
         String abstractViewName;
         boolean isNewTaskCreated = tryToCreateTask(request, formMessages);
         if (!isNewTaskCreated) {
-            setRequestAttributes(request, formMessages);
+            setFormAttributes(request, formMessages);
             abstractViewName = FORWARD + assets.get("CREATE_TASK_VIEW_NAME");
         } else {
             generalMessages.add(FrontMessageFactory.getInstance()
@@ -42,6 +42,7 @@ public class CreateTaskHandler implements RequestHandler {
     }
 
     private boolean tryToCreateTask(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        if (areParametersInvalid(request, formMessages)) {return false;}
         AppAssets assets = AppAssets.getInstance();
         String receiverLogin = request.getParameter(assets.get("TASK_RECEIVER_LOGIN_PARAM_NAME"));
         User receiver = ServiceFactoryImpl.getInstance().getUserService().getByLogin(receiverLogin);
@@ -59,6 +60,21 @@ public class CreateTaskHandler implements RequestHandler {
         ServiceFactoryImpl.getInstance().getTaskService().createNewAndAssociate(task, plants);
 
         return true;
+    }
+
+    private boolean areParametersInvalid(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        AppAssets assets = AppAssets.getInstance();
+        Set<FrontendMessage> validationMessages = new HashSet<>();
+        ControllerUtils.validateName(request.getParameter(assets.get("TASK_RECEIVER_LOGIN_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("TASK_RECEIVER_LOGIN_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateName(request.getParameter(assets.get("TASK_TITLE_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("TASK_TITLE_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateText(request.getParameter(assets.get("TASK_COMMENT_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("TASK_COMMENT_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        return !validationMessages.isEmpty();
     }
 
     private boolean checkReceiverIsNotExists(User receiver, Map<String, FrontendMessage> formMessages) {
@@ -94,7 +110,7 @@ public class CreateTaskHandler implements RequestHandler {
                 .collect(Collectors.toList());
     }
 
-    private void setRequestAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+    private void setFormAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
         AppAssets assets = AppAssets.getInstance();
         String receiverLogin = request.getParameter(assets.get("TASK_RECEIVER_LOGIN_PARAM_NAME"));
         String[] plantNames = request.getParameterValues(assets.get("TASK_PLANTS_PARAM_NAME"));

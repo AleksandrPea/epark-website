@@ -13,19 +13,18 @@
                     <div class="form-group validated required">
                         <label class="control-label" for="login">
                             <fmt:message key="credential.login.label" bundle="${credential}"/></label>
-                        <input type="text" class="form-control" id="login"
+                        <input type="text" class="form-control" id="login" required
                                placeholder="<fmt:message key="credential.login.label" bundle="${credential}"/>"
                                name="${assets.LOGIN_PARAM_NAME}"
                                value="${fn:escapeXml(requestScope[assets.LOGIN_ATTR_NAME])}"/>
 
                         <mytags:formMessages formInputName="${assets.LOGIN_PARAM_NAME}"/>
 
-
                     </div>
                     <div class="form-group validated required">
                         <label class="control-label" for="userPassword">
                             <fmt:message key="credential.password.label" bundle="${credential}"/></label>
-                        <input type="password" class="form-control" id="userPassword"
+                        <input type="password" class="form-control" id="userPassword" required
                                placeholder="<fmt:message key="credential.password.label" bundle="${credential}"/>"
                                name="${assets.PASSWORD_PARAM_NAME}"/>
 

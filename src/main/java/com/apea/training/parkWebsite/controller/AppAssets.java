@@ -63,6 +63,10 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("CURRENT_USER_RECEIVED_TASKS_ATTR_NAME", "currentUserReceivedTasks");
         assetsMap.put("NEW_RECEIVED_COUNT_ATTR_NAME", "newReceivedCount");
 
+        assetsMap.put("REPORT_COMMENT_ATTR_NAME", "reportComment");
+        assetsMap.put("REPORT_IMG_PATH_ATTR_NAME", "reportImg");
+        assetsMap.put("TASK_ID_ATTR_NAME", "taskId");
+
         assetsMap.put("AREA_ATTR_NAME", "area");
         assetsMap.put("PLANTS_ATTR_NAME", "plants");
         assetsMap.put("CURRENT_PLANT_PAGE_ATTR_NAME", "currentPlantPage");
@@ -104,6 +108,12 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("PLANT_DESCRIPTION_PARAM_NAME", "plantDescription");
         assetsMap.put("PLANT_IMG_PATH_PARAM_NAME", "plantImgPath");
         assetsMap.put("PLANT_STATE_PARAM_NAME", "plantState");
+
+        //************************* REGEX for validation ***************************
+        assetsMap.put("NAME_REGEX", "[а-яА-ЯіІїЇєЄёЁ\\w\\s!&?$#@'\"-]{1,30}");
+        assetsMap.put("TEXT_REGEX", "[^(<|>).]*");
+        assetsMap.put("PASSWORD_REGEX", "[\\w]{4,12}");
+        assetsMap.put("EMAIL_REGEX", "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$");
 
         //************************* VIEWS and URIS **********************************
         assetsMap.put("SIGN_IN_URI", "/backend/signIn");
@@ -164,11 +174,17 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("MSG_IS_NOT_TASKMASTER", "validation.isNotTaskmaster");
         assetsMap.put("MSG_OWNER_SUPERIOR_IS_NOT_EMPTY", "validation.ownerSuperiorIsNotEmpty");
 
+        assetsMap.put("NAME_VALIDATION_FAILED", "validation.regex.name");
+        assetsMap.put("TEXT_VALIDATION_FAILED", "validation.regex.text");
+        assetsMap.put("PASSWORD_VALIDATION_FAILED", "validation.regex.password");
+        assetsMap.put("EMAIL_VALIDATION_FAILED", "validation.regex.email");
+
         assetsMap.put("MSG_RECEIVER_LOGIN_IS_INVALID", "validation.receiverLoginIsInvalid");
         assetsMap.put("MSG_USER_IS_NOT_SUBORDINATE", "validation.userIsNotSubordinate");
         assetsMap.put("MSG_CREATE_TASK_SUCCESS", "task.createSuccess");
         assetsMap.put("MSG_CREATE_USER_SUCCESS", "user.createSuccess");
         assetsMap.put("MSG_CREATE_REPORT_SUCCESS", "report.createSuccess");
+        assetsMap.put("MSG_CREATE_REPORT_ERROR", "report.createError");
         assetsMap.put("MSG_CREATE_AREA_SUCCESS", "area.createSuccess");
         assetsMap.put("MSG_CREATE_PLANT_SUCCESS", "plant.createSuccess");
 

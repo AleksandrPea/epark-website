@@ -18,11 +18,11 @@
             <c:forEach var="user" items="${requestScope[assets.ALL_USERS_ATTR_NAME]}">
                 <tr>
                     <td><a href="<c:url value="${assets.DISPLAY_USER_URI}/${user.id}"/>">
-                        ${requestScope[assets.ALL_CREDENTIALS_ATTR_NAME][user.id].login}</a></td>
-                    <td>${user.firstName}</td>
-                    <td>${user.lastName}</td>
+                        <c:out value="${requestScope[assets.ALL_CREDENTIALS_ATTR_NAME][user.id].login}"/></a></td>
+                    <td><c:out value="${user.firstName}"/></td>
+                    <td><c:out value="${user.lastName}"/></td>
                     <td><fmt:message key="user.role.${user.role}" bundle="${langUser}"/></td>
-                    <td>${user.email}</td>
+                    <td><c:out value="${user.email}"/></td>
                 </tr>
             </c:forEach>
             </tbody>

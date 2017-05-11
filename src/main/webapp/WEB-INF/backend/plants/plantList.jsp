@@ -14,31 +14,23 @@
     <div class="row">
         <c:forEach var="plant" items="${plantRow}">
         <div class="col-md-4 plant-item">
-            <c:choose>
-                <c:when test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
-                        || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.AREA_ATTR_NAME].taskmasterId}">
-                    <a href="<c:url value="${assets.EDIT_PLANT_URI}/${plant.id}"/>">
-                        <img class="img-responsive plant-img" src="${plant.imgPath}" alt=""/>
-                    </a>
-                </c:when>
-                <c:otherwise>
-                    <img class="img-responsive plant-img" src="${plant.imgPath}" alt=""/>
-                </c:otherwise>
-            </c:choose>
-
+            <img class="img-responsive plant-img" src="${fn:escapeXml(plant.imgPath)}" alt=""/>
             <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.AREA_ATTR_NAME].taskmasterId}">
+                <a href="<c:url value="${assets.EDIT_PLANT_URI}/${plant.id}"/>">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
                 <a href="<c:url value="${assets.DELETE_PLANT_URI}/${plant.id}"/>" class="confirm" role="button">
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </a>
             </c:if>
             <h3>
-                ${plant.name}
+                <c:out value="${plant.name}"/>
                 <small><em>
                     <fmt:message key="plant.state.${plant.state}" bundle="${langPlant}"/>
                 </em></small>
             </h3>
-            <p>${plant.description}</p>
+            <p><c:out value="${plant.description}"/></p>
         </div>
         </c:forEach>
     </div>

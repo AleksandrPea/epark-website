@@ -8,12 +8,14 @@
             <ul class="list-group">
                 <c:forEach var="area" items="${requestScope[assets.ALL_AREAS_ATTR_NAME]}">
                     <a href="#area${area.id}" data-toggle="collapse" class="list-group-item">
-                        ${area.name}
-                        <em class="pull-right">${requestScope[assets.AREA_TASKMASTERS_ATTR_NAME][area.id]}</em>
+                        <c:out value="${area.name}"/>
+                        <em class="pull-right">
+                            <c:out value="${requestScope[assets.AREA_TASKMASTERS_ATTR_NAME][area.id]}"/>
+                        </em>
                     </a>
                     <div id="area${area.id}" class="collapse">
                         <div class="list-group-item clearfix">
-                            <p>${area.description}</p>
+                            <p><c:out value="${area.description}"/></p>
                             <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
                                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == area.taskmasterId}">
 

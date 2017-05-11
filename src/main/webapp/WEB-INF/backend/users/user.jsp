@@ -11,28 +11,28 @@
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.login.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static">${requestScope[assets.CREDENTIAL_ATTR_NAME].login}</p>
+                    <p class="form-control-static"><c:out value="${requestScope[assets.CREDENTIAL_ATTR_NAME].login}"/></p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.firstName.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static">${requestScope[assets.USER_ATTR_NAME].firstName}</p>
+                    <p class="form-control-static"><c:out value="${requestScope[assets.USER_ATTR_NAME].firstName}"/></p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.lastName.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static">${requestScope[assets.USER_ATTR_NAME].lastName}</p>
+                    <p class="form-control-static"><c:out value="${requestScope[assets.USER_ATTR_NAME].lastName}"/></p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.email.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static">${requestScope[assets.USER_ATTR_NAME].email}</p>
+                    <p class="form-control-static"><c:out value="${requestScope[assets.USER_ATTR_NAME].email}"/></p>
                 </div>
             </div>
             <div class="form-group">
@@ -46,7 +46,7 @@
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.info.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static">${requestScope[assets.USER_ATTR_NAME].info}</p>
+                    <p class="form-control-static"><c:out value="${requestScope[assets.USER_ATTR_NAME].info}"/></p>
                 </div>
             </div>
             <c:if test="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME] != null}">
@@ -56,7 +56,7 @@
                     <div class="col-xs-8">
                         <p class="form-control-static">
                             <a href="<c:url value="${assets.DISPLAY_USER_URI}/${user.superiorId}"/>">
-                                ${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}
+                                <c:out value="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}"/>
                             </a>
                         </p>
                     </div>
@@ -70,7 +70,7 @@
                         <p class="form-control-static">
                             <c:forEach var="subordinateEntry" items="${requestScope[assets.SUBORDINATES_ATTR_NAME]}">
                                 <a href="<c:url value="${assets.DISPLAY_USER_URI}/${subordinateEntry.key}"/>">
-                                    ${subordinateEntry.value}
+                                    <c:out value="${subordinateEntry.value}"/>
                                 </a>
                             </c:forEach>
                         </p>

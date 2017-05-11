@@ -9,14 +9,17 @@
                 <div class="panel panel-default">
                     <a href="#received" data-toggle="collapse" class="list-group-item">
                         <h3><fmt:message key="task.taskListPage.received.label" bundle="${langTask}"/>
-                            <span class="badge">${requestScope[assets.NEW_RECEIVED_COUNT_ATTR_NAME]}</span></h3>
+                            <c:if test="${requestScope[assets.NEW_RECEIVED_COUNT_ATTR_NAME] > 0}">
+                                <span class="badge">${requestScope[assets.NEW_RECEIVED_COUNT_ATTR_NAME]}</span>
+                            </c:if>
+                        </h3>
                     </a>
                     <div id="received" class="panel-collapse collapse">
                         <div class="panel-body">
                             <c:forEach var="task" items="${requestScope[assets.CURRENT_USER_RECEIVED_TASKS_ATTR_NAME]}">
                                 <a href="<c:url value="${assets.DISPLAY_TASK_URI}/${task.id}"/>" class="list-group-item">
                                     <h5 class="list-group-item-heading">
-                                        ${task.title}
+                                        <c:out value="${task.title}"/>
                                         <small><fmt:message key="task.createdLabel" bundle="${langTask}"/>:
                                                 <fmt:formatDate pattern = "yyyy-MM-dd HH:mm" value = "${task.creationDate}"/>
                                         </small>
@@ -39,7 +42,7 @@
                             <c:forEach var="taskEntry" items="${requestScope[assets.CURRENT_USER_SENDED_TASKS_ATTR_NAME]}">
                                 <a href="<c:url value="${assets.DISPLAY_TASK_URI}/${taskEntry.key.id}"/>" class="list-group-item">
                                     <h5 class="list-group-item-heading">
-                                        ${taskEntry.key.title}
+                                        <c:out value="${taskEntry.key.title}"/>
                                         <small><fmt:message key="task.createdLabel" bundle="${langTask}"/>:
                                                 <fmt:formatDate pattern = "yyyy-MM-dd HH:mm" value = "${taskEntry.key.creationDate}"/>
                                         </small>
@@ -47,7 +50,7 @@
                                             <fmt:message key="task.state.${taskEntry.key.state}" bundle="${langTask}"/>
                                         </span>
                                     </h5>
-                                    <fmt:message key="task.for.label" bundle="${langTask}"/> ${taskEntry.value}
+                                    <fmt:message key="task.for.label" bundle="${langTask}"/> <c:out value="${taskEntry.value}"/>
                                 </a>
                             </c:forEach>
                         </div>

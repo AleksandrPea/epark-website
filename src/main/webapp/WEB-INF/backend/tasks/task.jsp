@@ -20,20 +20,20 @@
         <p><em>
             <fmt:message key="task.from.label" bundle="${langTask}"/>
             <a href="<c:url value="${assets.DISPLAY_USER_URI}/${requestScope[assets.TASK_RECEIVER_ATTR_NAME].userId}"/>">
-                ${requestScope[assets.TASK_RECEIVER_ATTR_NAME].login}
+                <c:out value="${requestScope[assets.TASK_RECEIVER_ATTR_NAME].login}"/>
             </a>
 
             <fmt:message key="task.for.label" bundle="${langTask}"/>
             <a href="<c:url value="${assets.DISPLAY_USER_URI}/${requestScope[assets.TASK_SENDER_ATTR_NAME].userId}"/>">
-                ${requestScope[assets.TASK_SENDER_ATTR_NAME].login}
+                <c:out value="${requestScope[assets.TASK_SENDER_ATTR_NAME].login}"/>
             </a>
         </em></p>
-        <p>${requestScope[assets.TASK_ATTR_NAME].comment}</p>
+        <p><c:out value="${requestScope[assets.TASK_ATTR_NAME].comment}"/></p>
         <p>
             <strong><fmt:message key="task.taskPage.plants" bundle="${langTask}"/>: </strong>
             <c:forEach var="plant" items="${requestScope[assets.TASK_PLANTS_ATTR_NAME]}">
                 <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/${plant.areaId}/1"/>">
-                    ${plant.name}</a>,
+                    <c:out value="${plant.name}"/></a>,
             </c:forEach>
         <p>
         <ul class="reports list-unstyled">
@@ -47,8 +47,8 @@
                             </a>
                         </c:if>
                     </h3>
-                    <img class="img-responsive center-block" src="${report.imgPath}" alt=""/>
-                    <p class="report-text">${report.comment}</p>
+                    <img class="img-responsive center-block" src="${fn:escapeXml(report.imgPath)}" alt=""/>
+                    <p class="report-text"><c:out value="${report.comment}"/></p>
                 </li>
             </c:forEach>
         </ul>

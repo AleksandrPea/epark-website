@@ -12,10 +12,7 @@ import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CreateAreaHandler implements RequestHandler {
 
@@ -44,20 +41,35 @@ public class CreateAreaHandler implements RequestHandler {
         return abstractViewName;
     }
 
-
-
     private boolean tryToCreateArea(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        if (areParametersInvalid(request, formMessages)) { return false; }
         AppAssets assets = AppAssets.getInstance();
         String taskmasterLogin = request.getParameter(assets.get("TASKMASTER_LOGIN_PARAM_NAME"));
         User taskmaster = ServiceFactoryImpl.getInstance().getUserService().getByLogin(taskmasterLogin);
         if (userIsNotExists(taskmaster, formMessages)) {return false;}
         if (isTaskmasterInvalid(taskmaster, formMessages)) {return false;}
+
         String name = request.getParameter(assets.get("AREA_NAME_PARAM_NAME"));
         String description = request.getParameter(assets.get("AREA_DESCRIPTION_PARAM_NAME"));
         Area area = new Area.Builder().setName(name).setDescription(description)
                 .setTaskmasterId(taskmaster.getId()).build();
         ServiceFactoryImpl.getInstance().getAreaService().create(area);
         return true;
+    }
+
+    protected boolean areParametersInvalid(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        AppAssets assets = AppAssets.getInstance();
+        Set<FrontendMessage> validationMessages = new HashSet<>();
+        ControllerUtils.validateName(request.getParameter(assets.get("TASKMASTER_LOGIN_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("TASKMASTER_LOGIN_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateName(request.getParameter(assets.get("AREA_NAME_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("AREA_NAME_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        ControllerUtils.validateText(request.getParameter(assets.get("AREA_DESCRIPTION_PARAM_NAME")))
+                .ifPresent(msg -> {formMessages.put(assets.get("AREA_DESCRIPTION_PARAM_NAME"), msg); validationMessages.add(msg);});
+
+        return !validationMessages.isEmpty();
     }
 
     protected boolean isTaskmasterInvalid(User taskmaster,Map<String, FrontendMessage> formMessages) {

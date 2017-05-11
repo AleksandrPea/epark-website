@@ -18,21 +18,23 @@
                     value="${requestScope[assets.PLANT_ID_ATTR_NAME]}"/>
             </c:if>
 
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="name">
                     <fmt:message key="plant.name.label" bundle="${langPlant}"/></label>
-                <input type="text" class="form-control" id="name"
+                <input type="text" class="form-control" id="name" required
                        placeholder="<fmt:message key="plant.name.label" bundle="${langPlant}"/>"
                        name="${assets.PLANT_NAME_PARAM_NAME}"
                        value="${fn:escapeXml(requestScope[assets.PLANT_NAME_ATTR_NAME])}"/>
+                <mytags:formMessages formInputName="${assets.PLANT_NAME_PARAM_NAME}"/>
             </div>
 
-            <div class="form-group">
+            <div class="form-group validated">
                 <label class="control-label" for="description">
                     <fmt:message key="plant.description.label" bundle="${langPlant}"/></label>
                 <textarea class="form-control" id="description" rows="8"
                        placeholder="<fmt:message key="plant.description.label" bundle="${langPlant}"/>"
-                       name="${assets.PLANT_DESCRIPTION_PARAM_NAME}">${requestScope[assets.PLANT_DESCRIPTION_ATTR_NAME]}</textarea>
+                       name="${assets.PLANT_DESCRIPTION_PARAM_NAME}"><c:out value="${requestScope[assets.PLANT_DESCRIPTION_ATTR_NAME]}"/></textarea>
+                <mytags:formMessages formInputName="${assets.PLANT_DESCRIPTION_PARAM_NAME}"/>
             </div>
 
             <div class="form-group required">
@@ -56,13 +58,14 @@
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group validated">
                 <label class="control-label" for="imgPath">
                     <fmt:message key="plant.imgPath.label" bundle="${langPlant}"/></label>
                 <input type="text" class="form-control" id="imgPath"
                        placeholder="<fmt:message key="plant.imgPath.label" bundle="${langPlant}"/>"
                        name="${assets.PLANT_IMG_PATH_PARAM_NAME}"
                        value="${fn:escapeXml(requestScope[assets.PLANT_IMG_PATH_ATTR_NAME])}"/>
+                <mytags:formMessages formInputName="${assets.PLANT_IMG_PATH_PARAM_NAME}"/>
             </div>
 
             <c:choose>
@@ -79,7 +82,7 @@
                                 name="${assets.AREA_ID_PARAM_NAME}">
                             <c:forEach var="area" items="${requestScope[assets.ALL_AREAS_ATTR_NAME]}">
                                 <option value="${area.id}" ${(requestScope[assets.AREA_ATTR_NAME].id == area.id) ? 'selected' : ''}>
-                                    ${area.name}
+                                    <c:out value="${area.name}"/>
                                 </option>
                             </c:forEach>
                         </select>

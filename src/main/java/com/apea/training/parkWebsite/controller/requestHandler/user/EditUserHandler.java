@@ -71,6 +71,7 @@ public class EditUserHandler extends CreateUserHandler {
     }
 
     private boolean tryToEditUser(HttpServletRequest request, User user, Map<String, FrontendMessage> formMessages) {
+        if (areParametersInvalid(request, formMessages)) {return false;}
         AppAssets assets = AppAssets.getInstance();
         UserService userService = ServiceFactoryImpl.getInstance().getUserService();
         String superiorLogin = request.getParameter(assets.get("SUPERIOR_LOGIN_PARAM_NAME"));

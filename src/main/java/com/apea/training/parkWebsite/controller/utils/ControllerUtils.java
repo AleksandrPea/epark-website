@@ -2,6 +2,7 @@ package com.apea.training.parkWebsite.controller.utils;
 
 import com.apea.training.parkWebsite.controller.AppAssets;
 import com.apea.training.parkWebsite.controller.exception.AccessDeniedException;
+import com.apea.training.parkWebsite.controller.message.FrontMessageFactory;
 import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.domain.Plant;
@@ -103,5 +104,42 @@ public class ControllerUtils {
         }
 
         return assets.get("GENERAL_ERROR_VIEW_NAME");
+    }
+
+    /** @return empty optional if name is valid. Otherwise returns error message */
+    public static Optional<FrontendMessage> validateName(String name) {
+        AppAssets assets = AppAssets.getInstance();
+        if (name.matches(assets.get("NAME_REGEX"))) {
+            return Optional.empty();
+        } else {
+            return  Optional.of(FrontMessageFactory.getInstance().getError(assets.get("NAME_VALIDATION_FAILED")));
+        }
+    }
+
+    public static Optional<FrontendMessage> validateText(String text) {
+        AppAssets assets = AppAssets.getInstance();
+        if (text.matches(assets.get("TEXT_REGEX"))) {
+            return Optional.empty();
+        } else {
+            return  Optional.of(FrontMessageFactory.getInstance().getError(assets.get("TEXT_VALIDATION_FAILED")));
+        }
+    }
+
+    public static Optional<FrontendMessage> validatePassword(String password) {
+        AppAssets assets = AppAssets.getInstance();
+        if (password.matches(assets.get("PASSWORD_REGEX"))) {
+            return Optional.empty();
+        } else {
+            return  Optional.of(FrontMessageFactory.getInstance().getError(assets.get("PASSWORD_VALIDATION_FAILED")));
+        }
+    }
+
+    public static Optional<FrontendMessage> validateEmail(String email) {
+        AppAssets assets = AppAssets.getInstance();
+        if (email.matches(assets.get("EMAIL_REGEX"))) {
+            return Optional.empty();
+        } else {
+            return  Optional.of(FrontMessageFactory.getInstance().getError(assets.get("EMAIL_VALIDATION_FAILED")));
+        }
     }
 }

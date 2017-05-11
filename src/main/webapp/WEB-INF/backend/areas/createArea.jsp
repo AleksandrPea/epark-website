@@ -17,27 +17,29 @@
                     name="${assets.AREA_ID_PARAM_NAME}"
                     value="${requestScope[assets.AREA_ID_ATTR_NAME]}"/>
             </c:if>
-            <div class="form-group required">
+            <div class="form-group validated required">
                 <label class="control-label" for="name">
                     <fmt:message key="area.name.label" bundle="${langArea}"/></label>
-                <input type="text" class="form-control" id="name"
+                <input type="text" class="form-control" id="name" required
                        placeholder="<fmt:message key="area.name.label" bundle="${langArea}"/>"
                        name="${assets.AREA_NAME_PARAM_NAME}"
                        value="${fn:escapeXml(requestScope[assets.AREA_NAME_ATTR_NAME])}"/>
+                <mytags:formMessages formInputName="${assets.AREA_NAME_PARAM_NAME}"/>
             </div>
 
-            <div class="form-group">
+            <div class="form-group validated">
                 <label class="control-label" for="description">
                     <fmt:message key="area.description.label" bundle="${langArea}"/></label>
                 <textarea class="form-control" id="description" rows="8"
                        placeholder="<fmt:message key="area.description.label" bundle="${langArea}"/>"
                        name="${assets.AREA_DESCRIPTION_PARAM_NAME}"><c:out value="${requestScope[assets.AREA_DESCRIPTION_ATTR_NAME]}"/></textarea>
+                <mytags:formMessages formInputName="${assets.AREA_DESCRIPTION_PARAM_NAME}"/>
             </div>
 
             <div class="form-group validated required">
                 <label class="control-label" for="taskmasterLogin">
                     <fmt:message key="area.taskmasterLogin.label" bundle="${langArea}"/></label>
-                <input type="text" class="form-control" id="taskmasterLogin"
+                <input type="text" class="form-control" id="taskmasterLogin" required
                        placeholder="<fmt:message key="area.taskmasterLogin.label" bundle="${langArea}"/>"
                        name="${assets.TASKMASTER_LOGIN_PARAM_NAME}"
                        value="${fn:escapeXml(requestScope[assets.TASKMASTER_LOGIN_ATTR_NAME])}"/>
