@@ -12,7 +12,7 @@
 hs_err_pid*
 
 *.iml
-*.log
+.logs/
 .idea
 target/
 .db
