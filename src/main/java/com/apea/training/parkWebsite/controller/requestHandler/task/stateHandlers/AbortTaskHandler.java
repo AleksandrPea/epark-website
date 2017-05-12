@@ -19,15 +19,16 @@ public class AbortTaskHandler implements RequestHandler {
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         if (!isCurrentUserSender(request)) {throw new AccessDeniedException("Current user is not a sender.");}
+        String taskId = request.getParameter(assets.get("ID_PARAM_NAME"));
+        if (taskId == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        ServiceFactoryImpl.getInstance().getTaskService().setState(id, Task.State.INCOMPLETED);
+        ServiceFactoryImpl.getInstance().getTaskService().setState(Integer.valueOf(taskId), Task.State.INCOMPLETED);
         return REDIRECT + assets.get("DISPLAY_USER_TASKS_URI");
     }
 
     private boolean isCurrentUserSender(HttpServletRequest request) {
-        Integer taskId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        Task task = ServiceFactoryImpl.getInstance().getTaskService().getById(taskId);
+        String taskId = request.getParameter(AppAssets.getInstance().get("ID_PARAM_NAME"));
+        Task task = ServiceFactoryImpl.getInstance().getTaskService().getById(Integer.valueOf(taskId));
         User currentUser = ControllerUtils.getCurrentUser(request);
         if (task.getSenderId().equals(currentUser.getId())) {
             return true;

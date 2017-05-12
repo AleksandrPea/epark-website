@@ -18,6 +18,8 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("CHARACTER_ENCODING", "UTF-8");
 
         //************************* ATTRIBUTES *********************************
+        assetsMap.put("LANGUAGE_ATTR_NAME", "language");
+
         assetsMap.put("MESSAGES_ATTR_NAME", "messages");
         assetsMap.put("GENERAL_MESSAGES_BLOCK_NAME", "generalMessages");
         assetsMap.put("CURRENT_USER_ID_ATTR_NAME", "currentUserId");
@@ -80,6 +82,9 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("PLANT_STATE_ATTR_NAME", "plantState");
 
         //************************* PARAMS **********************************
+        assetsMap.put("ID_PARAM_NAME", "id");
+        assetsMap.put("PAGE_PARAM_NAME", "page");
+
         assetsMap.put("LOGIN_PARAM_NAME", "login");
         assetsMap.put("PASSWORD_PARAM_NAME", "password");
         assetsMap.put("FIRSTNAME_PARAM_NAME", "firstName");
@@ -111,7 +116,7 @@ public class AppAssets extends AbstractMap<String, String> {
 
         //************************* REGEX for validation ***************************
         assetsMap.put("NAME_REGEX", "[а-яА-ЯіІїЇєЄёЁ\\w\\s!&?$#@'\"-]{1,30}");
-        assetsMap.put("TEXT_REGEX", "[^(<|>).]*");
+        assetsMap.put("TEXT_REGEX", "[^<>]*");
         assetsMap.put("PASSWORD_REGEX", "[\\w]{4,12}");
         assetsMap.put("EMAIL_REGEX", "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$");
 
@@ -163,6 +168,7 @@ public class AppAssets extends AbstractMap<String, String> {
         assetsMap.put("ACCESS_DENIED_ERROR_VIEW_NAME", "errors/accessDenied");
 
         assetsMap.put("LOGIN_PAGE", "/login.jsp");
+        assetsMap.put("HOME_PAGE", "/home.jsp");
 
         //************************* MESSAGES **********************************
         assetsMap.put("MSG_CREDENTIALS_ARE_NOT_CORRECT", "validation.credentialsAreNotCorrect");

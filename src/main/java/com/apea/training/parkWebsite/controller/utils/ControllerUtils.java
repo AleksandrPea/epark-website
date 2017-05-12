@@ -41,21 +41,21 @@ public class ControllerUtils {
         return ServiceFactoryImpl.getInstance().getUserService().getById(id);
     }
 
-    public static int getFirstIdFromUri(String uri) {
-        return getIntFromUri(uri, 0);
-    }
-
-    public static int getIntFromUri(String uri, int index) {
-        Matcher matcher = Pattern.compile("\\d+").matcher(uri);
-
-        for(int i = 0; i <= index; i++) {
-            if (!matcher.find()) {
-                throw new IllegalArgumentException("There is no id in uri " + uri);
-            }
-        }
-
-        return Integer.parseInt(matcher.group());
-    }
+//    public static int getFirstIdFromUri(String uri) {
+//        return getIntFromUri(uri, 0);
+//    }
+//
+//    public static int getIntFromUri(String uri, int index) {
+//        Matcher matcher = Pattern.compile("\\d+").matcher(uri);
+//
+//        for(int i = 0; i <= index; i++) {
+//            if (!matcher.find()) {
+//                throw new IllegalArgumentException("There is no id in uri " + uri);
+//            }
+//        }
+//
+//        return Integer.parseInt(matcher.group());
+//    }
 
     public static void saveGeneralMsgsInSession(HttpServletRequest request,
                                                 List<FrontendMessage> generalMessages) {

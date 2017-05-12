@@ -20,6 +20,7 @@ public class DisplayEditPlantPageHandler implements RequestHandler {
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         if (ControllerUtils.getCurrentUserRole(request) == User.Role.FORESTER) {throw new AccessDeniedException("User is not the owner or a taskmaster");}
+        if (request.getParameter(assets.get("ID_PARAM_NAME")) == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
         setFormAttributes(request);
         request.setAttribute(assets.get("ALL_AREAS_ATTR_NAME"),
@@ -30,10 +31,10 @@ public class DisplayEditPlantPageHandler implements RequestHandler {
 
     private void setFormAttributes(HttpServletRequest request) {
         AppAssets assets = AppAssets.getInstance();
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        Plant plant = ServiceFactoryImpl.getInstance().getPlantService().getById(id);
+        Integer plantId = Integer.valueOf(request.getParameter(assets.get("ID_PARAM_NAME")));
+        Plant plant = ServiceFactoryImpl.getInstance().getPlantService().getById(plantId);
         Area area = ServiceFactoryImpl.getInstance().getAreaService().getById(plant.getAreaId());
-        request.setAttribute(assets.get("PLANT_ID_ATTR_NAME"), id);
+        request.setAttribute(assets.get("PLANT_ID_ATTR_NAME"), plantId);
         request.setAttribute(assets.get("PLANT_NAME_ATTR_NAME"), plant.getName());
         request.setAttribute(assets.get("PLANT_DESCRIPTION_ATTR_NAME"), plant.getDescription());
         request.setAttribute(assets.get("PLANT_IMG_PATH_ATTR_NAME"), plant.getImgPath());

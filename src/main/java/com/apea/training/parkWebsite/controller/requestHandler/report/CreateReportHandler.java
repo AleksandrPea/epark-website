@@ -29,7 +29,7 @@ public class CreateReportHandler implements RequestHandler {
         }
         String taskId = request.getParameter(assets.get("TASK_ID_PARAM_NAME"));
         ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
-        return REDIRECT + assets.get("DISPLAY_TASK_URI") + "/"+taskId;
+        return REDIRECT + assets.get("DISPLAY_TASK_URI") + "?"+assets.get("ID_PARAM_NAME")+"="+taskId;
     }
 
     private boolean tryToCreateReport(HttpServletRequest request) {

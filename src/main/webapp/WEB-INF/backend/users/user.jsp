@@ -55,7 +55,7 @@
                         <fmt:message key="user.superior.label" bundle="${langUser}"/></label>
                     <div class="col-xs-8">
                         <p class="form-control-static">
-                            <a href="<c:url value="${assets.DISPLAY_USER_URI}/${user.superiorId}"/>">
+                            <a href="<c:url value="${assets.DISPLAY_USER_URI}?${assets.ID_PARAM_NAME}=${user.superiorId}"/>">
                                 <c:out value="${requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME]}"/>
                             </a>
                         </p>
@@ -69,7 +69,7 @@
                     <div class="col-xs-8">
                         <p class="form-control-static">
                             <c:forEach var="subordinateEntry" items="${requestScope[assets.SUBORDINATES_ATTR_NAME]}">
-                                <a href="<c:url value="${assets.DISPLAY_USER_URI}/${subordinateEntry.key}"/>">
+                                <a href="<c:url value="${assets.DISPLAY_USER_URI}?${assets.ID_PARAM_NAME}=${subordinateEntry.key}"/>">
                                     <c:out value="${subordinateEntry.value}"/>
                                 </a>
                             </c:forEach>
@@ -83,7 +83,7 @@
                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.USER_ATTR_NAME].id
                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.USER_ATTR_NAME].superiorId}">
 
-                <a href="<c:url value="${assets.EDIT_USER_URI}/${requestScope[assets.USER_ATTR_NAME].id}"/>"
+                <a href="<c:url value="${assets.EDIT_USER_URI}?${assets.ID_PARAM_NAME}=${requestScope[assets.USER_ATTR_NAME].id}"/>"
                         class="btn btn-default" role="button">
                     <fmt:message key="user.page.editButton" bundle="${langUser}"/>
                 </a>
@@ -91,7 +91,7 @@
             <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
                     && sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] != requestScope[assets.USER_ATTR_NAME].id
                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.USER_ATTR_NAME].superiorId}">
-                <a href="<c:url value="${assets.DELETE_USER_URI}/${requestScope[assets.USER_ATTR_NAME].id}"/>"
+                <a href="<c:url value="${assets.DELETE_USER_URI}?${assets.ID_PARAM_NAME}=${requestScope[assets.USER_ATTR_NAME].id}"/>"
                         class="btn btn-danger confirm" role="button">
                     <fmt:message key="user.page.deleteButton" bundle="${langUser}"/>
                 </a>

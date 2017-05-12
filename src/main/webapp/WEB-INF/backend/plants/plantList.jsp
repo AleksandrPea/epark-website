@@ -17,10 +17,10 @@
             <img class="img-responsive plant-img" src="${fn:escapeXml(plant.imgPath)}" alt=""/>
             <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
                     || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.AREA_ATTR_NAME].taskmasterId}">
-                <a href="<c:url value="${assets.EDIT_PLANT_URI}/${plant.id}"/>">
+                <a href="<c:url value="${assets.EDIT_PLANT_URI}?${assets.ID_PARAM_NAME}=${plant.id}"/>">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
-                <a href="<c:url value="${assets.DELETE_PLANT_URI}/${plant.id}"/>" class="confirm" role="button">
+                <a href="<c:url value="${assets.DELETE_PLANT_URI}?${assets.ID_PARAM_NAME}=${plant.id}"/>" class="confirm" role="button">
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </a>
             </c:if>
@@ -38,7 +38,7 @@
 
 <c:if test="${sessionScope[assets.CURRENT_USER_ROLE_ATTR_NAME] == 'OWNER'
         || sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.AREA_ATTR_NAME].taskmasterId}">
-    <a href="<c:url value="${assets.CREATE_PLANT_URI}/${requestScope[assets.AREA_ATTR_NAME].id}"/>"
+    <a href="<c:url value="${assets.CREATE_PLANT_URI}?${assets.AREA_ID_PARAM_NAME}=${requestScope[assets.AREA_ATTR_NAME].id}"/>"
             class="btn btn-primary" role="button">
         <fmt:message key="plant.plantList.createButton" bundle="${langPlant}"/>
     </a>
@@ -55,13 +55,15 @@
                         <a href="#">&laquo;</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/${requestScope[assets.AREA_ATTR_NAME].id}/${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME]-1}"/>">&laquo;</a>
+                        <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}?${assets.AREA_ID_PARAM_NAME}=${requestScope[assets.AREA_ATTR_NAME].id}&${
+                                assets.PAGE_PARAM_NAME}=${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME]-1}"/>">&laquo;</a>
                     </c:otherwise>
                 </c:choose>
             </li>
             <c:forEach var = "page" begin = "1" end = "${requestScope[assets.MAX_PLANT_PAGES_ATTR_NAME]}">
                 <li class="${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME] == page ? 'active' :''}">
-                    <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/${requestScope[assets.AREA_ATTR_NAME].id}/${page}"/>">${page}</a>
+                    <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}?${assets.AREA_ID_PARAM_NAME}=${requestScope[assets.AREA_ATTR_NAME].id}&${
+                            assets.PAGE_PARAM_NAME}=${page}"/>">${page}</a>
                 </li>
             </c:forEach>
             <li>
@@ -70,7 +72,8 @@
                         <a href="#">&raquo;</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/${requestScope[assets.AREA_ATTR_NAME].id}/${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME]+1}"/>">&raquo;</a>
+                        <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}?${assets.AREA_ID_PARAM_NAME}=${requestScope[assets.AREA_ATTR_NAME].id}&${
+                                assets.PAGE_PARAM_NAME}=${requestScope[assets.CURRENT_PLANT_PAGE_ATTR_NAME]+1}"/>">&raquo;</a>
                     </c:otherwise>
                 </c:choose>
             </li>

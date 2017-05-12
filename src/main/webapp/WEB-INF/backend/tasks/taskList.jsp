@@ -17,7 +17,7 @@
                     <div id="received" class="panel-collapse collapse">
                         <div class="panel-body">
                             <c:forEach var="task" items="${requestScope[assets.CURRENT_USER_RECEIVED_TASKS_ATTR_NAME]}">
-                                <a href="<c:url value="${assets.DISPLAY_TASK_URI}/${task.id}"/>" class="list-group-item">
+                                <a href="<c:url value="${assets.DISPLAY_TASK_URI}?${assets.ID_PARAM_NAME}=${task.id}"/>" class="list-group-item">
                                     <h5 class="list-group-item-heading">
                                         <c:out value="${task.title}"/>
                                         <small><fmt:message key="task.createdLabel" bundle="${langTask}"/>:
@@ -40,7 +40,7 @@
                     <div id="sended" class="panel-collapse collapse">
                         <div class="panel-body">
                             <c:forEach var="taskEntry" items="${requestScope[assets.CURRENT_USER_SENDED_TASKS_ATTR_NAME]}">
-                                <a href="<c:url value="${assets.DISPLAY_TASK_URI}/${taskEntry.key.id}"/>" class="list-group-item">
+                                <a href="<c:url value="${assets.DISPLAY_TASK_URI}?${assets.ID_PARAM_NAME}=${taskEntry.key.id}"/>" class="list-group-item">
                                     <h5 class="list-group-item-heading">
                                         <c:out value="${taskEntry.key.title}"/>
                                         <small><fmt:message key="task.createdLabel" bundle="${langTask}"/>:

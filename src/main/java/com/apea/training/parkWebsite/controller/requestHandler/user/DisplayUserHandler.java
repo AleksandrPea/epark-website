@@ -7,6 +7,7 @@ import com.apea.training.parkWebsite.domain.User;
 import com.apea.training.parkWebsite.service.CredentialService;
 import com.apea.training.parkWebsite.service.UserService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,14 +21,17 @@ public class DisplayUserHandler implements RequestHandler {
         AppAssets assets = AppAssets.getInstance();
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        String userId = request.getParameter(assets.get("ID_PARAM_NAME"));
+        if (userId == null) {return REDIRECT + assets.get("HOME_PAGE"); }
 
         CredentialService credentialService = ServiceFactoryImpl.getInstance().getCredentialService();
         UserService userService = ServiceFactoryImpl.getInstance().getUserService();
-        int userId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        User user = userService.getById(userId);
+
+
+        User user = userService.getById(Integer.valueOf(userId));
         request.setAttribute(assets.get("USER_ATTR_NAME"), user);
         request.setAttribute(assets.get("CREDENTIAL_ATTR_NAME"),
-                credentialService.getByUserId(userId));
+                credentialService.getByUserId(Integer.valueOf(userId)));
         if (user.getSuperiorId() != null) {
             request.setAttribute(assets.get("SUPERIOR_LOGIN_ATTR_NAME"),
                     credentialService.getByUserId(user.getSuperiorId()).getLogin());

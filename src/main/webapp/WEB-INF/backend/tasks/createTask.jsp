@@ -5,8 +5,7 @@
 <div class="row">
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">
         <h3 class="text-center">
-            <fmt:message key="${requestScope[assets.IS_CREATING_TASK_ATTR_NAME] ?
-                'task.createPage.title' : 'task.editPage.title'}" bundle="${langTask}"/>
+            <fmt:message key="task.createPage.title" bundle="${langTask}"/>
         </h3>
         <form method="POST" name="createTaskForm" id="createTaskForm"
               action="<c:url value="${assets.CREATE_TASK_URI}"/>"

@@ -18,8 +18,9 @@ $(function () {
     $("a.language-picker").click(function(e) {
         e.preventDefault();
         var language = $(this).attr('href');
-        var href = window.location.href.split(/\?language=[\w]{5}/)[0];
-        window.location.replace(href+"?language="+language);
+        var href = window.location.href.split(/[&]?language=[\w]{5}/)[0];
+        var symbol = href.indexOf("?") > 0 ? "&" : "?";
+        window.location.replace(href+symbol+"language="+language);
     });
 
     // for activating top buttons on navigation

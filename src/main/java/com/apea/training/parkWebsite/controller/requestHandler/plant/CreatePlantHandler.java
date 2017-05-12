@@ -22,6 +22,8 @@ public class CreatePlantHandler implements RequestHandler {
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         if (ControllerUtils.getCurrentUserRole(request) == User.Role.FORESTER) {throw new AccessDeniedException("User is not the owner or a taskmaster");}
+        String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
+        if (areaId == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
         Map<String, FrontendMessage> formMessages = new HashMap<>();
         List<FrontendMessage> generalMessages = new ArrayList<>();
@@ -31,8 +33,9 @@ public class CreatePlantHandler implements RequestHandler {
             generalMessages.add(FrontMessageFactory.getInstance()
                     .getSuccess(assets.get("MSG_CREATE_PLANT_SUCCESS")));
             ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
-            String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
-            abstractViewName = REDIRECT + assets.get("DISPLAY_PLANTS_URI")+"/"+areaId+"/1";
+
+            abstractViewName = REDIRECT + assets.get("DISPLAY_PLANTS_URI")+"?"+assets.get("AREA_ID_PARAM_NAME")+
+                    "="+areaId+"&"+assets.get("PAGE_PARAM_NAME")+"=1";
         } else {
             setFormAttributes(request, formMessages);
             request.setAttribute(assets.get("IS_CREATING_PLANT_ATTR_NAME"), true);
@@ -78,11 +81,11 @@ public class CreatePlantHandler implements RequestHandler {
         String imgPath = request.getParameter(assets.get("PLANT_IMG_PATH_PARAM_NAME"));
         String state = request.getParameter(assets.get("PLANT_STATE_PARAM_NAME"));
         String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
-        request.setAttribute(assets.get("PLANT_NAME_PARAM_NAME"), name);
-        request.setAttribute(assets.get("PLANT_DESCRIPTION_PARAM_NAME"), description);
-        request.setAttribute(assets.get("PLANT_IMG_PATH_PARAM_NAME"), imgPath);
-        request.setAttribute(assets.get("PLANT_STATE_PARAM_NAME"), state);
-        request.setAttribute(assets.get("AREA_ID_PARAM_NAME"), areaId);
+        request.setAttribute(assets.get("PLANT_NAME_ATTR_NAME"), name);
+        request.setAttribute(assets.get("PLANT_DESCRIPTION_ATTR_NAME"), description);
+        request.setAttribute(assets.get("PLANT_IMG_PATH_ATTR_NAME"), imgPath);
+        request.setAttribute(assets.get("PLANT_STATE_ATTR_NAME"), state);
+        request.setAttribute(assets.get("AREA_ID_ATTR_NAME"), areaId);
 
         request.setAttribute(assets.get("MESSAGES_ATTR_NAME"), formMessages);
     }

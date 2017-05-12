@@ -21,7 +21,7 @@ public class DisplayCreateUserPageHandler implements RequestHandler {
 
         request.setAttribute(assets.get("IS_CREATING_USER_ATTR_NAME"), true);
         Integer id = ControllerUtils.getCurrentUserId(request);
-        request.setAttribute(assets.get("CURRENT_USER_LOGIN_ATTR_NAME"),
+        request.setAttribute(assets.get("SUPERIOR_LOGIN_ATTR_NAME"),
                 ServiceFactoryImpl.getInstance().getCredentialService().getByUserId(id).getLogin());
         return FORWARD + assets.get("CREATE_USER_VIEW_NAME");
     }

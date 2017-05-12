@@ -19,15 +19,16 @@ public class ReceiveTaskHandler implements RequestHandler {
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         if (!isCurrentUserReceiver(request)) {throw new AccessDeniedException("Current user is not a receiver.");}
+        String taskId = request.getParameter(assets.get("ID_PARAM_NAME"));
+        if (taskId == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        ServiceFactoryImpl.getInstance().getTaskService().setState(id, Task.State.RUNNING);
-        return REDIRECT + assets.get("DISPLAY_TASK_URI")+"/"+id;
+        ServiceFactoryImpl.getInstance().getTaskService().setState(Integer.valueOf(taskId), Task.State.RUNNING);
+        return REDIRECT + assets.get("DISPLAY_TASK_URI")+"?"+assets.get("ID_PARAM_NAME")+"="+taskId;
     }
 
     private boolean isCurrentUserReceiver(HttpServletRequest request) {
-        Integer taskId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        Task task = ServiceFactoryImpl.getInstance().getTaskService().getById(taskId);
+        String taskId = request.getParameter(AppAssets.getInstance().get("ID_PARAM_NAME"));
+        Task task = ServiceFactoryImpl.getInstance().getTaskService().getById(Integer.valueOf(taskId));
         User currentUser = ControllerUtils.getCurrentUser(request);
         if (task.getReceiverId().equals(currentUser.getId())) {
             return true;

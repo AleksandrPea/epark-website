@@ -3,7 +3,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/"><fmt:message key="header.siteName" bundle="${langGeneral}"/></a>
+            <a class="navbar-brand" href="<c:url value="${assets.HOME_PAGE}"/>"><fmt:message key="header.siteName" bundle="${langGeneral}"/></a>
         </div>
         <c:choose>
             <c:when test="${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] != null}">
@@ -32,7 +32,7 @@
                             <li><a class="language-picker" href="ru_RU"><fmt:message key="language.russian" bundle="${langGeneral}"/></a></li>
                         </ul>
                     </li>
-                    <li><a href="<c:url value="${assets.DISPLAY_USER_URI}/${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME]}"/>">
+                    <li><a href="<c:url value="${assets.DISPLAY_USER_URI}?${assets.ID_PARAM_NAME}=${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME]}"/>">
                         <span class="glyphicon glyphicon-user">
                         </span> <fmt:message key="myAccount.label" bundle="${langGeneral}"/>
                     </a></li>

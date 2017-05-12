@@ -5,9 +5,8 @@
 <%@ taglib prefix="mytags" uri="http://parkWebsite.com/jsp/tlds/mytags" %>
 <fmt:setBundle basename="webProject.i18n.backend.general" var="langGeneral"/>
 
-<c:if test="${not empty param.language}">
-    <c:set var="language" value="${param.language}" scope="session"/>
-</c:if>
+<c:set var="language" value="${not empty param.language ? param.language :
+        not empty language ? language : pageContext.request.locale}" scope="session"/>
 <fmt:setLocale value="${language}"/>
 
 <!DOCTYPE html>

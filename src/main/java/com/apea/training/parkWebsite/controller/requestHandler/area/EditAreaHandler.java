@@ -57,4 +57,12 @@ public class EditAreaHandler extends CreateAreaHandler {
         ServiceFactoryImpl.getInstance().getAreaService().update(area);
         return true;
     }
+
+    @Override
+    protected void setFormAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        super.setFormAttributes(request, formMessages);
+        AppAssets assets = AppAssets.getInstance();
+        String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
+        request.setAttribute(assets.get("AREA_ID_ATTR_NAME"), areaId);
+    }
 }

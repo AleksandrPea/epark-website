@@ -93,7 +93,7 @@
                         <input type="text" class="form-control" id="userRole"
                                readonly
                                name="${assets.ROLE_PARAM_NAME}"
-                               value="<fmt:message key="user.role.FORESTER" bundle="${langUser}"/>"/>
+                               value="FORESTER"/>
                     </c:when>
                     <c:otherwise>
                          <input type="text" class="form-control" id="userRole"
@@ -123,12 +123,6 @@
                                placeholder="<fmt:message key="user.superiorLogin.label" bundle="${langUser}"/>"
                                name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
                                value="${fn:escapeXml(requestScope[assets.SUPERIOR_LOGIN_ATTR_NAME])}"/>
-                    </c:when>
-                    <c:when test="${requestScope[assets.IS_CREATING_USER_ATTR_NAME]}">
-                        <input type="text" class="form-control" id="superiorLogin"
-                                readonly
-                                name="${assets.SUPERIOR_LOGIN_PARAM_NAME}"
-                                value="${fn:escapeXml(requestScope[assets.CURRENT_USER_LOGIN_ATTR_NAME])}"/>
                     </c:when>
                     <c:otherwise>
                         <input type="text" class="form-control" id="superiorLogin"

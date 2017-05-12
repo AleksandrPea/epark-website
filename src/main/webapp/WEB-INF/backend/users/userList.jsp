@@ -17,7 +17,7 @@
             <tbody>
             <c:forEach var="user" items="${requestScope[assets.ALL_USERS_ATTR_NAME]}">
                 <tr>
-                    <td><a href="<c:url value="${assets.DISPLAY_USER_URI}/${user.id}"/>">
+                    <td><a href="<c:url value="${assets.DISPLAY_USER_URI}?${assets.ID_PARAM_NAME}=${user.id}"/>">
                         <c:out value="${requestScope[assets.ALL_CREDENTIALS_ATTR_NAME][user.id].login}"/></a></td>
                     <td><c:out value="${user.firstName}"/></td>
                     <td><c:out value="${user.lastName}"/></td>
