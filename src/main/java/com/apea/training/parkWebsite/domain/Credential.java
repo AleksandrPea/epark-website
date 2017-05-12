@@ -6,6 +6,8 @@ public class Credential {
     private String login;
     private String password;
 
+    public Credential() {}
+
     public Credential(Integer userId, String login, String password) {
         this.userId = userId;
         this.login = login;

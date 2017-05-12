@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
 
-    UserServiceImpl() {
-    }
+    UserServiceImpl() {}
 
     @Override
     public void create(User user, Credential credential) {
