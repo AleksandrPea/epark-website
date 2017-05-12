@@ -17,9 +17,10 @@ public class DisplayCreatePlantPageHandler implements RequestHandler {
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         if (ControllerUtils.getCurrentUserRole(request) == User.Role.FORESTER) {throw new AccessDeniedException("User is not the owner or a taskmaster");}
+        String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
+        if (areaId == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
-        Integer taskId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        request.setAttribute(assets.get("AREA_ID_ATTR_NAME"), taskId);
+        request.setAttribute(assets.get("AREA_ID_ATTR_NAME"), Integer.valueOf(areaId));
         request.setAttribute(assets.get("IS_CREATING_PLANT_ATTR_NAME"), true);
         return FORWARD + assets.get("CREATE_PLANT_VIEW_NAME");
     }

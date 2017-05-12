@@ -18,14 +18,15 @@ public class DisplayTaskHandler implements RequestHandler {
         AppAssets assets = AppAssets.getInstance();
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        String taskId = request.getParameter(assets.get("ID_PARAM_NAME"));
+        if (taskId == null) { return REDIRECT + assets.get("HOME_PAGE");}
 
         TaskService taskService = ServiceFactoryImpl.getInstance().getTaskService();
         CredentialService credentialService = ServiceFactoryImpl.getInstance().getCredentialService();
-        Integer taskId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        Task task = taskService.getById(taskId);
+        Task task = taskService.getById(Integer.valueOf(taskId));
         request.setAttribute(assets.get("TASK_ATTR_NAME"), task);
         request.setAttribute(assets.get("TASK_REPORTS_ATTR_NAME"),
-                ServiceFactoryImpl.getInstance().getReportService().getAllOn(taskId));
+                ServiceFactoryImpl.getInstance().getReportService().getAllOn(Integer.valueOf(taskId)));
         request.setAttribute(assets.get("TASK_RECEIVER_ATTR_NAME"),
                 credentialService.getByUserId(task.getReceiverId()));
         request.setAttribute(assets.get("TASK_SENDER_ATTR_NAME"),

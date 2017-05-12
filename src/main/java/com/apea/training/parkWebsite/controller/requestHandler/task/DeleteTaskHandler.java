@@ -24,6 +24,7 @@ public class DeleteTaskHandler implements RequestHandler {
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         Task task = getTask(request);
         if (!isCurrentUserSender(request, task)) {throw new AccessDeniedException("Current user is not a sender.");}
+        if (request.getParameter(assets.get("ID_PARAM_NAME")) == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
         List<FrontendMessage> generalMessages = new ArrayList<>();
         deleteTask(task, generalMessages);
@@ -32,8 +33,8 @@ public class DeleteTaskHandler implements RequestHandler {
     }
 
     private Task getTask(HttpServletRequest request) {
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        return ServiceFactoryImpl.getInstance().getTaskService().getById(id);
+        String taskId = request.getParameter(AppAssets.getInstance().get("ID_PARAM_NAME"));
+        return ServiceFactoryImpl.getInstance().getTaskService().getById(Integer.valueOf(taskId));
     }
 
     private boolean isCurrentUserSender(HttpServletRequest request, Task task) {

@@ -27,16 +27,17 @@ public class DeleteReportHandler implements RequestHandler {
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         Report report = getReport(request);
         if (!checkIfReportBelongsToCurrentUser(request, report)) {throw new AccessDeniedException("Report doesn't belong to current user.");}
+        if (request.getParameter(assets.get("ID_PARAM_NAME")) == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
         List<FrontendMessage> generalMessages = new ArrayList<>();
         Integer taskId = deleteReport(report, generalMessages);
         ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
-        return REDIRECT + assets.get("DISPLAY_TASK_URI")+"/"+taskId;
+        return REDIRECT + assets.get("DISPLAY_TASK_URI") + "?"+assets.get("ID_PARAM_NAME")+"="+taskId;
     }
 
     private Report getReport(HttpServletRequest request) {
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        return ServiceFactoryImpl.getInstance().getReportService().getById(id);
+        String reportId = request.getParameter(AppAssets.getInstance().get("ID_PARAM_NAME"));
+        return ServiceFactoryImpl.getInstance().getReportService().getById(Integer.valueOf(reportId));
     }
 
     private boolean checkIfReportBelongsToCurrentUser(HttpServletRequest request, Report report) {

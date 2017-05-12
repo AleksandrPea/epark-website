@@ -23,6 +23,8 @@ public class DeleteUserHandler implements RequestHandler {
         AppAssets assets = AppAssets.getInstance();
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        if (request.getParameter(assets.get("ID_PARAM_NAME")) == null) {return REDIRECT + assets.get("HOME_PAGE");}
+
         User userToDelete = getUser(request);
         if (!ifCurrentUserHasRights(request, userToDelete)) {throw new AccessDeniedException("Current user doesn't have" +
                 " rights to delete user with id " + userToDelete.getId());}
@@ -33,16 +35,16 @@ public class DeleteUserHandler implements RequestHandler {
         if (isUserDeleted) {
             redirectUri = assets.get("USER_LIST_URI");
         } else {
-            redirectUri = assets.get("DISPLAY_USER_URI") +"/"+
-                    ControllerUtils.getFirstIdFromUri(request.getRequestURI());
+            redirectUri = assets.get("DISPLAY_USER_URI") +"?"+ assets.get("ID_PARAM_NAME") +
+                    "="+userToDelete.getId();
         }
         ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
         return REDIRECT + redirectUri;
     }
 
     private User getUser(HttpServletRequest request) {
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        return ServiceFactoryImpl.getInstance().getUserService().getById(id);
+        String userId = request.getParameter(AppAssets.getInstance().get("ID_PARAM_NAME"));
+        return ServiceFactoryImpl.getInstance().getUserService().getById(Integer.valueOf(userId));
     }
 
     private boolean ifCurrentUserHasRights(HttpServletRequest request, User userToDelete) {

@@ -24,19 +24,21 @@ public class DeletePlantHandler implements RequestHandler {
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         if (ControllerUtils.getCurrentUserRole(request) == User.Role.FORESTER) {throw new AccessDeniedException("User is not the owner or a taskmaster");}
+        if (request.getParameter(assets.get("ID_PARAM_NAME")) == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
         List<FrontendMessage> generalMessages = new ArrayList<>();
         Integer areaId = deletePlant(request, generalMessages);
         ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
-        return REDIRECT + assets.get("DISPLAY_PLANTS_URI")+"/"+areaId+"/1";
+        return REDIRECT + assets.get("DISPLAY_PLANTS_URI")+"?"+assets.get("AREA_ID_PARAM_NAME")+
+                "="+areaId+"&"+assets.get("PAGE_PARAM_NAME")+"=1";
     }
 
     /** @return area id */
     private Integer deletePlant(HttpServletRequest request, List<FrontendMessage> generalMessages) {
         AppAssets assets = AppAssets.getInstance();
         PlantService plantService = ServiceFactoryImpl.getInstance().getPlantService();
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        Plant plant = plantService.getById(id);
+        Integer plantId = Integer.valueOf(request.getParameter(assets.get("ID_PARAM_NAME")));
+        Plant plant = plantService.getById(plantId);
         plantService.delete(plant);
         generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_DELETE_PLANT_SUCCESS")));
         return plant.getAreaId();

@@ -7,7 +7,7 @@
         <h3>
             ${requestScope[assets.TASK_ATTR_NAME].title}
             <c:if test="${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.TASK_ATTR_NAME].senderId}">
-                <a href="<c:url value="${assets.DELETE_TASK_URI}/${requestScope[assets.TASK_ATTR_NAME].id}"/>"
+                <a href="<c:url value="${assets.DELETE_TASK_URI}?${assets.ID_PARAM_NAME}=${requestScope[assets.TASK_ATTR_NAME].id}"/>"
                         class="confirm" role="button">
                     <small><span class="glyphicon glyphicon-remove"></span></small>
                 </a>
@@ -19,30 +19,30 @@
         </h5>
         <p><em>
             <fmt:message key="task.from.label" bundle="${langTask}"/>
-            <a href="<c:url value="${assets.DISPLAY_USER_URI}/${requestScope[assets.TASK_RECEIVER_ATTR_NAME].userId}"/>">
+            <a href="<c:url value="${assets.DISPLAY_USER_URI}?${assets.ID_PARAM_NAME}=${requestScope[assets.TASK_RECEIVER_ATTR_NAME].userId}"/>">
                 <c:out value="${requestScope[assets.TASK_RECEIVER_ATTR_NAME].login}"/>
             </a>
 
             <fmt:message key="task.for.label" bundle="${langTask}"/>
-            <a href="<c:url value="${assets.DISPLAY_USER_URI}/${requestScope[assets.TASK_SENDER_ATTR_NAME].userId}"/>">
+            <a href="<c:url value="${assets.DISPLAY_USER_URI}?${assets.ID_PARAM_NAME}=${requestScope[assets.TASK_SENDER_ATTR_NAME].userId}"/>">
                 <c:out value="${requestScope[assets.TASK_SENDER_ATTR_NAME].login}"/>
             </a>
         </em></p>
         <p><c:out value="${requestScope[assets.TASK_ATTR_NAME].comment}"/></p>
-        <p>
+        <c:if test="${not empty requestScope[assets.TASK_PLANTS_ATTR_NAME]}"><p>
             <strong><fmt:message key="task.taskPage.plants" bundle="${langTask}"/>: </strong>
             <c:forEach var="plant" items="${requestScope[assets.TASK_PLANTS_ATTR_NAME]}">
-                <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}/${plant.areaId}/1"/>">
-                    <c:out value="${plant.name}"/></a>,
+                <a href="<c:url value="${assets.DISPLAY_PLANTS_URI}?${assets.AREA_ID_PARAM_NAME}=${plant.areaId}&${assets.PAGE_PARAM_NAME}=1"/>">
+                    <c:out value="${plant.name}"/></a>
             </c:forEach>
-        <p>
+        <p></c:if>
         <ul class="reports list-unstyled">
             <c:forEach var="report" items="${requestScope[assets.TASK_REPORTS_ATTR_NAME]}">
                 <li>
                     <h3>
                         <fmt:formatDate pattern = "yyyy-MM-dd HH:mm" value = "${report.creationDate}"/>
                         <c:if test="${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.TASK_ATTR_NAME].receiverId}">
-                            <a href="<c:url value="${assets.DELETE_REPORT_URI}/${report.id}"/>" class="confirm" role="button">
+                            <a href="<c:url value="${assets.DELETE_REPORT_URI}?${assets.ID_PARAM_NAME}=${report.id}"/>" class="confirm" role="button">
                                 <small><span class="glyphicon glyphicon-remove"></span></small>
                             </a>
                         </c:if>
@@ -64,18 +64,18 @@
             </c:when>
             <c:when test="${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.TASK_ATTR_NAME].receiverId
                     && requestScope[assets.TASK_ATTR_NAME].state == 'NEW'}">
-                <a href="<c:url value="${assets.RECEIVE_TASK_URI}/${requestScope[assets.TASK_ATTR_NAME].id}"/>"
+                <a href="<c:url value="${assets.RECEIVE_TASK_URI}?${assets.ID_PARAM_NAME}=${requestScope[assets.TASK_ATTR_NAME].id}"/>"
                         class="btn btn-success" role="button">
                     <fmt:message key="task.taskPage.receiveButton" bundle="${langTask}"/>
                 </a>
             </c:when>
             <c:when test="${sessionScope[assets.CURRENT_USER_ID_ATTR_NAME] == requestScope[assets.TASK_ATTR_NAME].senderId
                     && (requestScope[assets.TASK_ATTR_NAME].state == 'NEW' || requestScope[assets.TASK_ATTR_NAME].state == 'RUNNING')}">
-                <a href="<c:url value="${assets.FINISH_TASK_URI}/${requestScope[assets.TASK_ATTR_NAME].id}"/>"
+                <a href="<c:url value="${assets.FINISH_TASK_URI}?${assets.ID_PARAM_NAME}=${requestScope[assets.TASK_ATTR_NAME].id}"/>"
                         class="btn btn-success confirm" role="button">
                     <fmt:message key="task.taskPage.finishButton" bundle="${langTask}"/>
                 </a>
-               <a href="<c:url value="${assets.ABORT_TASK_URI}/${requestScope[assets.TASK_ATTR_NAME].id}"/>"
+               <a href="<c:url value="${assets.ABORT_TASK_URI}?${assets.ID_PARAM_NAME}=${requestScope[assets.TASK_ATTR_NAME].id}"/>"
                     class="btn btn-warning confirm" role="button">
                     <fmt:message key="task.taskPage.incompleteButton" bundle="${langTask}"/>
                 </a>

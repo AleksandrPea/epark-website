@@ -37,8 +37,8 @@ public class EditUserHandler extends CreateUserHandler {
                     .getSuccess(assets.get("MSG_EDIT_USER_SUCCESS")));
             ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
             String login = request.getParameter(assets.get("LOGIN_PARAM_NAME"));
-            abstractViewName = REDIRECT + assets.get("DISPLAY_USER_URI") +"/"+
-                    ServiceFactoryImpl.getInstance().getCredentialService().getByLogin(login).getUserId();
+            abstractViewName = REDIRECT + assets.get("DISPLAY_USER_URI") +"?"+assets.get("ID_PARAM_NAME")+
+                    "="+ServiceFactoryImpl.getInstance().getCredentialService().getByLogin(login).getUserId();
         } else {
             setFormAttributes(request, formMessages);
             request.setAttribute(assets.get("IS_CREATING_USER_ATTR_NAME"), false);

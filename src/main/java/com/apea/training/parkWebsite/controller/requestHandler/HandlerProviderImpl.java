@@ -24,41 +24,41 @@ public class HandlerProviderImpl implements HandlerProvider {
     private static AppAssets assets = AppAssets.getInstance();
 
     public final String POST_SIGN_IN_REQUEST_PATTERN = "POST:" + assets.get("SIGN_IN_URI");
-    public final String GET_ALL_USERS_REQUEST_PATTERN = "GET:" + assets.get("USER_LIST_URI") +"/?";
-    public final String GET_ONE_USER_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_URI") +"/\\d+/?";
-    public final String GET_EDIT_USER_REQUEST_PATTERN = "GET:" + assets.get("EDIT_USER_URI") +"/\\d+/?";
-    public final String POST_EDIT_USER_REQUEST_PATTERN = "POST:" + assets.get("EDIT_USER_URI") +"/?";
-    public final String GET_DELETE_USER_REQUEST_PATTERN = "GET:" + assets.get("DELETE_USER_URI") +"/\\d+/?";
-    public final String GET_CREATE_USER_REQUEST_PATTERN = "GET:" + assets.get("CREATE_USER_URI") +"/?";
-    public final String POST_CREATE_USER_REQUEST_PATTERN = "POST:" + assets.get("CREATE_USER_URI") +"/?";
+    public final String GET_ALL_USERS_REQUEST_PATTERN = "GET:" + assets.get("USER_LIST_URI");
+    public final String GET_ONE_USER_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_URI");
+    public final String GET_EDIT_USER_REQUEST_PATTERN = "GET:" + assets.get("EDIT_USER_URI");
+    public final String POST_EDIT_USER_REQUEST_PATTERN = "POST:" + assets.get("EDIT_USER_URI");
+    public final String GET_DELETE_USER_REQUEST_PATTERN = "GET:" + assets.get("DELETE_USER_URI");
+    public final String GET_CREATE_USER_REQUEST_PATTERN = "GET:" + assets.get("CREATE_USER_URI");
+    public final String POST_CREATE_USER_REQUEST_PATTERN = "POST:" + assets.get("CREATE_USER_URI");
 
-    public final String GET_ONE_TASK_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_TASK_URI") +"/\\d++/?";
-    public final String GET_USER_TASKS_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_TASKS_URI") +"/?";
-    public final String GET_DELETE_TASK_REQUEST_PATTERN = "GET:" + assets.get("DELETE_TASK_URI") +"/\\d+/?";
-    public final String GET_CREATE_TASK_REQUEST_PATTERN = "GET:" + assets.get("CREATE_TASK_URI") +"/?";
-    public final String GET_RECEIVE_TASK_REQUEST_PATTERN = "GET:" + assets.get("RECEIVE_TASK_URI") +"/\\d+/?";
-    public final String GET_FINISH_TASK_REQUEST_PATTERN = "GET:" + assets.get("FINISH_TASK_URI") +"/\\d+/?";
-    public final String GET_ABORT_TASK_REQUEST_PATTERN = "GET:" + assets.get("ABORT_TASK_URI") +"/\\d+/?";
-    public final String POST_CREATE_TASK_REQUEST_PATTERN = "POST:" + assets.get("CREATE_TASK_URI") +"/?";
+    public final String GET_ONE_TASK_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_TASK_URI");
+    public final String GET_USER_TASKS_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_USER_TASKS_URI");
+    public final String GET_DELETE_TASK_REQUEST_PATTERN = "GET:" + assets.get("DELETE_TASK_URI");
+    public final String GET_CREATE_TASK_REQUEST_PATTERN = "GET:" + assets.get("CREATE_TASK_URI");
+    public final String GET_RECEIVE_TASK_REQUEST_PATTERN = "GET:" + assets.get("RECEIVE_TASK_URI");
+    public final String GET_FINISH_TASK_REQUEST_PATTERN = "GET:" + assets.get("FINISH_TASK_URI");
+    public final String GET_ABORT_TASK_REQUEST_PATTERN = "GET:" + assets.get("ABORT_TASK_URI");
+    public final String POST_CREATE_TASK_REQUEST_PATTERN = "POST:" + assets.get("CREATE_TASK_URI");
 
-    public final String GET_DELETE_REPORT_REQUEST_PATTERN = "GET:" + assets.get("DELETE_REPORT_URI") +"/\\d+/?";
-    public final String POST_CREATE_REPORT_REQUEST_PATTERN = "POST:" + assets.get("CREATE_REPORT_URI") +"/?";
+    public final String GET_DELETE_REPORT_REQUEST_PATTERN = "GET:" + assets.get("DELETE_REPORT_URI");
+    public final String POST_CREATE_REPORT_REQUEST_PATTERN = "POST:" + assets.get("CREATE_REPORT_URI");
 
-    public final String GET_ALL_AREAS_REQUEST_PATTERN = "GET:" + assets.get("AREA_LIST_URI") +"/?";
-    public final String GET_EDIT_AREA_REQUEST_PATTERN = "GET:" + assets.get("EDIT_AREA_URI") +"/\\d+/?";
-    public final String POST_EDIT_AREA_REQUEST_PATTERN = "POST:" + assets.get("EDIT_AREA_URI") +"/?";
-    public final String GET_DELETE_AREA_REQUEST_PATTERN = "GET:" + assets.get("DELETE_AREA_URI") +"/\\d+/?";
-    public final String GET_CREATE_AREA_REQUEST_PATTERN = "GET:" + assets.get("CREATE_AREA_URI") + "/?";
-    public final String POST_CREATE_AREA_REQUEST_PATTERN = "POST:" + assets.get("CREATE_AREA_URI") + "/?";
+    public final String GET_ALL_AREAS_REQUEST_PATTERN = "GET:" + assets.get("AREA_LIST_URI");
+    public final String GET_EDIT_AREA_REQUEST_PATTERN = "GET:" + assets.get("EDIT_AREA_URI");
+    public final String POST_EDIT_AREA_REQUEST_PATTERN = "POST:" + assets.get("EDIT_AREA_URI");
+    public final String GET_DELETE_AREA_REQUEST_PATTERN = "GET:" + assets.get("DELETE_AREA_URI");
+    public final String GET_CREATE_AREA_REQUEST_PATTERN = "GET:" + assets.get("CREATE_AREA_URI");
+    public final String POST_CREATE_AREA_REQUEST_PATTERN = "POST:" + assets.get("CREATE_AREA_URI");
 
-    public final String GET_PLANTS_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_PLANTS_URI") +"/\\d+/\\d+/?";
-    public final String GET_EDIT_PLANT_REQUEST_PATTERN = "GET:" + assets.get("EDIT_PLANT_URI") +"/\\d+/?";
-    public final String POST_EDIT_PLANT_REQUEST_PATTERN = "POST:" + assets.get("EDIT_PLANT_URI") +"/?";
-    public final String GET_DELETE_PLANT_REQUEST_PATTERN = "GET:" + assets.get("DELETE_PLANT_URI") +"/\\d+/?";
-    public final String GET_CREATE_PLANT_REQUEST_PATTERN = "GET:" + assets.get("CREATE_PLANT_URI") +"/\\d+/?";
-    public final String POST_CREATE_PLANT_REQUEST_PATTERN = "POST:" + assets.get("CREATE_PLANT_URI") +"/?";
+    public final String GET_PLANTS_REQUEST_PATTERN = "GET:" + assets.get("DISPLAY_PLANTS_URI");
+    public final String GET_EDIT_PLANT_REQUEST_PATTERN = "GET:" + assets.get("EDIT_PLANT_URI");
+    public final String POST_EDIT_PLANT_REQUEST_PATTERN = "POST:" + assets.get("EDIT_PLANT_URI");
+    public final String GET_DELETE_PLANT_REQUEST_PATTERN = "GET:" + assets.get("DELETE_PLANT_URI");
+    public final String GET_CREATE_PLANT_REQUEST_PATTERN = "GET:" + assets.get("CREATE_PLANT_URI");
+    public final String POST_CREATE_PLANT_REQUEST_PATTERN = "POST:" + assets.get("CREATE_PLANT_URI");
 
-    public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:" + assets.get("SIGN_OUT_URI") +"/?";
+    public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:" + assets.get("SIGN_OUT_URI");
 
     private static HandlerProviderImpl instance = new HandlerProviderImpl();
 

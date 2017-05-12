@@ -20,15 +20,16 @@ public class DisplayPlantsHandler implements RequestHandler {
         AppAssets assets = AppAssets.getInstance();
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
+        String page = request.getParameter(assets.get("PAGE_PARAM_NAME"));
+        if (areaId == null || page == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
-        int page = ControllerUtils.getIntFromUri(request.getRequestURI(), 1);
-        Integer areaId = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        List<Plant> areaPlants = ServiceFactoryImpl.getInstance().getPlantService().getAllOn(areaId);
-        request.setAttribute(assets.get("PLANTS_ATTR_NAME"), makePlantPage(page, areaPlants));
+        List<Plant> areaPlants = ServiceFactoryImpl.getInstance().getPlantService().getAllOn(Integer.valueOf(areaId));
+        request.setAttribute(assets.get("PLANTS_ATTR_NAME"), makePlantPage(Integer.valueOf(page), areaPlants));
         request.setAttribute(assets.get("MAX_PLANT_PAGES_ATTR_NAME"), calcMaxPage(areaPlants));
         request.setAttribute(assets.get("CURRENT_PLANT_PAGE_ATTR_NAME"), page);
         request.setAttribute(assets.get("AREA_ATTR_NAME"),
-                ServiceFactoryImpl.getInstance().getAreaService().getById(areaId));
+                ServiceFactoryImpl.getInstance().getAreaService().getById(Integer.valueOf(areaId)));
         return FORWARD + assets.get("PLANT_LIST_VIEW_NAME");
     }
 

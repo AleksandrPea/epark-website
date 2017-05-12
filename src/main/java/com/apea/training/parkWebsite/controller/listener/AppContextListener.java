@@ -10,7 +10,6 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         servletContextEvent.getServletContext().setAttribute("assets", AppAssets.getInstance());
-        servletContextEvent.getServletContext().setAttribute("language", "en_EN");
     }
 
     @Override

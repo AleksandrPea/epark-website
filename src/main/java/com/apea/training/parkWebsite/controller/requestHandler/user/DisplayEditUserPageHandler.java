@@ -18,6 +18,8 @@ public class DisplayEditUserPageHandler implements RequestHandler {
         AppAssets assets = AppAssets.getInstance();
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
+        if (request.getParameter(assets.get("ID_PARAM_NAME")) == null) {return REDIRECT + assets.get("HOME_PAGE");}
+
         User userToEdit = getUser(request);
         if (!ifCurrentUserHasRights(request, userToEdit)) {throw new AccessDeniedException("Current user doesn't have" +
                 " rights to edit user with id " + userToEdit.getId());}
@@ -28,8 +30,8 @@ public class DisplayEditUserPageHandler implements RequestHandler {
     }
 
     private User getUser(HttpServletRequest request) {
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        return ServiceFactoryImpl.getInstance().getUserService().getById(id);
+        String userId = request.getParameter(AppAssets.getInstance().get("ID_PARAM_NAME"));
+        return ServiceFactoryImpl.getInstance().getUserService().getById(Integer.valueOf(userId));
     }
 
     private boolean ifCurrentUserHasRights(HttpServletRequest request, User userToEdit) {
@@ -52,8 +54,8 @@ public class DisplayEditUserPageHandler implements RequestHandler {
 
     private void setFormAttributes(HttpServletRequest request, User userToEdit) {
         AppAssets assets = AppAssets.getInstance();
-        Integer id = ControllerUtils.getFirstIdFromUri(request.getRequestURI());
-        Credential credential = ServiceFactoryImpl.getInstance().getCredentialService().getByUserId(id);
+        String userId = request.getParameter(assets.get("ID_PARAM_NAME"));
+        Credential credential = ServiceFactoryImpl.getInstance().getCredentialService().getByUserId(Integer.valueOf(userId));
         request.setAttribute(assets.get("LOGIN_ATTR_NAME"), credential.getLogin());
         request.setAttribute(assets.get("PASSWORD_ATTR_NAME"), credential.getPassword());
         request.setAttribute(assets.get("FIRSTNAME_ATTR_NAME"), userToEdit.getFirstName());

@@ -18,6 +18,7 @@ public class MySqlConnectionPool implements ConnectionPool {
     private final String DB_CONFIG_PARAM_USER_PASSWORD = "database.userPassword";
     private final String DB_CONFIG_PARAM_DRIVER = "database.driver";
     private final String DB_CONFIG_PARAM_MAX_CONNECTIONS = "database.maxConnections";
+    private final String DB_CONFIG_PARAM_CONNECTION_PROPERITES="database.connectionProperties";
 
     private static MySqlConnectionPool instance = new MySqlConnectionPool();
 
@@ -36,6 +37,7 @@ public class MySqlConnectionPool implements ConnectionPool {
             connectionPool.setUsername(props.getProperty(DB_CONFIG_PARAM_USER_NAME));
             connectionPool.setPassword(props.getProperty(DB_CONFIG_PARAM_USER_PASSWORD));
             connectionPool.setMaxTotal(Integer.parseInt(props.getProperty(DB_CONFIG_PARAM_MAX_CONNECTIONS)));
+            connectionPool.setConnectionProperties(props.getProperty(DB_CONFIG_PARAM_CONNECTION_PROPERITES));
         } catch (IOException e) {
             throw new DaoException(e);
         }

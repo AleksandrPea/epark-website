@@ -24,6 +24,8 @@ public class EditPlantHandler extends CreatePlantHandler {
 
         if (ControllerUtils.getCurrentUserId(request) == null) {return REDIRECT + assets.get("LOGIN_PAGE");}
         if (ControllerUtils.getCurrentUserRole(request) == User.Role.FORESTER) {throw new AccessDeniedException("User is not the owner or a taskmaster");}
+        String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
+        if (areaId == null) {return REDIRECT + assets.get("HOME_PAGE");}
 
         Map<String, FrontendMessage> formMessages = new HashMap<>();
         List<FrontendMessage> generalMessages = new ArrayList<>();
@@ -32,10 +34,13 @@ public class EditPlantHandler extends CreatePlantHandler {
         if (isPlantEdited) {
             generalMessages.add(FrontMessageFactory.getInstance().getSuccess(assets.get("MSG_EDIT_PLANT_SUCCESS")));
             ControllerUtils.saveGeneralMsgsInSession(request, generalMessages);
-            String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
-            abstractViewName = REDIRECT + assets.get("DISPLAY_PLANTS_URI")+"/"+areaId+"/1";
+
+            abstractViewName = REDIRECT + assets.get("DISPLAY_PLANTS_URI")+"?"+assets.get("AREA_ID_PARAM_NAME")+
+                    "="+areaId+"&"+assets.get("PAGE_PARAM_NAME")+"=1";
         } else {
             setFormAttributes(request, formMessages);
+            request.setAttribute(assets.get("ALL_AREAS_ATTR_NAME"),
+                    ServiceFactoryImpl.getInstance().getAreaService().getAll());
             request.setAttribute(assets.get("IS_CREATING_PLANT_ATTR_NAME"), false);
             abstractViewName = FORWARD + assets.get("CREATE_PLANT_VIEW_NAME");
         }
@@ -56,5 +61,16 @@ public class EditPlantHandler extends CreatePlantHandler {
                 .setAreaId(Integer.valueOf(areaId)).build();
         ServiceFactoryImpl.getInstance().getPlantService().update(plant);
         return true;
+    }
+
+    @Override
+    protected void setFormAttributes(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
+        super.setFormAttributes(request, formMessages);
+        AppAssets assets = AppAssets.getInstance();
+        String id = request.getParameter(assets.get("PLANT_ID_PARAM_NAME"));
+        String areaId = request.getParameter(assets.get("AREA_ID_PARAM_NAME"));
+        request.setAttribute(assets.get("PLANT_ID_ATTR_NAME"), id);
+        request.setAttribute(assets.get("AREA_ATTR_NAME"),
+                ServiceFactoryImpl.getInstance().getAreaService().getById(Integer.valueOf(areaId)));
     }
 }

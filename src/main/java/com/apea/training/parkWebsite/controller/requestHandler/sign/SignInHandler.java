@@ -23,7 +23,7 @@ public class SignInHandler implements RequestHandler {
         String abstractView;
         if (isCredentialCorrect(request)) {
             Integer id = signInUser(request);
-            abstractView = REDIRECT + assets.get("DISPLAY_USER_URI") + "/"+id;
+            abstractView = REDIRECT + assets.get("DISPLAY_USER_URI") + "?id="+id;
         } else {
             addErrorMessages(messages);
             abstractView = FORWARD + assets.get("LOGIN_VIEW_NAME");
