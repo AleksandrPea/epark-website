@@ -39,11 +39,11 @@ public class DisplayEditUserPageHandler implements RequestHandler {
         if (currentUser.getRole() == User.Role.OWNER) {
             return true;
         }
-        if (currentUser.getRole() == User.Role.FORESTER) {
-            return false;
-        }
         if (userToEdit.getId().equals(currentUser.getId())) {
             return true;
+        }
+        if (currentUser.getRole() == User.Role.FORESTER) {
+            return false;
         }
         if (userToEdit.getSuperiorId().equals(currentUser.getId())) {
             return true;
