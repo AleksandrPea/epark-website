@@ -7,14 +7,17 @@ import com.apea.training.parkWebsite.controller.message.FrontendMessage;
 import com.apea.training.parkWebsite.dao.DaoException;
 import com.apea.training.parkWebsite.domain.Plant;
 import com.apea.training.parkWebsite.domain.User;
+import com.apea.training.parkWebsite.service.CredentialService;
 import com.apea.training.parkWebsite.service.impl.ServiceFactoryImpl;
 import com.apea.training.parkWebsite.view.JspResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ControllerUtils {
 
@@ -41,22 +44,6 @@ public class ControllerUtils {
         return ServiceFactoryImpl.getInstance().getUserService().getById(id);
     }
 
-//    public static int getFirstIdFromUri(String uri) {
-//        return getIntFromUri(uri, 0);
-//    }
-//
-//    public static int getIntFromUri(String uri, int index) {
-//        Matcher matcher = Pattern.compile("\\d+").matcher(uri);
-//
-//        for(int i = 0; i <= index; i++) {
-//            if (!matcher.find()) {
-//                throw new IllegalArgumentException("There is no id in uri " + uri);
-//            }
-//        }
-//
-//        return Integer.parseInt(matcher.group());
-//    }
-
     public static void saveGeneralMsgsInSession(HttpServletRequest request,
                                                 List<FrontendMessage> generalMessages) {
         Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
@@ -66,17 +53,26 @@ public class ControllerUtils {
     }
 
     public static List<Plant> getCurrentUserPlants(HttpServletRequest request) {
-        User currentUser = ControllerUtils.getCurrentUser(request);
+        User currentUser = getCurrentUser(request);
         if (currentUser.getRole() == User.Role.OWNER) {
             return ServiceFactoryImpl.getInstance().getPlantService().getAll();
         } else {
-            List<Plant> userPlants = new ArrayList<>();
-            ServiceFactoryImpl.getInstance().getUserService().getAttachedAreas(currentUser)
+            List<Plant> userPlants = ServiceFactoryImpl.getInstance().getUserService().getAttachedAreas(currentUser)
                     .stream()
-                    .map(area -> ServiceFactoryImpl.getInstance().getPlantService().getAllOn(area.getId()))
-                    .forEach(userPlants::addAll);
+                    .flatMap(area -> ServiceFactoryImpl.getInstance().getPlantService().getAllOn(area.getId()).stream())
+                    .collect(Collectors.toList());
             return userPlants;
         }
+    }
+
+    public static Set<String> getCurrentUserSubordinateLogins(HttpServletRequest request) {
+        CredentialService crService = ServiceFactoryImpl.getInstance().getCredentialService();
+        User currentUser = getCurrentUser(request);
+        return ServiceFactoryImpl.getInstance().getUserService()
+                .getAllSubordinatesOf(currentUser)
+                .stream()
+                .map(user->crService.getByUserId(user.getId()).getLogin())
+                .collect(Collectors.toSet());
     }
 
     public static String resolveViewName(String viewName) {
@@ -112,7 +108,7 @@ public class ControllerUtils {
         if (name.matches(assets.get("NAME_REGEX"))) {
             return Optional.empty();
         } else {
-            return  Optional.of(FrontMessageFactory.getInstance().getError(assets.get("NAME_VALIDATION_FAILED")));
+            return Optional.of(FrontMessageFactory.getInstance().getError(assets.get("NAME_VALIDATION_FAILED")));
         }
     }
 
@@ -130,7 +126,7 @@ public class ControllerUtils {
         if (password.matches(assets.get("PASSWORD_REGEX"))) {
             return Optional.empty();
         } else {
-            return  Optional.of(FrontMessageFactory.getInstance().getError(assets.get("PASSWORD_VALIDATION_FAILED")));
+            return Optional.of(FrontMessageFactory.getInstance().getError(assets.get("PASSWORD_VALIDATION_FAILED")));
         }
     }
 
@@ -139,7 +135,7 @@ public class ControllerUtils {
         if (email.matches(assets.get("EMAIL_REGEX"))) {
             return Optional.empty();
         } else {
-            return  Optional.of(FrontMessageFactory.getInstance().getError(assets.get("EMAIL_VALIDATION_FAILED")));
+            return Optional.of(FrontMessageFactory.getInstance().getError(assets.get("EMAIL_VALIDATION_FAILED")));
         }
     }
 }

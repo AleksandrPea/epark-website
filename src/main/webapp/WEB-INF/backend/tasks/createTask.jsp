@@ -11,14 +11,17 @@
               action="<c:url value="${assets.CREATE_TASK_URI}"/>"
               accept-charset="UTF-8" role="form">
 
-            <div class="form-group validated required">
+            <div class="form-group required">
                 <label class="control-label" for="receiverLogin">
                     <fmt:message key="task.receiverLogin.label" bundle="${langTask}"/></label>
-                <input type="text" class="form-control" id="receiverLogin" required
-                       placeholder="<fmt:message key="task.receiverLogin.label" bundle="${langTask}"/>"
-                       name="${assets.TASK_RECEIVER_LOGIN_PARAM_NAME}"
-                       value="${fn:escapeXml(requestScope[assets.TASK_RECEIVER_LOGIN_ATTR_NAME])}"/>
-                <mytags:formMessages formInputName="${assets.TASK_RECEIVER_LOGIN_PARAM_NAME}"/>
+                <select id="receiverLogin" class="selectpicker form-control"
+                         name="${assets.TASK_RECEIVER_LOGIN_PARAM_NAME}">
+                    <c:forEach var="subordinateLogin" items="${requestScope[assets.SUBORDINATES_ATTR_NAME]}">
+                        <option value="${subordinateLogin}" ${(subordinateLogin == requestScope[assets.TASK_RECEIVER_LOGIN_ATTR_NAME]) ? 'selected' : ''}>
+                            <c:out value="${subordinateLogin}"/>
+                        </option>
+                    </c:forEach>
+                </select>
             </div>
 
             <div class="form-group validated required">

@@ -46,7 +46,6 @@ public class CreateTaskHandler implements RequestHandler {
         AppAssets assets = AppAssets.getInstance();
         String receiverLogin = request.getParameter(assets.get("TASK_RECEIVER_LOGIN_PARAM_NAME"));
         User receiver = ServiceFactoryImpl.getInstance().getUserService().getByLogin(receiverLogin);
-        if (checkReceiverIsNotExists(receiver,formMessages)) { return false; }
 
         User currentUser = ControllerUtils.getCurrentUser(request);
         if (isSubordinationInvalid(receiver, currentUser, formMessages)) { return false; }
@@ -65,8 +64,6 @@ public class CreateTaskHandler implements RequestHandler {
     private boolean areParametersInvalid(HttpServletRequest request, Map<String, FrontendMessage> formMessages) {
         AppAssets assets = AppAssets.getInstance();
         Set<FrontendMessage> validationMessages = new HashSet<>();
-        ControllerUtils.validateName(request.getParameter(assets.get("TASK_RECEIVER_LOGIN_PARAM_NAME")))
-                .ifPresent(msg -> {formMessages.put(assets.get("TASK_RECEIVER_LOGIN_PARAM_NAME"), msg); validationMessages.add(msg);});
 
         ControllerUtils.validateName(request.getParameter(assets.get("TASK_TITLE_PARAM_NAME")))
                 .ifPresent(msg -> {formMessages.put(assets.get("TASK_TITLE_PARAM_NAME"), msg); validationMessages.add(msg);});
@@ -75,16 +72,6 @@ public class CreateTaskHandler implements RequestHandler {
                 .ifPresent(msg -> {formMessages.put(assets.get("TASK_COMMENT_PARAM_NAME"), msg); validationMessages.add(msg);});
 
         return !validationMessages.isEmpty();
-    }
-
-    private boolean checkReceiverIsNotExists(User receiver, Map<String, FrontendMessage> formMessages) {
-        AppAssets assets = AppAssets.getInstance();
-        if (receiver == null) {
-            formMessages.put(assets.get("TASK_RECEIVER_LOGIN_PARAM_NAME"),
-                    FrontMessageFactory.getInstance().getError(assets.get("MSG_RECEIVER_LOGIN_IS_INVALID")));
-            return true;
-        }
-        return false;
     }
 
     private boolean isSubordinationInvalid(User receiver, User currentUser, Map<String, FrontendMessage> formMessages) {
@@ -124,6 +111,9 @@ public class CreateTaskHandler implements RequestHandler {
         }
         request.setAttribute(assets.get("ALL_TASK_PLANTS_ATTR_NAME"),
                 ControllerUtils.getCurrentUserPlants(request));
+        request.setAttribute(assets.get("SUBORDINATES_ATTR_NAME"),
+                ControllerUtils.getCurrentUserSubordinateLogins(request));
+
         request.setAttribute(assets.get("MESSAGES_ATTR_NAME"), formMessages);
     }
 }
